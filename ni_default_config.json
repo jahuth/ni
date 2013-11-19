@@ -1,0 +1,1 @@
+{"model.ip.adaptive_rate_smooth_width": 20, "ni.data.monkey.path": "/net/store/ni/happycortex/statmodelling/data/", "model.ip.knot_number": 3, "model.ip.history_length": 100, "tmp_path": "/net/store/ni/happycortex/statmodelling/", "model.ip.knots_rate": 10, "frontend.max_started_jobs": 50, "model.ip.backend": "glm"}
