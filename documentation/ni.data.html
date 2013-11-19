@@ -1,0 +1,433 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>3. data Package &mdash; Neuroinformatics Toolbox 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Neuroinformatics Toolbox 0.1 documentation" href="index.html" />
+    <link rel="prev" title="2. tools Package" href="ni.tools.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ni.tools.html" title="2. tools Package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Neuroinformatics Toolbox 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="data-package">
+<h1>3. data Package<a class="headerlink" href="#data-package" title="Permalink to this headline">¶</a></h1>
+<p>Provides easy access to some data.</p>
+<div class="section" id="module-ni.data.data">
+<span id="data-module"></span><h2>3.1. <tt class="xref py py-mod docutils literal"><span class="pre">data</span></tt> Module<a class="headerlink" href="#module-ni.data.data" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-ni.data.data"></span><div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">Use different internal representations, depending on use. Ie. Spike times vs. binary array</p>
+</div>
+<div class="admonition-todo admonition" id="index-1">
+<p class="first admonition-title">Todo</p>
+<p class="last">Lazy loading and prevention from data duplicates where unnecessary. See also: <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy">indexing view versus copy</a></p>
+</div>
+<div class="section" id="storing-spike-data-in-python-with-pandas">
+<h3>3.1.1. Storing Spike Data in Python with Pandas<a class="headerlink" href="#storing-spike-data-in-python-with-pandas" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference external" href="http://pandas.pydata.org/">pandas package</a> allows for easy storage of large data objects in python. The structure that is used by this toolbox is the pandas <tt class="xref py py-class docutils literal"><span class="pre">pandas.MultiIndexedFrame</span></tt> which is a <a class="reference external" href="http://pandas.pydata.org/pandas-docs/dev/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.12.0-1114-g4d0632b)"><tt class="xref py py-class docutils literal"><span class="pre">pandas.DataFrame</span></tt></a> / <a class="reference external" href="http://pandas.pydata.org/pandas-docs/dev/dsintro.html#dataframe">pandas.DataFrame</a> with an Index that has multiple levels.</p>
+<p>The index contains at least the levels <tt class="docutils literal"><span class="pre">'Cell'</span></tt>, <tt class="docutils literal"><span class="pre">'Trial'</span></tt> and <tt class="docutils literal"><span class="pre">'Condition'</span></tt>. Additional Indizex can be used (eg. <tt class="docutils literal"><span class="pre">'Bootstrap</span> <span class="pre">Sample'</span></tt> for Bootstrap Samples), but keep in mind that when fitting a model only <tt class="docutils literal"><span class="pre">'Cell'</span></tt> and <tt class="docutils literal"><span class="pre">'Trial'</span></tt> should remain, all other dimensions will be collapsed as more sets of Trials which may be indistinguishable after the fit.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="9%" />
+<col width="12%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Condition</th>
+<th class="head">Cell</th>
+<th class="head">Trial</th>
+<th class="head"><em>t</em> (Timeseries of specific trial)</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0,0,0,0,1,0,0,0,0,1,0...</td>
+</tr>
+<tr class="row-odd"><td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0,0,0,1,0,0,0,0,1,0,0...</td>
+</tr>
+<tr class="row-even"><td>0</td>
+<td>0</td>
+<td>2</td>
+<td>0,0,1,0,1,0,0,1,0,1,0...</td>
+</tr>
+<tr class="row-odd"><td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0,0,0,1,0,0,0,0,0,0,0...</td>
+</tr>
+<tr class="row-even"><td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0,0,0,0,0,1,0,0,0,1,0...</td>
+</tr>
+<tr class="row-odd"><td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="row-even"><td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0,0,1,0,0,0,0,0,0,0,1...</td>
+</tr>
+<tr class="row-odd"><td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0,0,0,0,0,1,0,1,0,0,0...</td>
+</tr>
+<tr class="row-even"><td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+</tbody>
+</table>
+<p>To put your own data into a <a class="reference external" href="http://pandas.pydata.org/pandas-docs/dev/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.12.0-1114-g4d0632b)"><tt class="xref py py-class docutils literal"><span class="pre">pandas.DataFrame</span></tt></a>, so it can be used by the models in this toolbox create a MultiIndex for example like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">ni</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="n">d</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">tuples</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">con</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nr_conditions</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nr_trials</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nr_cells</span><span class="p">):</span>
+                                <span class="n">spikes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">getBinary</span><span class="p">(</span><span class="n">Spike_times_STC</span><span class="o">.</span><span class="n">all_SUA</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">spike_times</span><span class="p">[</span><span class="n">con</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">*</span><span class="mi">1000</span><span class="p">))</span>
+                                <span class="k">if</span> <span class="n">spikes</span> <span class="o">!=</span> <span class="p">[]:</span>
+                                        <span class="n">d</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">spikes</span><span class="p">)</span>
+                                        <span class="n">tuples</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">con</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">c</span><span class="p">))</span>
+<span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_tuples</span><span class="p">(</span><span class="n">tuples</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;Condition&#39;</span><span class="p">,</span><span class="s">&#39;Trial&#39;</span><span class="p">,</span><span class="s">&#39;Cell&#39;</span><span class="p">])</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="n">index</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>If you only have one trial if several cells or one cell with a few trials, it can be indexed like this:</p>
+<blockquote>
+<div><p>from ni.data.data import Data
+import pandas as pd</p>
+<p>index = pd.MultiIndex.from_tuples([(0,0,i) for i in range(len(d))], names=[&#8216;Condition&#8217;,&#8217;Cell&#8217;,&#8217;Trial&#8217;])
+data = Data(pd.DataFrame(d, index = index))</p>
+</div></blockquote>
+<p>To use the data you can use <a class="reference internal" href="#ni.data.data.Data.filter" title="ni.data.data.Data.filter"><tt class="xref py py-func docutils literal"><span class="pre">ni.data.data.Data.filter()</span></tt></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">only_first_trials</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s">&#39;Trial&#39;</span><span class="p">)</span>
+
+<span class="c"># filter returns a copy of the Data object</span>
+
+<span class="n">only_the_first_trial</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s">&#39;Trial&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s">&#39;Cell&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s">&#39;Condition&#39;</span><span class="p">)</span> 
+
+<span class="n">only_the_first_trial</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">condition</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">trial</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c"># condition(), cell() and trial() are shortcuts to filter that set *level* accordingly</span>
+
+<span class="n">only_some_trials</span>  <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">trial</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">15</span><span class="p">))</span>
+<span class="c"># using slices, ranges or boolean indexing causes the DataFrame to be indexed again from 0 to N, in this case 0:11</span>
+</pre></div>
+</div>
+<p>Also ix and xs pandas operations can be useful:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">ix</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">):(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">cumsum</span><span class="p">())</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="s">&#39;Condition&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="s">&#39;Cell&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">ix</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">cumsum</span><span class="p">())</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="ni.data.data.Data">
+<em class="property">class </em><tt class="descclassname">ni.data.data.</tt><tt class="descname">Data</tt><big>(</big><em>matrix</em>, <em>dimensions=</em><span class="optional">[</span><span class="optional">]</span>, <em>other_spikes=False</em>, <em>key_index='i'</em>, <em>resolution=1000</em><big>)</big><a class="reference internal" href="_modules/ni/data/data.html#Data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.data.data.Data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Spike data container</p>
+<p>Contains a panda Data Frame with MultiIndex.
+Can save to and load from files.</p>
+<p>The Index contains at least Trial, Cell and Condition and can be extended.</p>
+<dl class="method">
+<dt id="ni.data.data.Data.as_list_of_series">
+<tt class="descname">as_list_of_series</tt><big>(</big><em>list_conditions=True</em>, <em>list_cells=True</em>, <em>list_trials=False</em>, <em>list_additional_indizes=True</em><big>)</big><a class="headerlink" href="#ni.data.data.Data.as_list_of_series" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns one timeseries, collapsing only certain indizes (on default only trials). All non collapsed indizes</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ni.data.data.Data.as_series">
+<tt class="descname">as_series</tt><big>(</big><big>)</big><a class="headerlink" href="#ni.data.data.Data.as_series" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns one timeseries, collapsing all indizes.</p>
+<p>The output has dimensions of (N,1) with N being length of one trial x nr_trials x nr_cells x nr_conditions (x additonal indices).</p>
+<p>If cells, conditions or trials should be separated, use <a class="reference internal" href="#ni.data.data.Data.as_list_of_series" title="ni.data.data.Data.as_list_of_series"><tt class="xref py py-func docutils literal"><span class="pre">as_list_of_series()</span></tt></a> instead.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ni.data.data.Data.cell">
+<tt class="descname">cell</tt><big>(</big><em>cells=False</em><big>)</big><a class="reference internal" href="_modules/ni/data/data.html#Data.cell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.data.data.Data.cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>filters for an array of cells -&gt; see <a class="reference internal" href="#ni.data.data.Data.filter" title="ni.data.data.Data.filter"><tt class="xref py py-func docutils literal"><span class="pre">ni.data.data.Data.filter()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ni.data.data.Data.condition">
+<tt class="descname">condition</tt><big>(</big><em>conditions=False</em><big>)</big><a class="reference internal" href="_modules/ni/data/data.html#Data.condition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.data.data.Data.condition" title="Permalink to this definition">¶</a></dt>
+<dd><p>filters for an array of conditions -&gt; see <a class="reference internal" href="#ni.data.data.Data.filter" title="ni.data.data.Data.filter"><tt class="xref py py-func docutils literal"><span class="pre">ni.data.data.Data.filter()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ni.data.data.Data.filter">
+<tt class="descname">filter</tt><big>(</big><em>array=False</em>, <em>level='Cell'</em><big>)</big><a class="reference internal" href="_modules/ni/data/data.html#Data.filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.data.data.Data.filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>filters for arbitrary index levels
+<cite>array</cite> a number, list or numpy array of indizes that are to be filtered
+<cite>level</cite> the level of index that is to be filtered. Default: &#8216;Cell&#8217;</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ni.data.data.Data.firing_rate">
+<tt class="descname">firing_rate</tt><big>(</big><em>smooth_width=0</em>, <em>trials=False</em><big>)</big><a class="headerlink" href="#ni.data.data.Data.firing_rate" title="Permalink to this definition">¶</a></dt>
+<dd><p>computes the firing rate of the data for each cell separately.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ni.data.data.Data.getFlattend">
+<tt class="descname">getFlattend</tt><big>(</big><em>all_in_one=True</em>, <em>trials=False</em><big>)</big><a class="reference internal" href="_modules/ni/data/data.html#Data.getFlattend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.data.data.Data.getFlattend" title="Permalink to this definition">¶</a></dt>
+<dd><p class="deprecated">
+<span class="versionmodified">Deprecated since version 0.1: </span>Use <a class="reference internal" href="#ni.data.data.Data.as_list_of_series" title="ni.data.data.Data.as_list_of_series"><tt class="xref py py-func docutils literal"><span class="pre">as_list_of_series()</span></tt></a> and <a class="reference internal" href="#ni.data.data.Data.as_series" title="ni.data.data.Data.as_series"><tt class="xref py py-func docutils literal"><span class="pre">as_series()</span></tt></a> instead</p>
+<p>Returns one timeseries for all trials.</p>
+<p>The <em>all_in_one</em> flag determines whether <tt class="docutils literal"><span class="pre">'Cell'</span></tt> and <tt class="docutils literal"><span class="pre">'Condition'</span></tt> should also be collapsed. If set to <em>False</em> and the number of Conditions and/or Cells is greater than 1, a list of timeseries will be returned. If both are greater than 1, then a list containing for each condition a list with a time series for each cell.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ni.data.data.Data.html_view">
+<tt class="descname">html_view</tt><big>(</big><big>)</big><a class="headerlink" href="#ni.data.data.Data.html_view" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ni.data.data.Data.interspike_intervals">
+<tt class="descname">interspike_intervals</tt><big>(</big><em>smooth_width=0</em>, <em>trials=False</em><big>)</big><a class="headerlink" href="#ni.data.data.Data.interspike_intervals" title="Permalink to this definition">¶</a></dt>
+<dd><p>computes inter spike intervalls in the data for each cell separately.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ni.data.data.Data.read_pickle">
+<tt class="descname">read_pickle</tt><big>(</big><em>path</em><big>)</big><a class="reference internal" href="_modules/ni/data/data.html#Data.read_pickle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.data.data.Data.read_pickle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads a DataFrame from a file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ni.data.data.Data.shape">
+<tt class="descname">shape</tt><big>(</big><em>level</em><big>)</big><a class="reference internal" href="_modules/ni/data/data.html#Data.shape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.data.data.Data.shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the shape of the sepcified level:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="s">&#39;Trial&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<blockquote>
+<div>100</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="s">&#39;Cell&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">data</span><span class="o">.</span><span class="n">nr_cells</span>
+<span class="go">        True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="ni.data.data.Data.to_pickle">
+<tt class="descname">to_pickle</tt><big>(</big><em>path</em><big>)</big><a class="reference internal" href="_modules/ni/data/data.html#Data.to_pickle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.data.data.Data.to_pickle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the DataFrame to a file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ni.data.data.Data.trial">
+<tt class="descname">trial</tt><big>(</big><em>trials=False</em><big>)</big><a class="reference internal" href="_modules/ni/data/data.html#Data.trial"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.data.data.Data.trial" title="Permalink to this definition">¶</a></dt>
+<dd><p>filters for an array of trials -&gt; see <a class="reference internal" href="#ni.data.data.Data.filter" title="ni.data.data.Data.filter"><tt class="xref py py-func docutils literal"><span class="pre">ni.data.data.Data.filter()</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="ni.data.data.loadFromFile">
+<tt class="descclassname">ni.data.data.</tt><tt class="descname">loadFromFile</tt><big>(</big><em>path</em><big>)</big><a class="reference internal" href="_modules/ni/data/data.html#loadFromFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.data.data.loadFromFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ni.data.data.matrix_to_dataframe">
+<tt class="descclassname">ni.data.data.</tt><tt class="descname">matrix_to_dataframe</tt><big>(</big><em>matrix</em>, <em>dimensions</em><big>)</big><a class="headerlink" href="#ni.data.data.matrix_to_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ni.data.data.merge">
+<tt class="descclassname">ni.data.data.</tt><tt class="descname">merge</tt><big>(</big><em>datas</em>, <em>dim</em>, <em>keys=False</em><big>)</big><a class="reference internal" href="_modules/ni/data/data.html#merge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.data.data.merge" title="Permalink to this definition">¶</a></dt>
+<dd><p>merges multiple Data instances into one:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">merge</span><span class="p">([</span><span class="n">ni</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Date</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;data1.pkl&#39;</span><span class="p">,</span><span class="s">&#39;data2.pkl&#39;</span><span class="p">,</span><span class="s">&#39;data3.pkl&#39;</span><span class="p">]],</span> <span class="n">dim</span> <span class="o">=</span> <span class="s">&#39;Data File&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="ni.data.data.saveToFile">
+<tt class="descclassname">ni.data.data.</tt><tt class="descname">saveToFile</tt><big>(</big><em>path</em>, <em>o</em><big>)</big><a class="reference internal" href="_modules/ni/data/data.html#saveToFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.data.data.saveToFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-ni.data.decoding_data">
+<span id="decoding-data-module"></span><h2>3.2. <tt class="xref py py-mod docutils literal"><span class="pre">decoding_data</span></tt> Module<a class="headerlink" href="#module-ni.data.decoding_data" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-ni.data.decoding_data"></span><p>Loads Data into a Panda Data Frame</p>
+<dl class="class">
+<dt id="ni.data.decoding_data.Cell">
+<em class="property">class </em><tt class="descclassname">ni.data.decoding_data.</tt><tt class="descname">Cell</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="_modules/ni/data/decoding_data.html#Cell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.data.decoding_data.Cell" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="ni.data.decoding_data.DecodingData">
+<em class="property">class </em><tt class="descclassname">ni.data.decoding_data.</tt><tt class="descname">DecodingData</tt><a class="reference internal" href="_modules/ni/data/decoding_data.html#DecodingData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.data.decoding_data.DecodingData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads Data into a Panda Data Frame</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="ni.data.decoding_data.Trial">
+<em class="property">class </em><tt class="descclassname">ni.data.decoding_data.</tt><tt class="descname">Trial</tt><a class="reference internal" href="_modules/ni/data/decoding_data.html#Trial"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.data.decoding_data.Trial" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="ni.data.decoding_data.Trial.addCell">
+<tt class="descname">addCell</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="_modules/ni/data/decoding_data.html#Trial.addCell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.data.decoding_data.Trial.addCell" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ni.data.decoding_data.Trial.getMatrix">
+<tt class="descname">getMatrix</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ni/data/decoding_data.html#Trial.getMatrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.data.decoding_data.Trial.getMatrix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="ni.data.decoding_data.get">
+<tt class="descclassname">ni.data.decoding_data.</tt><tt class="descname">get</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ni/data/decoding_data.html#get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.data.decoding_data.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-ni.data.monkey">
+<span id="monkey-module"></span><h2>3.3. <tt class="xref py py-mod docutils literal"><span class="pre">monkey</span></tt> Module<a class="headerlink" href="#module-ni.data.monkey" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-ni.data.monkey"></span><dl class="function">
+<dt id="ni.data.monkey.Data">
+<tt class="descclassname">ni.data.monkey.</tt><tt class="descname">Data</tt><big>(</big><em>file_nr='101a03'</em>, <em>resolution=1000</em>, <em>trial=</em><span class="optional">[</span><span class="optional">]</span>, <em>condition=</em><span class="optional">[</span><span class="optional">]</span>, <em>cell=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="_modules/ni/data/monkey.html#Data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.data.monkey.Data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads Data into a Data Frame</p>
+<p>Expects a file number. Available file numbers are in ni.data.monkey.available_files:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">ni</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">monkey</span><span class="o">.</span><span class="n">available_files</span>
+<span class="go">        [&#39;101a03&#39;, &#39;104a10&#39;, &#39;107a03&#39;, &#39;108a08&#39;, &#39;112a03&#39;, &#39;101a03&#39;, &#39;104a11&#39;, &#39;107a04&#39;, &#39;109a04&#39;, &#39;112b02&#39;, &#39;101a04&#39;, &#39;105a04&#39;, &#39;108a05&#39;, &#39;110a03&#39;, &#39;113a04&#39;, &#39;102a09&#39;, &#39;105a05&#39;, &#39;108a06&#39;, &#39;111a03&#39;, &#39;113a05&#39;, &#39;103a03&#39;, &#39;106a03&#39;, &#39;108a07&#39;, &#39;111a04&#39;]</span>
+</pre></div>
+</div>
+<p><strong>trial</strong></p>
+<blockquote>
+<div>number of trial to load or list of trials to load.
+Non-existent trial numbers are ignored.</div></blockquote>
+<p><strong>condition</strong></p>
+<blockquote>
+<div>number of condition to load or list of conditions to load.
+Non-existent condition numbers are ignored.</div></blockquote>
+<p><strong>cell</strong></p>
+<blockquote>
+<div>number of cell to load or list of cells to load.
+Non-existent cell numbers are ignored.</div></blockquote>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">monkey</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="n">trial_nr</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">monkey</span><span class="o">.</span><span class="n">available_trials</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">trial</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">condition</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">3. data Package</a><ul>
+<li><a class="reference internal" href="#module-ni.data.data">3.1. <tt class="docutils literal"><span class="pre">data</span></tt> Module</a><ul>
+<li><a class="reference internal" href="#storing-spike-data-in-python-with-pandas">3.1.1. Storing Spike Data in Python with Pandas</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-ni.data.decoding_data">3.2. <tt class="docutils literal"><span class="pre">decoding_data</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-ni.data.monkey">3.3. <tt class="docutils literal"><span class="pre">monkey</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ni.tools.html"
+                        title="previous chapter">2. tools Package</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/ni.data.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ni.tools.html" title="2. tools Package"
+             >previous</a> |</li>
+        <li><a href="index.html">Neuroinformatics Toolbox 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Jacob Huth.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
