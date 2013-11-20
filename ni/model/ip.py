@@ -154,23 +154,22 @@ class FittedModel(ni.tools.pickler.Picklable):
 				raise Exception("Initialized without a model.")
 	@property
 	def complexity(self):
+		""" returns the length of the parameter vector """
 		try:
 			return len(self.beta)
 		except:
 			return False
-	"""def getBareModel(self):
-		return {'beta':self.beta, 'design': str(self.design), 'statistics': self.statistics }
-	def fromBareModel(self,bm):
-		self.beta = bm["beta"]
-		self.statistics = bm["statistics"]
-		self.design = bm["design"]"""
 	def getParams(self):
+		""" returns the parameters of each design matrix component as a list """
 		return [np.sum(self.design.get(h) * self.beta[self.design.getIndex(h)],1) for h in np.unique(self.design.header)]
 	def getPvalues(self):
+		""" returns pvalues of each component as a dictionary """
 		return dict((h,self.statistics.pvalues[self.design.getIndex(h)]) for h in np.unique(self.design.header))
 	def pvalues_by_component(self):
+		""" returns pvalues of each component as a dictionary """
 		return dict((h,self.statistics.pvalues[self.design.getIndex(h)]) for h in np.unique(self.design.header))
 	def plotParams(self,x=-1):
+		""" plots the parameters and returns a dictionary of figures """
 		figs = {}
 		for h in np.unique(self.design.header):
 			fig = pl.figure()
@@ -179,6 +178,7 @@ class FittedModel(ni.tools.pickler.Picklable):
 			figs[h] = fig
 		return figs
 	def plot_prototypes(self):
+		""" plots each of the components as a prototype (sum of fitted b-splines) and returns a dictionary of figures """
 		figs = {}
 		for h in np.unique(self.design.header):
 			fig = pl.figure()
@@ -210,6 +210,7 @@ class FittedModel(ni.tools.pickler.Picklable):
 			figs[h] = fig
 		return figs
 	def prototypes(self):
+		""" returns a dictionary with a prototype (numpy.ndarray) per component """
 		prot = {}
 		for h in np.unique(self.design.header):
 			splines = self.design.get(h)
@@ -221,41 +222,19 @@ class FittedModel(ni.tools.pickler.Picklable):
 				prot[h] = np.zeros(splines.shape)
 				for (i, ind) in zip(range(splines.shape[0]),self.design.getIndex(h)):
 					prot[h][i,:,:] = splines[i,:,:] * self.beta[ind]
-			"""
-			if 'rate' in h or 'constant' in h:
-				prot[h] = np.sum(self.design.get(h) * self.beta[self.design.getIndex(h)],1)
-			elif 'autohistory' in h or 'crosshistory' in h:
-				prot[h] = np.sum(self.design.get(h) * self.beta[self.design.getIndex(h)],1)
-			else:
-				prot[h] = np.sum(self.design.get(h) * self.beta[self.design.getIndex(h)],1)
-			"""
 		return prot
-	"""
-	def getWeights(self):
-		prot = {}
-		for h in np.unique(self.design.header):
-			splines = self.design.get(h)
-			if len(splines.shape) == 3:
-				prot[h] = np.mean(np.sum([splines[i] * self.beta[self.design.getIndex(h)][i] for i in range(splines.shape[0])],0))
-			else:
-				prot[h] = np.mean(np.sum(splines * self.beta[self.design.getIndex(h)],1))
-		return prot"""
-	def history_model(self, n = 'autohistory'):
-		"""
-			TODO: sort out what is saved where
-		"""
-		return np.sum(self.design.history_kernel * self.beta[self.design.getIndex(n)],1)
 	def firing_rate_model(self):
+		""" returns a time series which contains the rate and constant component """
 		rate_design = self.design.getIndex('rate')
 		return self.design.get('rate')[:self.design.trial_length,:]*self.beta[rate_design]
 	def plot_firing_rate_model(self):
-		rate_design = self.design.getIndex('rate')
-		return plot(np.sum(self.design.get('rate')[:self.design.trial_length,:]*self.beta[rate_design]))
+		""" returns a time series which contains the rate and constant component """
+		return plot(self.firing_rate_model())
 	def generate(self, bins=-1):
 		"""
 		Generates new spike trains from the extracted staistics
 
-		Currently uses rate model and autohistory.
+		This function only uses rate model and autohistory. For crosshistory dependence, use :mod:`ip_generator`.
 
 			**bins**
 		
@@ -309,14 +288,11 @@ class FittedModel(ni.tools.pickler.Picklable):
 			**ll**: np.sum(ll)/nr_trials
 		"""
 		return self.model.compare(data, self.predict(data))
-	def to_pickle(self,path):
-		#{'beta':self.beta, 'design': str(self.design)}
-		raise Exception("Not implemented yet.")
-	def read_pickle(self,path):
-		raise Exception("Not implemented yet.")
 	def dumps(self):
+		""" see :mod:`ni.tools.pickler` """
 		return ni.tools.pickler.dumps({'beta': self.beta, 'model': self.model,'statistics': self.statistics})
 	def html_view(self):
+		""" see :mod:`ni.tools.html_view` """
 		view = View()
 		model_prefix = self.model.name + "/"
 		view.add(model_prefix + "#2/beta",self.beta)
@@ -389,10 +365,25 @@ class Model(ni.tools.pickler.Picklable):
 		elif b == "elasticnet":
 			self._backend = backend_elasticnet
 	def predict(self,beta,data):
+		"""
+		will predict a firing probability function according to a design matrix.
+		"""
 		dm = self.dm(data)
 		x = beta
 		return self.backend.predict(x,dm)
 	def compare(self,data,p,nr_trials=1):
+		"""
+		will compare a timeseries of probabilities `p` to a binary timeseries or Data instance `data`.
+
+		Returns:
+
+			**Deviance_all**: dv, 
+			**LogLikelihood_all**: ll, 
+			**Deviance**: dv/nr_trials, 
+			**LogLikelihood**: ll/nr_trials, 
+			**llf**: Likelihood function over time 
+			**ll**: np.sum(ll)/nr_trials
+		"""
 		binomial = statsmodels.genmod.families.family.Binomial()
 		x = self.x(data)
 		x = x.squeeze()
@@ -407,6 +398,9 @@ class Model(ni.tools.pickler.Picklable):
 		return {'Deviance': dv/nr_trials, 'Deviance_all': dv, 'LogLikelihood': ll/nr_trials, 'LogLikelihood_all': ll, 'llf': ll_bin, 'll': np.sum(ll_bin)/nr_trials}
 		#return self.backend.compare(x,p,nr_trails)
 	def generateDesignMatrix(self,data,trial_length):
+		"""
+			generates a design matrix template. Uses meta data from `data` to determine number of trials and trial length.
+		"""
 		design_template = designmatrix.DesignMatrixTemplate(data.nr_trials * data.time_bins,trial_length)
 		log_kernel = cs.create_splines_logspace(self.configuration.history_length, self.configuration.knot_number, self.configuration.delete_last_spline)
 		if self.configuration.autohistory:
@@ -472,6 +466,7 @@ class Model(ni.tools.pickler.Picklable):
 		design.setMask(self.configuration.mask)
 		return design
 	def x(self, in_spikes):
+		""" converts data into a dependent variable time series, ie. it chooses the cell that was configured and extracts only this timeseries. """
 		if isinstance(in_spikes, Data) or isinstance(in_spikes, ni.data.data.Data):
 			data = in_spikes
 		else:
@@ -481,11 +476,13 @@ class Model(ni.tools.pickler.Picklable):
 		else:
 			x = data.cell(self.configuration.cell).getFlattend()
 		return x.squeeze()
-	def dm(self, in_spikes, design = False):
+	def dm(self, in_spikes, design = None):
 		"""
 		Creates a design matrix from data and self.design
 	
 			**in_spikes** `ni.data.data.Data` instance
+
+			**design** (optional) a different :class:`designmatrix.DesignMatrixTemplate`
 
 		"""
 		if isinstance(in_spikes, Data) or isinstance(in_spikes, ni.data.data.Data):
@@ -493,7 +490,7 @@ class Model(ni.tools.pickler.Picklable):
 		else:
 			return in_spikes
 
-		if design == False:
+		if design is None:
 			design = self.generateDesignMatrix(data,data.time_bins)
 		self.last_generated_design = design
 		dm = design.combine(data)
@@ -598,102 +595,13 @@ class Model(ni.tools.pickler.Picklable):
 		#log("done fitting.")
 		return fittedmodel
 	def fit_with_design_matrix(self, fittedmodel, spike_train_all_trial, dm):
+		""" internal function """
 		fittedmodel.fit = fittedmodel.backend_model.fit(spike_train_all_trial, dm) 
 		return fittedmodel
-	def to_pickle(self,path):
-		raise Exception("Not implemented yet.")
-	def read_pickle(self,path):
-		raise Exception("Not implemented yet.")
 	def html_view(self):
+		""" see :mod:`ni.tools.html_view` """
 		view = View()
 		model_prefix = self.name + "/"
 		for key in self.configuration.__dict__:
 			view.add(model_prefix + "#3/tabs/Configuration/table/"+key,self.configuration.__dict__[key])
 		return view
-
-class MultiChannelModel(ni.tools.pickler.Picklable):
-	def __init__(self,configuration={}):
-		self.configuration = configuration
-		self.models = []
-	def append(self,m):
-		self.models.append(m)
-
-def generate_to_file(path,data,eval_trials,use_cells=[0],eval_bootstrap_repetitions=10):
-	"""
-		This function fits two models and generates data for each saved to path + 'data0.pkl' and path + 'data1.pkl'
-
-		.. todo::
-
-			split into more usefull and modular functions
-	"""
-	bootstrap_datas = []
-	subjob("Fitting generative Model 1")
-	cross_fits = []
-	for cell in use_cells:
-		subjob("fitting models with auto and crosshistory for cell " + str(cell))
-		log("Fitting cell for generative model",4)
-		fit_data = data.cell(cell)
-		other_cells = [c for c in use_cells if c != cell]
-		fit_data.other_spikes = data.cell(other_cells)
-		c = Configuration()
-		#c.crosshistory = False
-		c.knots_rate = 30
-		c.history_length = 100
-		model = Model(c,fit_data.time_bins)
-		model.name = 'Original Model Cell ' + str(cell)
-		log("starting to fit...",1)
-		#print fit_data
-		fit = model.fit(fit_data)
-		cross_fits.append(fit)
-		superjob()
-	superjob()
-
-	bootstrap_data = []
-	for r in range(eval_bootstrap_repetitions):
-		#print r,
-		gs = []
-		gs_other = []
-		for t in range(eval_trials):
-			(spikes,p) = ni.model.ip_generator.generate(cross_fits)
-			gs.append(spikes.transpose())
-		bootstrap_data.append(Data(np.array(gs)))
-	bootstrap_datas.append(pandas.merge(bootstrap_data,'Bootstrap Sample'))
-
-	subjob("Fitting generative Model 2")
-	cross_fits = []
-	for cell in use_cells:
-		subjob("fitting models with auto and crosshistory for cell " + str(cell))
-		log("Fitting cell for generative model",4)
-		fit_data = data.cell(cell)
-		other_cells = [c for c in use_cells if c != cell]
-		fit_data.other_spikes = data.cell(other_cells)
-		c = Configuration()
-		c.autohistory = False
-		c.crosshistory = False
-		c.knots_rate = 10
-		model = Model(c,fit_data.time_bins)
-		model.name = 'Original Model Cell ' + str(cell)
-		log("starting to fit...",1)
-		fit = model.fit(fit_data)
-		cross_fits.append(fit)
-		superjob()
-	superjob()
-
-	bootstrap_data = []
-	for r in range(eval_bootstrap_repetitions):
-		#print r,
-		gs = []
-		gs_other = []
-		for t in range(eval_trials):
-			(spikes,p) = ni.model.ip_generator.generate(cross_fits)
-			gs.append(spikes.transpose())
-		bootstrap_data.append(Data(np.array(gs)))
-	bootstrap_datas.append(merge(bootstrap_data,'Bootstrap Sample'))
-	log("Generated Bootstrap Data",3)
-	#store = pandas.HDFStore(path)
-	#store['data0'] = bootstrap_datas[0]
-	#store['data1'] = bootstrap_datas[1]
-	#data0 = pandas.DataFrame(bootstrap_datas[0])
-	bootstrap_datas[0].to_pickle(path+'data0.pkl')
-	#data1 = pandas.DataFrame(bootstrap_datas[0])
-	bootstrap_datas[1].to_pickle(path+'data1.pkl')

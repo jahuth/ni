@@ -5,7 +5,11 @@ Helper Functions to alert when something is done
 from subprocess import call
 
 def alert(msg):
-	if call(["which","notify-seend"]) == 0:
+	"""
+		alerts the user of something happening via `notify-send`. If it is not installed, the alert will be printed to the console.
+	"""
+	if call(["which","notify-send"]) == 0:
 		call(["notify-send",msg])
-	print "ALERT: ", msg
+	else:
+		print "ALERT: ", msg
 

@@ -155,8 +155,6 @@ class Figure:
 def figure(path,display=False,close=True):
 	"""
 
-	.. todo:: integrate with projects, write to default paths
-
 
 	Can be used with the **with** statement::
 

@@ -1,3 +1,16 @@
+"""
+.. module:: ni.tools.pickler
+   :platform: Unix
+   :synopsis: Provides a method to save arbitrary objects to text files.
+
+.. moduleauthor:: Jacob Huth <jahuth@uos.de>
+
+Objects that inherit from :class:`Picklable` will have `save` and `load` functions to save them to a file.
+They can be loaded again (without having to specify which class they are) with `ni.tools.pickler.load(filename)`.
+
+
+"""
+
 
 import ni
 import numpy as np

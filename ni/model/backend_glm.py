@@ -5,6 +5,8 @@
 
 .. moduleauthor:: Jacob Huth <jahuth@uos.de>
 
+This module provides a backend to the .ip model. It wraps the statsmodels.api.GLM object.
+
 """
 import statsmodels.api as sm
 import statsmodels

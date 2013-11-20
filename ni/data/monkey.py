@@ -64,6 +64,7 @@ class _Data:
 		except:
 			self.init_square_brackets_indexing(mat,resolution,trial=trial,condition=condition,cell=cell)
 	def init_dot_indexing(self,mat,resolution=MILLISECOND_RESOLUTION,trial=[],condition=[],cell=[]):
+		""" one of two possible indexing methods (differs by python version and file) """
 		self.Spike_times_STC = mat['Data'][0][0].Spike_times_STC[0][0]
 		self.T = mat['Data'][0][0].T[0][0]
 		self.Stimulus = mat['Data'][0][0].Stimlus[0][0]
@@ -88,6 +89,7 @@ class _Data:
 		self.data = pd.DataFrame(d, index = index)
 		self.time_bins = len(self.data.columns)
 	def init_square_brackets_indexing(self,mat,resolution=MILLISECOND_RESOLUTION,trial=[],condition=[],cell=[]):
+		""" one of two possible indexing methods (differs by python version and file) """
 		self.Spike_times_STC = mat['Data'][0][0]['Spike_times_STC'][0][0]
 		self.T = mat['Data'][0][0].T[0][0]
 		self.Stimulus = mat['Data'][0][0]['Stimlus'][0][0]

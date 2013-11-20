@@ -60,12 +60,23 @@ import pointprocess
 
 class SimulationConfiguration:
 	"""
-	Undocumented
+	Configures the simulation. The default values are:
+
+		**Nneur**  = 100
+		**sparse_coeff** = 0.1
+		**Trial_Time**  = 1000
+		**prior_epoch**  = 250
+		**Ntrials**  = 10
+		**Nsec**  = Ntrials*Trial_Time/1000
+		**Ntime** = Nsec*1000
+		**eps**  =0.1
+		**frate_mu**  = 1.0/25.0
+		**Nhist** = 50
+		**output**  = False
+		**rate_function**  = False
+
 	"""
 	def __init__(self):
-		"""
-		Undocumented
-		"""
 		self.Nneur = 100
 		self.sparse_coeff=0.1
 		self.Trial_Time = 1000
@@ -81,25 +92,22 @@ class SimulationConfiguration:
 
 class SimulationResult:
 	"""
-	Undocumented
+	Holds the results of a simulation
 	"""
 	def __init__(self):
-		"""
-		Undocumented
-		"""
 		self.sim_name = "ni.model.net_sim"
 		self.log_time_begin = time.time()
 		self.config = {}
 		self.spikes = pd.DataFrame([0])
 	def stopTimer(self):
 		"""
-		Undocumented
+		stops the internal timer
 		"""
 		self.log_time_end = time.time()
 		self.log_time_duration = self.log_time_end - self.log_time_begin
 	def store(self, data):
 		"""
-		Undocumented
+		stores data in the container
 		"""
 		self.spikes = pd.DataFrame(data)
 		spikes = np.where(data==1)
@@ -110,38 +118,32 @@ class SimulationResult:
 		self.timerange = (0,len(self.spikes))
 	def plot(self):
 		"""
-		Undocumented
+		plots the resulting spike train
 		"""
 		[pylab.plot(np.where(self.spikes[i]>0)[0], self.spikes[i][self.spikes[i]>0]+i,'|', markersize=12)  for i in range(0,len(self.spikes.T))]
 		pylab.ylim(0, len(self.spikes.T)+1)
 		return
 	def plot_firing_rates(self):
 		"""
-		Undocumented
+		plots the resulting firing rate
 		"""
 		print "Firing Rates plot"
 		for i in xrange(self.num_channels):
 			pointprocess.plotGaussed(self.spikes[i],100)
 	def plot_firing_rates_per_channel(self):
 		"""
-		Undocumented
+		plots the firing rate for each channel
 		"""
 		print "Firing Rates plot"
 		pylab.plot(self.spikes.mean())
 	def __str__(self):
-		"""
-		Undocumented
-		"""
 		return "'" +self.sim_name + "' Simulation Result\n" + "Took " + str(round(self.log_time_duration,2)) + "s to compute.\nTimerange: "+str(self.timerange)+"\n" + str(int(self.num_spikes)) + " Spikes in " +str(self.num_channels)+ " channels: \n\t[" + ", ".join([str(int(s)) for s in self.num_spikes_per_channel]) + "]"
 
 class Net:
 	"""
-	Undocumented
+	The Net Simulator class. Use with an Configuration instance.
 	"""
 	def __init__(self,config):
-		"""
-		Undocumented
-		"""
 		self.sim_name = "ni.model.net_sim"
 		self.config = config
 		self.frate= np.random.rand(self.config.Nneur)*0.2+0.4
@@ -181,13 +183,10 @@ class Net:
 			self.Jall[i,i,] = np.zeros((1,1,self.config.Nhist))
 		self.results = []
 	def __str__(self):
-		"""
-		Undocumented
-		"""
 		return "'" +self.sim_name + "' Simulation Setup\nTimerange: "+str((self.config.prior_epoch,self.config.Ntime+self.config.prior_epoch))+"\n " +str(self.config.Nneur)+ " channels with firing rates: \n\t[" + ", ".join([str(s) for s in self.frate]) + "]"
 	def save(self,filename):
 		"""
-		Undocumented
+		saves itself to a file
 		"""
 		f = open(fileame, "wb")
 		pickle.dump(self, f)
@@ -195,7 +194,7 @@ class Net:
 		return 1
 	def load(self,filename):
 		"""
-		Undocumented
+		loads itself from a file
 		"""
 		f = open(fileame, "rb")
 		tmp_dict = pickle.load(f)
@@ -204,7 +203,7 @@ class Net:
 		return 1
 	def simulate(self):
 		"""
-		Undocumented
+		Simulates the network
 		"""
 		result = SimulationResult()
 		result.config = self.config
@@ -265,7 +264,7 @@ class Net:
 	# Plots:
 	def plot_interaction(self):
 		"""
-		Undocumented
+		plots the interactions of the network
 		"""
 		print "Interaction plot"
 		for i in range(0,self.config.Nneur):
@@ -276,14 +275,14 @@ class Net:
 			pylab.title(str(i))
 	def plot_firing_rates(self):
 		"""
-		Undocumented
+		plots the intended firing rates
 		"""
 		print "Firing Rates plot"
 		pylab.plot(self.frate)
 
 def simulate(config):
 	"""
-	Undocumented
+	creates a network and simulates it.
 	"""
 	result = SimulationResult()
 	frate= np.random.rand(config.Nneur)*0.4+0.3

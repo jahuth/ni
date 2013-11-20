@@ -92,9 +92,11 @@ from ni.tools.html_view import View
 MILLISECOND_RESOLUTION = 1000
 
 def saveToFile(path,o):
+	""" saves a DataFrame-like to a file """
 	return pandas.DataFrame(o).to_pickle(path)
 
 def loadFromFile(path):
+	""" loads a pandas DataFrame from a file """
 	return pandas.read_pickle(path)
 
 
@@ -117,7 +119,7 @@ def merge(datas,dim,keys = False):
 
 
 def matrix_to_dataframe(matrix, dimensions):
-
+	""" conerts a trial x cells matrix into a DataFrame """
 	tup = []
 	for t1 in range(self.nr_trials):
 		for t2 in range(self.nr_cells):

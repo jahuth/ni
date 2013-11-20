@@ -1,15 +1,13 @@
 
 import numpy as np
 
-class Generator:
-	def __init__(self, fit_objects):
-		self.fit_objects = fit_objects
-
 def generate(fit_objects, bins=-1):
 	"""
-	Generates new spike trains from the extracted staistics
+	Generates new spike trains from the extracted models.
 
-	Currently uses rate model and autohistory.
+		**fit_objects** 
+
+			A list of ip.Models
 
 		**bins**
 	

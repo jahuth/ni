@@ -18,12 +18,18 @@ import json
 import ni.tools.pickler
 
 def convolve_spikes(spikes,kernel):
+	"""
+		Convolves a spike train with a kernel by adding the kernel onto every spiketime.
+	"""
 	output = np.zeros((spikes.shape[0]+kernel.shape[0]+1,kernel.shape[1]))
 	for i in np.where(spikes)[0]:
 		output[(i+1):(i+1+kernel.shape[0]),:] = output[(i+1):(i+1+kernel.shape[0]),:] + kernel
 	return output[:len(spikes),:]
 
 def convolve_spikes_2d(spikes_a,spikes_b,kernel_a,kernel_b):
+	"""
+		Does a 2d convolution
+	"""
 	output = np.zeros((spikes_a.shape[0]+kernel_a.shape[0],kernel_a.shape[1]*kernel_b.shape[1]))
 	for k_i in range(kernel_a.shape[1]):
 		for k_j in range(kernel_b.shape[1]):
@@ -39,7 +45,7 @@ def convolve_spikes_2d(spikes_a,spikes_b,kernel_a,kernel_b):
 
 class HistoryDesignMatrix:
 	"""
-		Internal helper class - will be turned into a function
+		Internal helper class
 	"""
 	def __init__(self,spikes,history_length=100,knot_number=5,order_flag=1,kernel=False):
 		if type(kernel) == bool:
@@ -331,77 +337,6 @@ class SecondOrderHistoryComponent(Component):
 			s = "{\"header\": \""+self.header+"\", \"type\": \"2ndOrderHistory\", \"channel_1\": "+str(self.channel_1)+", \"channel_2\": "+str(self.channel_2)+", \"kernel_1\": [[" + "],[".join([",".join([str(e) for e in k]) for k in self.kernel_1]) + "]], \"kernel_2\": [[" + "],[".join([",".join([str(e) for e in k]) for k in self.kernel_2]) + "]]}"
 		return s
 
-"""
-old implementation
-
-
-class SecondOrderHistoryComponent(Component):
-	def __init__(self,header='autohistory',channel_1=0,channel_2=0,history_length=100,knot_number=4, order_flag=1,kernel_1=False,kernel_2=False,delete_last_spline=True):
-		if type(kernel_1) == bool:
-			self.kernel_1 = "cs.create_splines_logspace("+str(history_length)+", "+str(knot_number)+", "+str(delete_last_spline)+")"
-		else:
-			self.kernel_1 = kernel_1
-		if type(kernel_2) == bool:
-			self.kernel_2 = "cs.create_splines_logspace("+str(history_length)+", "+str(knot_number)+", "+str(delete_last_spline)+")"
-		else:
-			self.kernel_2 = kernel_2
-		self.header = header
-		self.knot_number = knot_number
-		self.history_length = history_length
-		self.channel_1 = channel_1
-		self.channel_2 = channel_2
-		if type(self.kernel_1) == str:
-			if type(self.kernel_2) == str:
-				self.width = eval(self.kernel_1).shape[1] * eval(self.kernel_2).shape[1]
-			else:
-				self.width = eval(self.kernel_1).shape[1] * self.kernel_2.shape[1]
-		else:
-			if type(self.kernel_2) == str:
-				self.width = self.kernel_1.shape[1] * eval(self.kernel_2).shape[1]
-			else:
-				self.width = self.kernel_1.shape[1] * self.kernel_2.shape[1]
-		if type(header) == str or type(header) == dict:
-			self.loads(header)
-		if type(self.kernel_1) == str:
-			self.kernel_1 = self.kernel_1.replace("np.ndarray","np.array")
-		if type(self.kernel_2) == str:
-			self.kernel_2 = self.kernel_2.replace("np.ndarray","np.array")
-	def getSplines(self,channels=[]):
-		if type(self.kernel_1) == str:
-			kernel_1 = eval(self.kernel_1)
-		else:
-			kernel_1 = self.kernel_1
-		if type(self.kernel_2) == str:
-			kernel_2 = eval(self.kernel_2)
-		else:
-			kernel_2 = self.kernel_2
-		if channels == []:
-			mats = np.zeros((kernel_1.shape[1]*kernel_2.shape[1],kernel_1.shape[0],kernel_2.shape[0]))
-			for i in range(kernel_1.shape[1]):
-				for j in range(kernel_2.shape[1]):
-					mat = np.zeros((kernel_1.shape[0],kernel_2.shape[0]))
-					for l_1 in range(kernel_1.shape[0]):
-						for l_2 in range(kernel_2.shape[0]):
-							mat[l_1,l_2] = kernel_1[l_1,i] * kernel_2[l_2,j]
-					mats[i*kernel_2.shape[1]+j,:,:] = mat
-			return mats
-		else:
-			if len(channels) > self.channel_1 and len(channels) > self.channel_2:
-				matrix = convolve_spikes_2d(channels[self.channel_1],channels[self.channel_2], kernel_1, kernel_2)
-			else:
-				raise Exception(str(self.channel_1) + " or " + str(self.channel_2) + " is greater than " + str(len(channels)) + "!")
-			return matrix
-	def __str__(self):
-		if type(self.kernel_1) == str and type(self.kernel_2) == str:
-			s = "{\"header\": \""+self.header+"\", \"type\": \"2ndOrderHistory\", \"channel_1\": "+str(self.channel_1)+", \"channel_2\": "+str(self.channel_2)+", \"kernel_1\": \"" + self.kernel_1 + "\", \"kernel_2\": \"" + self.kernel_2 + "\"}"
-		else:
-			s = "{\"header\": \""+self.header+"\", \"type\": \"2ndOrderHistory\", \"channel_1\": "+str(self.channel_1)+", \"channel_2\": "+str(self.channel_2)+", \"kernel_1\": [[" + "],[".join([",".join([str(e) for e in k]) for k in self.kernel_1]) + "]], \"kernel_2\": [[" + "],[".join([",".join([str(e) for e in k]) for k in self.kernel_2]) + "]]}"
-		return s
-
-
-"""
-
-
 class DesignMatrixTemplate(ni.tools.pickler.Picklable):
 	"""
 		Most important class for Design Matrices
@@ -433,11 +368,18 @@ class DesignMatrixTemplate(ni.tools.pickler.Picklable):
 			self.length = 0
 			self.loads(length)
 	def add(self, component):
+		""" Adds a component """
 		self.components.append(component)
 		self.header.append(component.header)
 		self.component_width = self.component_width + component.width
 		self.mask.extend([True]*component.width)
 	def combine(self,data):
+		"""
+			combines the design matrix template into an actual design matrix.
+
+			It needs an ni.Data instance for this to place the history splines.
+
+		"""
 		channels = []
 		#if type(data.data) == pandas.core.frame.DataFrame:
 		#	spike_train_all_trial_ = np.array(data.data.stack())
@@ -459,18 +401,23 @@ class DesignMatrixTemplate(ni.tools.pickler.Picklable):
 		#print d.matrix.shapeload
 		return d.matrix
 	def get(self,filt):
+		""" returns the splines of the first component, the header of which matches `filt` """
 		indx = [i for i in xrange(len(self.header)) if filt == self.header[i]]
 		return self.components[indx[0]].getSplines()
 	def get_components(self,filt):
+		""" returns all component, the header of which matches `filt` """
 		comps = [self.components[i] for i in xrange(len(self.header)) if filt == self.header[i]]
 		return comps
 	def getIndex(self,filt):
+		""" returns the index (design matrix rows) of the component matching `filt`"""
 		indx = [i for i in xrange(len(self._header)) if filt == self._header[i]]
 		return indx
 	def getMask(self,filt):
+		""" reurns the mask of the component matching `filt` """
 		indx = [self.mask[i] for i in xrange(len(self._header)) if filt == self._header[i]]
 		return indx
 	def setMask(self, mask):
+		""" sets a mask (list of boolean values), which design matrix rows to use. Default is all True. If `mask` is shorter` than the desgin matrix, all following values are assumed True. """
 		self.mask = mask
 	def __str__(self):
 		s = "[" + ",\n".join([c.__str__() for c in self.components]) + "]"
@@ -481,9 +428,9 @@ class DesignMatrixTemplate(ni.tools.pickler.Picklable):
 
 class DesignMatrix(ni.tools.pickler.Picklable):
 	"""
-		.. deprecated:: 0.1
+		Use :class:`DesignMatrixTemplate` to create a design matrix.
 
-			Use :class:`DesignMatrixTemplate`
+		This class computes an actual matrix, where :class:`DesignMatrixTemplate` can be saved before the matrix is instanciated.
 	"""
 	def __init__(self,length,width=1):
 		try:

@@ -5,6 +5,8 @@
 
 .. moduleauthor:: Jacob Huth <jahuth@uos.de>
 
+This module provides a backend to the .ip model. It wraps the sklearn.linear_model.ElasticNet / ElasticNetCV objects.
+
 """
 
 import sklearn.linear_model as linear_model 
