@@ -1218,6 +1218,25 @@ As the bootstrap functions add the statistics dictionary of the model fit to the
 </dd></dl>
 
 <dl class="method">
+<dt id="ni.tools.statcollector.StatCollector.rename_value_to_tree">
+<tt class="descname">rename_value_to_tree</tt><big>(</big><em>value=-1</em><big>)</big><a class="headerlink" href="#ni.tools.statcollector.StatCollector.rename_value_to_tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Renames nodes, such that increases of one value are counted as submodels</p>
+<p><cite>value</cite> is the index (of the slash splitted node name) of the value that is to be replaced. The default is -1, ie. the last value.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">ni</span>
+<span class="n">stats</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">StatCollector</span><span class="p">()</span>
+<span class="n">stats</span><span class="o">.</span><span class="n">addNode</span><span class="p">(</span><span class="s">&#39;Model 0/10&#39;</span><span class="p">,{</span><span class="s">&#39;a&#39;</span><span class="p">:</span><span class="mi">100</span><span class="p">})</span>
+<span class="n">stats</span><span class="o">.</span><span class="n">addNode</span><span class="p">(</span><span class="s">&#39;Model 0/20&#39;</span><span class="p">,{</span><span class="s">&#39;a&#39;</span><span class="p">:</span><span class="mi">100</span><span class="p">})</span>
+<span class="n">stats</span><span class="o">.</span><span class="n">addNode</span><span class="p">(</span><span class="s">&#39;Model 0/30&#39;</span><span class="p">,{</span><span class="s">&#39;a&#39;</span><span class="p">:</span><span class="mi">100</span><span class="p">})</span>
+<span class="n">stats</span><span class="o">.</span><span class="n">addNode</span><span class="p">(</span><span class="s">&#39;Model 0/50&#39;</span><span class="p">,{</span><span class="s">&#39;a&#39;</span><span class="p">:</span><span class="mi">100</span><span class="p">})</span>
+<span class="n">stats</span><span class="o">.</span><span class="n">addNode</span><span class="p">(</span><span class="s">&#39;Model 0/1000&#39;</span><span class="p">,{</span><span class="s">&#39;a&#39;</span><span class="p">:</span><span class="mi">100</span><span class="p">})</span>
+<span class="n">stats</span><span class="o">.</span><span class="n">rename_value_to_tree</span><span class="p">()</span><span class="o">.</span><span class="n">plotTree</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The example will rename the last node to &#8216;Model 0/10/20/30/50/1000&#8217;</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="ni.tools.statcollector.StatCollector.save">
 <tt class="descname">save</tt><big>(</big><em>filename</em><big>)</big><a class="headerlink" href="#ni.tools.statcollector.StatCollector.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Saves the StatCollector to <cite>filename</cite>.</p>
@@ -1255,6 +1274,12 @@ As the bootstrap functions add the statistics dictionary of the model fit to the
 <tt class="descclassname">ni.tools.statcollector.</tt><tt class="descname">natural_keys</tt><big>(</big><em>text</em><big>)</big><a class="headerlink" href="#ni.tools.statcollector.natural_keys" title="Permalink to this definition">¶</a></dt>
 <dd><p>alist.sort(key=natural_keys) sorts in human order
 (See Toothy&#8217;s implementation in the comments of <a class="reference external" href="http://nedbatchelder.com/blog/200712/human_sorting.html">http://nedbatchelder.com/blog/200712/human_sorting.html</a> )</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ni.tools.statcollector.natural_sorted">
+<tt class="descclassname">ni.tools.statcollector.</tt><tt class="descname">natural_sorted</tt><big>(</big><em>l</em><big>)</big><a class="headerlink" href="#ni.tools.statcollector.natural_sorted" title="Permalink to this definition">¶</a></dt>
+<dd><p>sorts a sortable in human order (0 &lt; 20 &lt; 100)</p>
 </dd></dl>
 
 </div>
