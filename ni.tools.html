@@ -233,48 +233,6 @@ manual comments</p>
 </ul>
 </div></blockquote>
 <dl class="class">
-<dt id="ni.tools.project.CodeManager">
-<em class="property">class </em><tt class="descclassname">ni.tools.project.</tt><tt class="descname">CodeManager</tt><big>(</big><em>project</em><big>)</big><a class="headerlink" href="#ni.tools.project.CodeManager" title="Permalink to this definition">¶</a></dt>
-<dd><p>Provides Management for Project Code Files</p>
-<dl class="method">
-<dt id="ni.tools.project.CodeManager.appendCode">
-<tt class="descname">appendCode</tt><big>(</big><em>code</em><big>)</big><a class="headerlink" href="#ni.tools.project.CodeManager.appendCode" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="ni.tools.project.CodeManager.appendFile">
-<tt class="descname">appendFile</tt><big>(</big><em>file</em><big>)</big><a class="headerlink" href="#ni.tools.project.CodeManager.appendFile" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="ni.tools.project.CodeManager.report">
-<tt class="descname">report</tt><big>(</big><big>)</big><a class="headerlink" href="#ni.tools.project.CodeManager.report" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="ni.tools.project.DataManager">
-<em class="property">class </em><tt class="descclassname">ni.tools.project.</tt><tt class="descname">DataManager</tt><big>(</big><em>project</em><big>)</big><a class="headerlink" href="#ni.tools.project.DataManager" title="Permalink to this definition">¶</a></dt>
-<dd><p>Provides Management for Project Data Files</p>
-<dl class="method">
-<dt id="ni.tools.project.DataManager.appendFile">
-<tt class="descname">appendFile</tt><big>(</big><em>file</em>, <em>options</em><big>)</big><a class="headerlink" href="#ni.tools.project.DataManager.appendFile" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="ni.tools.project.DataManager.appendXML">
-<tt class="descname">appendXML</tt><big>(</big><em>xml_root</em><big>)</big><a class="headerlink" href="#ni.tools.project.DataManager.appendXML" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="ni.tools.project.DataManager.report">
-<tt class="descname">report</tt><big>(</big><big>)</big><a class="headerlink" href="#ni.tools.project.DataManager.report" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
 <dt id="ni.tools.project.Figure">
 <em class="property">class </em><tt class="descclassname">ni.tools.project.</tt><tt class="descname">Figure</tt><big>(</big><em>path</em>, <em>display=False</em>, <em>close=True</em><big>)</big><a class="headerlink" href="#ni.tools.project.Figure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Figure Context Manager</p>
@@ -298,18 +256,6 @@ with ni.figure("some_test.png",close=False):
         plot(sin(x))    # plots to the first plot again</pre>
 </div>
 <p>Both figures will be displayed, but the second one will remain available after the code. (But keep in mind that in the iPython pylab console, after every input, all figures will be closed)</p>
-</dd></dl>
-
-<dl class="class">
-<dt id="ni.tools.project.FigureManager">
-<em class="property">class </em><tt class="descclassname">ni.tools.project.</tt><tt class="descname">FigureManager</tt><big>(</big><em>project</em><big>)</big><a class="headerlink" href="#ni.tools.project.FigureManager" title="Permalink to this definition">¶</a></dt>
-<dd><p>Provides Management for Figures</p>
-</dd></dl>
-
-<dl class="class">
-<dt id="ni.tools.project.HistoryManager">
-<em class="property">class </em><tt class="descclassname">ni.tools.project.</tt><tt class="descname">HistoryManager</tt><big>(</big><em>project</em><big>)</big><a class="headerlink" href="#ni.tools.project.HistoryManager" title="Permalink to this definition">¶</a></dt>
-<dd><p>Provides Management for Project HistoryManager</p>
 </dd></dl>
 
 <dl class="class">
@@ -406,7 +352,7 @@ with ni.figure("some_test.png",close=False):
 <dt id="ni.tools.project.Project">
 <em class="property">class </em><tt class="descclassname">ni.tools.project.</tt><tt class="descname">Project</tt><big>(</big><em>folder='unsaved_project'</em>, <em>name=''</em><big>)</big><a class="reference internal" href="_modules/ni/tools/project.html#Project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.tools.project.Project" title="Permalink to this definition">¶</a></dt>
 <dd><p>Project Class</p>
-<p>loads a Project folder (containing eg. a main.py file or a project_manifest.xml)</p>
+<p>loads a Project folder (containing eg. a main.py file)</p>
 <dl class="method">
 <dt id="ni.tools.project.Project.abandon">
 <tt class="descname">abandon</tt><big>(</big><big>)</big><a class="headerlink" href="#ni.tools.project.Project.abandon" title="Permalink to this definition">¶</a></dt>
