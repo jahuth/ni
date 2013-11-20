@@ -21,11 +21,6 @@ Contents:
    ni.data
 
 
-List of ToDo Items
-==================
-
-.. todolist::
-
 
 Indices and tables
 ==================
@@ -33,3 +28,81 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+Tutorial
+==========
+
+
+Some Examples
+================
+
+This code can be executed in an **ipython notebook --pylab inline** in browser maltlab like environment.
+
+Basic Example
+----------------
+
+The most basic example (if a path to the data is set and accessible) of how to use the toolbox is::
+
+	import ni
+	data = ni.data.monkey.Data(condition = 0)
+	model = ni.model.ip.Model({'cell':4,'crosshistory':[6,7]})
+	fm = model.fit(data.trial(range(data.nr_trials/2)))
+	plot(fm.prototypes()['rate'],'k')
+
+The first line loads data from the monkey module with the default filename. The second line creates a model for cell 4, using 6 and 7 as crosshistory dependencies.
+Then the model is fitted on half of the data and the rate component is displayed.
+
+
+Using other sources of data
+---------------------------------
+
+If the **nltk** is installed, you can also generate data like this::
+
+
+	import ni
+	import numpy as np
+	import pandas
+	from nltk.corpus import genesis
+	from ni.model.pointprocess import getBinary
+	trial_length = 1000 # use blocks of this many characters as a trial
+	d = []
+	index_tuples = []
+	for (condition, txt_file) in enumerate(['english-kjv.txt','finnish.txt','german.txt','french.txt']):
+		s = genesis.raw(txt_file).replace('.\n',' ').replace('\n',' ').replace('.',' ') # to make the end of sentences also ends of words
+		for t in range(len(s)/trial_length):
+			for (cell, letter) in enumerate([' ', 'a', 'e', 'i']):
+				d.append(list(getBinary( np.cumsum([len(w)+1 for w in s[(t*trial_length):((t+1)*trial_length)].split(letter)]) )))
+				index_tuples.append((condition,t,cell))
+	index = pandas.MultiIndex.from_tuples(index_tuples, names=['Condition','Trial','Cell'])
+	data = ni.Data(pandas.DataFrame(d, index = index))
+
+	model = ni.model.ip.Model({'history_length':10, 'rate':False})
+	for condition in range(4):
+		fm = model.fit(data.condition(condition).trial(range(50)))
+		print str(condition)+': ' + ' '.join([str(fm.compare(data.condition(i).trial(range(50,100)))['ll']) for i in range(4)])
+
+
+Adding a custom kernel
+---------------------------
+
+To add a designmatrix component to the default model, include it in the `custom_components` list of the configuration.::
+
+	import ni
+	data = ni.data.monkey.Data(condition=0)
+	long_kernel = ni.model.create_splines.create_splines_linspace(data.nr_trials * data.trial_length,5,False)
+	ni.model.ip.Model({'custom_components': [ ni.model.designmatrix.Component(header='trend', kernel=long_kernel) ]})
+
+
+StatCollectors
+-------------------
+
+An example of adding something to a StatCollector::
+
+	import ni
+	stat = ni.StatCollector()
+	stat.addNode("Model 0", {'ll_test': -240,
+				 'll_train': -80,
+				 'complexity':10})
+	stat.addNode("Model 0/1", {'ll_test': -100,
+				   'll_train': -90,
+				   'complexity':14})

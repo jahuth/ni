@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>3. Tutorial &mdash; Neuroinformatics Toolbox 0.1 documentation</title>
+    <title>1. Tutorial &mdash; Neuroinformatics Toolbox 0.1 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -27,8 +27,8 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="Neuroinformatics Toolbox 0.1 documentation" href="index.html" />
-    <link rel="next" title="5. model Package" href="ni.model.html" />
-    <link rel="prev" title="1. Results" href="results.html" /> 
+    <link rel="next" title="3. model Package" href="ni.model.html" />
+    <link rel="prev" title="Welcome to the Neuroinformatics Toolbox documentation!" href="index.html" /> 
   </head>
   <body>
     <div class="related">
@@ -38,13 +38,10 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="ni.model.html" title="5. model Package"
+          <a href="ni.model.html" title="3. model Package"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="results.html" title="1. Results"
+          <a href="index.html" title="Welcome to the Neuroinformatics Toolbox documentation!"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">Neuroinformatics Toolbox 0.1 documentation</a> &raquo;</li> 
       </ul>
@@ -56,479 +53,74 @@
           <div class="body">
             
   <div class="section" id="tutorial">
-<h1>3. Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
-<p>Something here</p>
+<h1>1. Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
 </div>
 <div class="section" id="some-examples">
-<h1>4. Some Examples<a class="headerlink" href="#some-examples" title="Permalink to this headline">¶</a></h1>
+<h1>2. Some Examples<a class="headerlink" href="#some-examples" title="Permalink to this headline">¶</a></h1>
 <p>This code can be executed in an <strong>ipython notebook &#8211;pylab inline</strong> in browser maltlab like environment.</p>
-<div class="highlight-python"><pre>cd uni/MT/EIC/py</pre>
-</div>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">ni.model.pointprocess</span>
-<span class="nb">reload</span><span class="p">(</span><span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="p">)</span>
-<span class="n">p1</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">createPoisson</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span>
-
-<span class="n">p2</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">createPoisson</span><span class="p">(</span><span class="n">sin</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">200</span><span class="p">))</span><span class="o">*</span><span class="mf">0.01</span><span class="p">)</span><span class="o">*</span><span class="mf">0.5</span><span class="o">-</span> <span class="mf">0.2</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span>
-
-<span class="kn">import</span> <span class="nn">matplotlib</span>
-<span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s">&#39;savefig.dpi&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">72</span>
+<div class="section" id="basic-example">
+<h2>2.1. Basic Example<a class="headerlink" href="#basic-example" title="Permalink to this headline">¶</a></h2>
+<p>The most basic example (if a path to the data is set and accessible) of how to use the toolbox is:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">ni</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">monkey</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="n">condition</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">ip</span><span class="o">.</span><span class="n">Model</span><span class="p">({</span><span class="s">&#39;cell&#39;</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span><span class="s">&#39;crosshistory&#39;</span><span class="p">:[</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">]})</span>
+<span class="n">fm</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">trial</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">nr_trials</span><span class="o">/</span><span class="mi">2</span><span class="p">)))</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">prototypes</span><span class="p">()[</span><span class="s">&#39;rate&#39;</span><span class="p">],</span><span class="s">&#39;k&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">scikits.statsmodels.genmod</span> <span class="kn">import</span> <span class="n">generalized_linear_model</span>
-<span class="kn">from</span> <span class="nn">scikits.statsmodels.genmod.families.family</span> <span class="kn">import</span> <span class="n">Binomial</span>
+<p>The first line loads data from the monkey module with the default filename. The second line creates a model for cell 4, using 6 and 7 as crosshistory dependencies.
+Then the model is fitted on half of the data and the rate component is displayed.</p>
+</div>
+<div class="section" id="using-other-sources-of-data">
+<h2>2.2. Using other sources of data<a class="headerlink" href="#using-other-sources-of-data" title="Permalink to this headline">¶</a></h2>
+<p>If the <strong>nltk</strong> is installed, you can also generate data like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">ni</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span>
+<span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">genesis</span>
+<span class="kn">from</span> <span class="nn">ni.model.pointprocess</span> <span class="kn">import</span> <span class="n">getBinary</span>
+<span class="n">trial_length</span> <span class="o">=</span> <span class="mi">1000</span> <span class="c"># use blocks of this many characters as a trial</span>
+<span class="n">d</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">index_tuples</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="n">txt_file</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="s">&#39;english-kjv.txt&#39;</span><span class="p">,</span><span class="s">&#39;finnish.txt&#39;</span><span class="p">,</span><span class="s">&#39;german.txt&#39;</span><span class="p">,</span><span class="s">&#39;french.txt&#39;</span><span class="p">]):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">genesis</span><span class="o">.</span><span class="n">raw</span><span class="p">(</span><span class="n">txt_file</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;.</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">,</span><span class="s">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">,</span><span class="s">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">,</span><span class="s">&#39; &#39;</span><span class="p">)</span> <span class="c"># to make the end of sentences also ends of words</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">/</span><span class="n">trial_length</span><span class="p">):</span>
+                <span class="k">for</span> <span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">letter</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="s">&#39; &#39;</span><span class="p">,</span> <span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;e&#39;</span><span class="p">,</span> <span class="s">&#39;i&#39;</span><span class="p">]):</span>
+                        <span class="n">d</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">getBinary</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">s</span><span class="p">[(</span><span class="n">t</span><span class="o">*</span><span class="n">trial_length</span><span class="p">):((</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">trial_length</span><span class="p">)]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">letter</span><span class="p">)])</span> <span class="p">)))</span>
+                        <span class="n">index_tuples</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">condition</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">cell</span><span class="p">))</span>
+<span class="n">index</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_tuples</span><span class="p">(</span><span class="n">index_tuples</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;Condition&#39;</span><span class="p">,</span><span class="s">&#39;Trial&#39;</span><span class="p">,</span><span class="s">&#39;Cell&#39;</span><span class="p">])</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="n">index</span><span class="p">))</span>
 
-<span class="n">spikes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">createPoisson</span><span class="p">(</span><span class="n">sin</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">200</span><span class="p">))</span><span class="o">*</span><span class="mf">0.01</span><span class="p">)</span><span class="o">*</span><span class="mf">0.5</span><span class="o">-</span> <span class="mf">0.2</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span><span class="o">.</span><span class="n">getCounts</span><span class="p">())</span>
-
-<span class="n">design_matrix</span> <span class="o">=</span> <span class="p">[[</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">*</span><span class="p">(((</span><span class="n">i</span><span class="o">-</span><span class="n">j</span><span class="o">*</span><span class="mi">100</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">9</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">999</span><span class="p">,</span><span class="mi">1000</span><span class="p">)]</span>
-<span class="n">glm</span> <span class="o">=</span> <span class="n">generalized_linear_model</span><span class="o">.</span><span class="n">GLM</span><span class="p">(</span><span class="n">spikes</span><span class="p">,</span><span class="n">design_matrix</span><span class="p">,</span> <span class="n">family</span> <span class="o">=</span> <span class="n">Binomial</span><span class="p">())</span>
-<span class="n">res</span> <span class="o">=</span> <span class="n">glm</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">ip</span><span class="o">.</span><span class="n">Model</span><span class="p">({</span><span class="s">&#39;history_length&#39;</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span> <span class="s">&#39;rate&#39;</span><span class="p">:</span><span class="bp">False</span><span class="p">})</span>
+<span class="k">for</span> <span class="n">condition</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+        <span class="n">fm</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">condition</span><span class="p">(</span><span class="n">condition</span><span class="p">)</span><span class="o">.</span><span class="n">trial</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">)))</span>
+        <span class="k">print</span> <span class="nb">str</span><span class="p">(</span><span class="n">condition</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;: &#39;</span> <span class="o">+</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">compare</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">condition</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">trial</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span><span class="mi">100</span><span class="p">)))[</span><span class="s">&#39;ll&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)])</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">ni.model.glm</span> <span class="kn">as</span> <span class="nn">glm</span>
-<span class="kn">import</span> <span class="nn">ni.tools.bootstrap</span> <span class="kn">as</span> <span class="nn">bs</span>
-<span class="nb">reload</span><span class="p">(</span><span class="n">glm</span><span class="p">)</span>
-<span class="nb">reload</span><span class="p">(</span><span class="n">bs</span><span class="p">)</span>
-
-<span class="n">length</span> <span class="o">=</span> <span class="mi">600</span>
-
-<span class="n">target</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">sin</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">length</span><span class="p">))</span><span class="o">*</span><span class="mf">0.01</span><span class="p">)</span><span class="o">*</span><span class="mf">0.1</span><span class="p">)</span>
-<span class="n">spikes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">createPoisson</span><span class="p">(</span><span class="n">target</span><span class="p">,</span><span class="n">length</span><span class="p">)</span><span class="o">.</span><span class="n">getCounts</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">)])</span>
-<span class="c">#design_matrix = [[exp(-1*(((i-j*60))**2)/10000) for j in range(0,9)] for i in linspace(0,length-1,length)]</span>
-<span class="n">design_matrix</span> <span class="o">=</span> <span class="p">[[</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">*</span><span class="p">(((</span><span class="n">i</span><span class="o">-</span><span class="n">j</span><span class="o">*</span><span class="mi">60</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="mi">3000</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">9</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">length</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">length</span><span class="p">)]</span>
-<span class="n">design_matrix2</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">):</span>
-    <span class="n">design_matrix2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">design_matrix</span><span class="p">)</span>
-<span class="n">design_matrix</span> <span class="o">=</span> <span class="n">vstack</span><span class="p">(</span><span class="n">design_matrix2</span><span class="p">)</span>
-<span class="n">plot</span><span class="p">(</span><span class="n">target</span><span class="p">,</span><span class="s">&#39;bo&#39;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">):</span>
-    <span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">plotGaussed</span><span class="p">(</span><span class="n">spikes</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="mi">30</span><span class="p">)</span>
-<span class="c">#bs.evaluate(glm.GLM(spikes,design_matrix),spikes,10)</span>
-</pre></div>
 </div>
-<img alt="_images/01.png" src="_images/01.png" />
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">scikits.statsmodels.genmod</span> <span class="kn">import</span> <span class="n">generalized_linear_model</span>
-<span class="kn">from</span> <span class="nn">scikits.statsmodels.genmod.families.family</span> <span class="kn">import</span> <span class="n">Binomial</span>
-
-<span class="n">Data</span> <span class="o">=</span> <span class="n">reshape</span><span class="p">(</span><span class="n">spikes</span><span class="p">,(</span><span class="n">length</span> <span class="o">*</span> <span class="mi">10</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
-<span class="c">#plot(Data,&#39;bo&#39;)</span>
-<span class="c">#plot(design_matrix[:,3])</span>
-
-<span class="n">dev</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">abs</span><span class="p">((</span><span class="n">design_matrix</span><span class="p">[</span><span class="n">find</span><span class="p">(</span><span class="n">Data</span><span class="o">.</span><span class="n">transpose</span><span class="p">()),</span><span class="n">i</span><span class="p">]))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">9</span><span class="p">)])</span>
-<span class="n">prediction</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">design_matrix</span> <span class="o">*</span> <span class="n">mean</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">plot</span><span class="p">(</span><span class="n">prediction</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">length</span><span class="p">]</span><span class="o">/</span><span class="nb">max</span><span class="p">(</span><span class="n">prediction</span><span class="p">))</span>
-<span class="n">plot</span><span class="p">(</span><span class="n">design_matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">length</span><span class="p">,:])</span>
-<span class="n">plot</span><span class="p">(</span><span class="n">target</span><span class="o">/</span><span class="nb">max</span><span class="p">(</span><span class="n">target</span><span class="p">),</span><span class="s">&#39;b.&#39;</span><span class="p">)</span>
-<span class="c">#g = generalized_linear_model.GLM(Data,design_matrix[:,1:5], family = Binomial())</span>
-<span class="c">#res = g.fit()</span>
-
-<span class="c">#model = glm.GLM(Data,design_matrix)</span>
-<span class="c">#m = model.fit(Data)</span>
-</pre></div>
-</div>
-<img alt="_images/02.png" src="_images/02.png" />
-<div class="highlight-python"><div class="highlight"><pre><span class="n">g</span> <span class="o">=</span> <span class="n">generalized_linear_model</span><span class="o">.</span><span class="n">GLM</span><span class="p">(</span><span class="n">Data</span><span class="p">,</span><span class="n">design_matrix</span><span class="p">,</span> <span class="n">family</span> <span class="o">=</span> <span class="n">Binomial</span><span class="p">())</span>
-<span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p><strong>Generates an ERROR</strong></p>
-<p>ValueError                                Traceback (most recent call last)
-/home/plogic/uni/MT/EIC/py/&lt;ipython-input-298-79fc06ff0302&gt; in &lt;module&gt;()</p>
+<div class="section" id="adding-a-custom-kernel">
+<h2>2.3. Adding a custom kernel<a class="headerlink" href="#adding-a-custom-kernel" title="Permalink to this headline">¶</a></h2>
+<p>To add a designmatrix component to the default model, include it in the <cite>custom_components</cite> list of the configuration.</p>
 <blockquote>
-<div>1 g = generalized_linear_model.GLM(Data,design_matrix, family = Binomial())</div></blockquote>
-<p>&#8212;-&gt; 2 res = g.fit()</p>
-<dl class="docutils">
-<dt>/usr/lib/pymodules/python2.7/scikits/statsmodels/genmod/generalized_linear_model.pyc in fit(self, maxiter, method, tol, scale)</dt>
-<dd>404             wlsendog = eta + self.family.link.deriv(mu) * (self.endog-mu) 405                  - offset</dd>
-<dt>&#8211;&gt; 406             wls_results = WLS(wlsendog, wlsexog, self.weights).fit()</dt>
-<dd>407             eta = np.dot(self.exog, wls_results.params) + offset
-408             mu = self.family.fitted(eta)</dd>
-<dt>/usr/lib/pymodules/python2.7/scikits/statsmodels/regression/linear_model.pyc in __init__(self, endog, exog, weights)</dt>
-<dd>383                    weights.size == design_rows) :
-384                 raise ValueError(</dd>
-<dt>&#8211;&gt; 385                     &#8216;Weights must be scalar or same length as design&#8217;)</dt>
-<dd>386             self.weights = weights.reshape(design_rows)
-387         super(WLS, self).__init__(endog, exog)</dd>
-</dl>
-<p class="last">ValueError: Weights must be scalar or same length as design</p>
+<div>import ni
+data = ni.data.monkey.Data(condition=0)
+long_kernel = ni.model.create_splines.create_splines_linspace(data.nr_trials * data.trial_length,5,False)
+ni.model.ip.Model({&#8216;custom_components&#8217;: [ ni.model.designmatrix.Component(header=&#8217;trend&#8217;, kernel=long_kernel) ]})</div></blockquote>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">design_matrix</span> <span class="o">=</span> <span class="p">[[</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">*</span><span class="p">(((</span><span class="n">i</span><span class="o">-</span><span class="n">j</span><span class="o">*</span><span class="mi">30</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="mi">10000</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">9</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">299</span><span class="p">,</span><span class="mi">300</span><span class="p">)]</span>
-<span class="n">design_matrix2</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">):</span>
-    <span class="n">design_matrix2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">design_matrix</span><span class="p">)</span>
-<span class="c">#design_matrix2</span>
-<span class="n">design_matrix</span> <span class="o">=</span> <span class="n">vstack</span><span class="p">(</span><span class="n">design_matrix2</span><span class="p">)</span>
+<div class="section" id="statcollectors">
+<h2>2.4. StatCollectors<a class="headerlink" href="#statcollectors" title="Permalink to this headline">¶</a></h2>
+<p>An example of adding something to a StatCollector:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">ni</span>
+<span class="n">stat</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">StatCollector</span><span class="p">()</span>
+<span class="n">stat</span><span class="o">.</span><span class="n">addNode</span><span class="p">(</span><span class="s">&quot;Model 0&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;ll_test&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">240</span><span class="p">,</span>
+                         <span class="s">&#39;ll_train&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">80</span><span class="p">,</span>
+                         <span class="s">&#39;complexity&#39;</span><span class="p">:</span><span class="mi">10</span><span class="p">})</span>
+<span class="n">stat</span><span class="o">.</span><span class="n">addNode</span><span class="p">(</span><span class="s">&quot;Model 0/1&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;ll_test&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">100</span><span class="p">,</span>
+                           <span class="s">&#39;ll_train&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">90</span><span class="p">,</span>
+                           <span class="s">&#39;complexity&#39;</span><span class="p">:</span><span class="mi">14</span><span class="p">})</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">img</span> <span class="o">=</span> <span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">design_matrix</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(),</span> <span class="n">aspect</span><span class="o">=</span><span class="s">&#39;auto&#39;</span><span class="p">)</span>
-<span class="n">img</span><span class="o">.</span><span class="n">set_interpolation</span><span class="p">(</span><span class="s">&#39;nearest&#39;</span><span class="p">)</span>
-</pre></div>
 </div>
-<img alt="_images/03.png" src="_images/03.png" />
-<div class="highlight-python"><div class="highlight"><pre><span class="n">res</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<blockquote>
-<div>Generalized linear model</div></blockquote>
-<blockquote>
-<div>Model Family:                  Binomial   # of obs:                        1000
-Method:                            IRLS   Df residuals:                     991
-Dependent Variable:                   Y   Df model:                           8
-Date:                  Thu, 30 May 2013   Scale:                         1.0000
-Time:                          17:29:30   Log likelihood:             -521.6848</div></blockquote>
-<blockquote>
-<div>coefficient   stand errors    t-statistic    Conf. Interval</div></blockquote>
-<blockquote class="last">
-<div>x0                   -24.4281                       -2.4888 [-43.666, -5.190]
-x1                    -2.1134                       -4.7164  [-2.992, -1.235]
-x2                    -3.3877                       -5.3690  [-4.624, -2.151]
-x3                    -2.2992                       -4.9481  [-3.210, -1.388]
-x4                    -2.2641                       -4.9220  [-3.166, -1.362]
-x5                    -1.6907                       -4.2519  [-2.470, -0.911]
-x6                    -2.1377                       -4.8080  [-3.009, -1.266]
-x7                    -1.3351                       -3.6306  [-2.056, -0.614]
-x8                    -2.3364                       -4.9854  [-3.255, -1.418]</div></blockquote>
-</div>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">plot</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">resid_deviance</span><span class="p">)</span>
-</pre></div>
-</div>
-<img alt="_images/04.png" src="_images/04.png" />
-<div class="highlight-python"><div class="highlight"><pre><span class="n">p2</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-
-<span class="n">p2</span><span class="o">.</span><span class="n">plotGaussed</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-</pre></div>
-</div>
-<img alt="_images/05.png" src="_images/05.png" />
-<div class="highlight-python"><div class="highlight"><pre><span class="n">p1</span><span class="o">.</span><span class="n">plotGaussed</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
-<span class="n">plot</span><span class="p">(</span><span class="n">p1</span><span class="o">.</span><span class="n">frate</span><span class="p">)</span>
-</pre></div>
-</div>
-<img alt="_images/06.png" src="_images/06.png" />
-<div class="highlight-python"><div class="highlight"><pre><span class="n">p2</span><span class="o">.</span><span class="n">plotGaussed</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
-<span class="n">plot</span><span class="p">(</span><span class="n">p2</span><span class="o">.</span><span class="n">frate</span><span class="p">)</span>
-</pre></div>
-</div>
-<img alt="_images/07.png" src="_images/07.png" />
-<div class="highlight-python"><div class="highlight"><pre><span class="n">frate</span> <span class="o">=</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">200</span><span class="p">))</span><span class="o">*</span><span class="mf">0.001</span><span class="p">)</span><span class="o">*</span><span class="mf">0.2</span><span class="o">+</span><span class="mf">0.01</span>
-<span class="n">channels</span> <span class="o">=</span> <span class="mi">9</span>
-
-<span class="n">dists</span> <span class="o">=</span> <span class="p">[</span><span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">createPoisson</span><span class="p">(</span><span class="n">frate</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">channels</span><span class="p">)]</span>
-<span class="c">#for i in range(0,9): dists[i].plotGaussed(10)</span>
-<span class="kn">import</span> <span class="nn">itertools</span>
-<span class="n">spks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dists</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">getCounts</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">channels</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">99</span><span class="p">)</span> <span class="p">])</span>
-<span class="n">imshow</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">*</span><span class="n">spks</span><span class="p">)</span>
-<span class="n">set_cmap</span><span class="p">(</span><span class="s">&#39;gray&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<img alt="_images/08.png" src="_images/08.png" />
-<div class="highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">channels</span><span class="p">):</span> <span class="n">dists</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plotGaussed</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-</pre></div>
-</div>
-<img alt="_images/09.png" src="_images/09.png" />
-<div class="highlight-python"><div class="highlight"><pre><span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">plotGaussed</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dists</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">getCounts</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">channels</span><span class="p">)])</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span><span class="mi">20</span><span class="p">)</span>
-<span class="n">plot</span><span class="p">(</span><span class="n">dists</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">frate</span><span class="p">)</span>
-</pre></div>
-</div>
-<img alt="_images/10.png" src="_images/10.png" />
-<div class="highlight-python"><div class="highlight"><pre><span class="nb">reload</span><span class="p">(</span><span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="p">)</span>
-
-<span class="n">frate</span> <span class="o">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1000</span><span class="p">))</span><span class="o">*</span><span class="mf">0.1</span><span class="p">)</span><span class="o">*</span><span class="mf">0.02</span><span class="o">+</span><span class="mf">0.04</span>
-<span class="n">mc</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">MultiChannelPointProcess</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
-<span class="n">mc</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">createPoisson</span><span class="p">(</span><span class="n">frate</span><span class="p">,</span><span class="mi">1000</span><span class="p">))</span>
-<span class="c">#m = ni.model.pointprocess.createPoisson(0.1,1000)</span>
-<span class="c">#mc.set(lambda x: m)</span>
-
-<span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">plotGaussed</span><span class="p">(</span><span class="n">mc</span><span class="o">.</span><span class="n">getMeanCounts</span><span class="p">(),</span><span class="mi">5</span><span class="p">)</span>
-<span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">getCounts</span><span class="p">()))</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-
-<span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">plotGaussed</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
-<span class="n">plot</span><span class="p">(</span><span class="n">frate</span><span class="p">)</span>
-</pre></div>
-</div>
-<img alt="_images/11.png" src="_images/11.png" />
-<div class="highlight-python"><div class="highlight"><pre><span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">getCounts</span><span class="p">()))</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">plotGaussed</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
-</pre></div>
-</div>
-<img alt="_images/12.png" src="_images/12.png" />
-<div class="highlight-python"><div class="highlight"><pre><span class="n">c2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mc</span><span class="o">.</span><span class="n">get2</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">convolve</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">getCounts</span><span class="p">(),</span><span class="n">y</span><span class="o">.</span><span class="n">getCounts</span><span class="p">())</span><span class="o">.</span><span class="n">sum</span><span class="p">()))</span>
-<span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">plotGaussed</span><span class="p">(</span><span class="n">c2</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
-<span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
-
-<span class="n">imshow</span><span class="p">(</span><span class="n">c2</span><span class="p">)</span>
-<span class="n">colorbar</span><span class="p">()</span>
-<span class="n">set_cmap</span><span class="p">(</span><span class="s">&#39;jet&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<img alt="_images/13.png" src="_images/13.png" />
-<div class="highlight-python"><div class="highlight"><pre><span class="nb">reload</span><span class="p">(</span><span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="p">)</span>
-
-<span class="n">ppc</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">PPContainer</span><span class="p">()</span>
-<span class="n">ppc</span><span class="o">.</span><span class="n">setData</span><span class="p">([</span><span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">createPoisson</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span><span class="o">.</span><span class="n">getCounts</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">)])</span>
-<span class="n">ppc</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span>
-<span class="p">[</span><span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">plotGaussed</span><span class="p">(</span><span class="n">ppc</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="mi">20</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">)]</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">[None, None, None, None, None, None, None, None, None, None]</p>
-</div>
-<img alt="_images/14.png" src="_images/14.png" />
-<div class="highlight-python"><div class="highlight"><pre><span class="n">cont</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">createPoisson</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span><span class="o">.</span><span class="n">getCounts</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">)])</span>
-<span class="p">[</span><span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">plotGaussed</span><span class="p">(</span><span class="n">cont</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="mi">20</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cont</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
-</pre></div>
-</div>
-<img alt="_images/15.png" src="_images/15.png" />
-<div class="highlight-python"><div class="highlight"><pre><span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">plotMultiSpikes</span><span class="p">(</span><span class="n">cont</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
-</pre></div>
-</div>
-<img alt="_images/16.png" src="_images/16.png" />
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">ni.model.net_sim</span>
-<span class="nb">reload</span><span class="p">(</span><span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">net_sim</span><span class="p">)</span>
-<span class="n">c</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">net_sim</span><span class="o">.</span><span class="n">SimulationConfiguration</span><span class="p">()</span>
-<span class="n">c</span><span class="o">.</span><span class="n">Nneur</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="n">net</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">net_sim</span><span class="o">.</span><span class="n">Net</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
-<span class="k">print</span> <span class="n">net</span>
-<span class="n">net</span><span class="o">.</span><span class="n">plot_firing_rates</span><span class="p">()</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>&#8216;ni.model.net_sim&#8217; Simulation Setup
-Timerange: (250, 10250)
-10 channels with firing rates:</p>
-<blockquote>
-<div>[12.815928361, 29.6328550796, 19.9415819867, 13.6710936491, 20.242131795, 11.4661487294, 11.5071338947, 10.2727521514, 24.2587596858, 13.1497981307]</div></blockquote>
-<p class="last">Firing Rates plot</p>
-</div>
-<img alt="_images/17.png" src="_images/17.png" />
-<div class="highlight-python"><div class="highlight"><pre><span class="n">connections</span> <span class="o">=</span> <span class="p">[[</span><span class="nb">abs</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">Jall</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,:]</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mf">0.001</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">)]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">)]</span>
-<span class="c">#imgplot = imshow(connections)</span>
-<span class="c">#imgplot.set_interpolation(&#39;nearest&#39;)</span>
-<span class="kn">import</span> <span class="nn">pydot</span>
-<span class="n">d</span> <span class="o">=</span> <span class="n">pydot</span><span class="o">.</span><span class="n">graph_from_edges</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">connections</span><span class="p">),</span> <span class="n">directed</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="c">#d.create_png()</span>
-<span class="n">d</span><span class="o">.</span><span class="n">set_layout</span><span class="p">(</span><span class="s">&#39;neato&#39;</span><span class="p">)</span>
-<span class="n">d</span><span class="o">.</span><span class="n">set_mindist</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">d</span><span class="o">.</span><span class="n">write_png</span><span class="p">(</span><span class="s">&quot;test2.png&quot;</span><span class="p">)</span>
-
-<span class="n">d2</span> <span class="o">=</span> <span class="n">pydot</span><span class="o">.</span><span class="n">graph_from_edges</span><span class="p">(</span><span class="n">connections</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="c">#d.create_png()</span>
-<span class="n">d2</span><span class="o">.</span><span class="n">set_layout</span><span class="p">(</span><span class="s">&#39;neato&#39;</span><span class="p">)</span>
-<span class="n">d2</span><span class="o">.</span><span class="n">write_png</span><span class="p">(</span><span class="s">&quot;test1.png&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">11</span><span class="p">):</span>
-    <span class="k">print</span> <span class="n">i</span>
-    <span class="n">res1</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">simulate</span><span class="p">()</span> <span class="c">#ni.model.net_sim.simulate(c)</span>
-    <span class="n">res1</span><span class="o">.</span><span class="n">plot_firing_rates</span><span class="p">()</span>
-    <span class="k">print</span> <span class="n">res1</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>0
-Firing Rates plot
-&#8216;ni.model.net_sim&#8217; Simulation Result
-Took 5.07s to compute.
-Timerange: (0, 10250)
-2359 Spikes in 10 channels:</p>
-<blockquote>
-<div>[242, 277, 131, 336, 326, 199, 260, 141, 233, 214]</div></blockquote>
-<p>1
-Firing Rates plot
-&#8216;ni.model.net_sim&#8217; Simulation Result
-Took 5.32s to compute.
-Timerange: (0, 10250)
-2305 Spikes in 10 channels:</p>
-<blockquote>
-<div>[246, 329, 134, 299, 303, 199, 273, 123, 201, 198]</div></blockquote>
-<p>2
-Firing Rates plot
-&#8216;ni.model.net_sim&#8217; Simulation Result
-Took 5.17s to compute.
-Timerange: (0, 10250)
-2449 Spikes in 10 channels:</p>
-<blockquote>
-<div>[251, 334, 125, 326, 324, 235, 261, 162, 214, 217]</div></blockquote>
-<p>3
-Firing Rates plot
-&#8216;ni.model.net_sim&#8217; Simulation Result
-Took 9.69s to compute.
-Timerange: (0, 10250)
-2436 Spikes in 10 channels:</p>
-<blockquote>
-<div>[241, 343, 131, 310, 324, 210, 277, 131, 235, 234]</div></blockquote>
-<p>4
-Firing Rates plot
-&#8216;ni.model.net_sim&#8217; Simulation Result
-Took 6.74s to compute.
-Timerange: (0, 10250)
-2352 Spikes in 10 channels:</p>
-<blockquote>
-<div>[251, 334, 121, 332, 306, 206, 278, 113, 225, 186]</div></blockquote>
-<p>5
-Firing Rates plot
-&#8216;ni.model.net_sim&#8217; Simulation Result
-Took 5.3s to compute.
-Timerange: (0, 10250)
-2342 Spikes in 10 channels:</p>
-<blockquote>
-<div>[253, 332, 126, 325, 321, 216, 240, 114, 198, 217]</div></blockquote>
-<p>6
-Firing Rates plot
-&#8216;ni.model.net_sim&#8217; Simulation Result
-Took 5.39s to compute.
-Timerange: (0, 10250)
-2395 Spikes in 10 channels:</p>
-<blockquote>
-<div>[263, 340, 121, 328, 305, 207, 268, 135, 216, 212]</div></blockquote>
-<p>7
-Firing Rates plot
-&#8216;ni.model.net_sim&#8217; Simulation Result
-Took 5.72s to compute.
-Timerange: (0, 10250)
-2340 Spikes in 10 channels:</p>
-<blockquote>
-<div>[248, 308, 137, 317, 317, 189, 277, 116, 225, 206]</div></blockquote>
-<p>8
-Firing Rates plot
-&#8216;ni.model.net_sim&#8217; Simulation Result
-Took 5.64s to compute.
-Timerange: (0, 10250)
-2357 Spikes in 10 channels:</p>
-<blockquote>
-<div>[244, 326, 131, 303, 347, 203, 283, 107, 201, 212]</div></blockquote>
-<p>9
-Firing Rates plot
-&#8216;ni.model.net_sim&#8217; Simulation Result
-Took 5.71s to compute.
-Timerange: (0, 10250)
-2361 Spikes in 10 channels:</p>
-<blockquote class="last">
-<div>[242, 341, 149, 307, 338, 197, 253, 122, 191, 221]</div></blockquote>
-</div>
-<img alt="_images/18.png" src="_images/18.png" />
-<div class="highlight-python"><div class="highlight"><pre><span class="c">#[r.plot_firing_rates() for r in net.results]</span>
-<span class="n">plot</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">r</span><span class="o">.</span><span class="n">num_spikes_per_channel</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">net</span><span class="o">.</span><span class="n">results</span><span class="p">]))</span>
-<span class="c">#plot([r.spikes.T.mean() for r in net.results].T)</span>
-<span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">results</span><span class="p">))</span>
-</pre></div>
-</div>
-<img alt="_images/19.png" src="_images/19.png" />
-<div class="highlight-python"><div class="highlight"><pre><span class="n">res2</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">simulate</span><span class="p">()</span>
-<span class="n">res2</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-<span class="k">print</span> <span class="n">res2</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>&#8216;ni.model.net_sim&#8217; Simulation Result
-Took 11.85s to compute.
-Timerange: (0, 10250)
-4883 Spikes in 20 channels:</p>
-<blockquote class="last">
-<div>[219, 258, 299, 343, 379, 346, 153, 139, 106, 220, 223, 310, 193, 274, 212, 252, 163, 291, 202, 301]</div></blockquote>
-</div>
-<img alt="_images/20.png" src="_images/20.png" />
-<div class="highlight-python"><div class="highlight"><pre><span class="k">print</span> <span class="n">res1</span>
-<span class="nb">len</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">Jall</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
-<span class="k">print</span> <span class="s">&quot;Interaction plot&quot;</span>
-<span class="n">pyplot</span><span class="o">.</span><span class="n">figsize</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">net</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">Nneur</span><span class="p">):</span>
-  <span class="n">subplot</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="n">net</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">Nneur</span><span class="o">/</span><span class="mi">5</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-  <span class="n">p</span> <span class="o">=</span> <span class="n">plot</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">Jall</span><span class="p">[</span><span class="n">i</span><span class="p">,:,:]</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
-  <span class="k">print</span> <span class="n">i</span><span class="p">,</span> <span class="n">net</span><span class="o">.</span><span class="n">Jall</span><span class="p">[</span><span class="n">i</span><span class="p">,:,:]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-  <span class="c">#p.set_cmap(&#39;hot&#39;)</span>
-  <span class="n">title</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>&#8216;ni.model.net_sim&#8217; Simulation Result
-Took 18.46s to compute.
-Timerange: (0, 10250)
-4801 Spikes in 20 channels:</p>
-<blockquote>
-<div>[202, 280, 241, 307, 347, 358, 140, 149, 110, 210, 206, 323, 185, 281, 239, 255, 174, 262, 248, 284]</div></blockquote>
-<p class="last">Interaction plot
-0 -2.03759911202
-1 -3.44761233133
-2 0.723006313412
-3 -0.952023565109
-4 4.25574511824
-5 -3.3453963685
-6 0.0627568073968
-7 -2.69221647701
-8 1.76568144941
-9 1.52325958899
-10 -0.000215659457296
-11 1.16132044427
-12 0.784372891918
-13 -0.000215659457296
-14 -0.000215659457296
-15 -0.000215659457296
-16 3.06368154242
-17 -1.95556680782
-18 -0.349520835524
-19 -3.41784456774</p>
-</div>
-<img alt="_images/21.png" src="_images/21.png" />
-<div class="highlight-python"><div class="highlight"><pre><span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">plotGaussed</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">spikes</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span><span class="mi">10</span><span class="p">)</span>
-</pre></div>
-</div>
-<img alt="_images/22.png" src="_images/22.png" />
-<div class="highlight-python"><div class="highlight"><pre><span class="c">#conv = [[np.convolve(p1,p2) for p1 in res.spikes] for p2 in res.spikes]</span>
-<span class="n">imshow</span><span class="p">([[</span><span class="n">np</span><span class="o">.</span><span class="n">convolve</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">spikes</span><span class="p">[</span><span class="n">j</span><span class="p">],</span><span class="n">res</span><span class="o">.</span><span class="n">spikes</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">)]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">)])</span>
-</pre></div>
-</div>
-<img alt="_images/23.png" src="_images/23.png" />
-<div class="highlight-python"><div class="highlight"><pre><span class="n">res</span><span class="o">.</span><span class="n">spikes</span><span class="o">.</span><span class="n">info</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">&lt;bound method DataFrame.info of &lt;class &#8216;pandas.core.frame.DataFrame&#8217;&gt;
-Int64Index: 10250 entries, 0 to 10249
-Data columns:
-0    10250  non-null values
-1    10250  non-null values
-2    10250  non-null values
-3    10250  non-null values
-4    10250  non-null values
-5    10250  non-null values
-6    10250  non-null values
-7    10250  non-null values
-8    10250  non-null values
-9    10250  non-null values
-dtypes: float64(10)&gt;</p>
-</div>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">sklearn</span>
-
-<span class="n">enet</span> <span class="o">=</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">linear_model</span><span class="o">.</span><span class="n">ElasticNet</span><span class="p">()</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">spikes</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="mi">100</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="mi">8</span><span class="p">]</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">spikes</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="mi">100</span><span class="p">,</span><span class="mi">9</span><span class="p">]</span>
-<span class="n">enet</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
-<span class="n">enet</span><span class="o">.</span><span class="n">predict</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<dl class="last docutils">
-<dt>ElasticNet(alpha=1.0, copy_X=True, fit_intercept=True, max_iter=1000,</dt>
-<dd>normalize=False, precompute=&#8217;auto&#8217;, rho=0.5, tol=0.0001)</dd>
-</dl>
-</div>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">spikes</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="mi">100</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="mi">8</span><span class="p">])</span>
-</pre></div>
-</div>
-<img alt="_images/24.png" src="_images/24.png" />
 </div>
 
 
@@ -539,16 +131,22 @@ dtypes: float64(10)&gt;</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">3. Tutorial</a></li>
-<li><a class="reference internal" href="#some-examples">4. Some Examples</a></li>
+<li><a class="reference internal" href="#">1. Tutorial</a></li>
+<li><a class="reference internal" href="#some-examples">2. Some Examples</a><ul>
+<li><a class="reference internal" href="#basic-example">2.1. Basic Example</a></li>
+<li><a class="reference internal" href="#using-other-sources-of-data">2.2. Using other sources of data</a></li>
+<li><a class="reference internal" href="#adding-a-custom-kernel">2.3. Adding a custom kernel</a></li>
+<li><a class="reference internal" href="#statcollectors">2.4. StatCollectors</a></li>
+</ul>
+</li>
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="results.html"
-                        title="previous chapter">1. Results</a></p>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to the Neuroinformatics Toolbox documentation!</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="ni.model.html"
-                        title="next chapter">5. model Package</a></p>
+                        title="next chapter">3. model Package</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/tutorial.txt"
@@ -578,13 +176,10 @@ dtypes: float64(10)&gt;</p>
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="ni.model.html" title="5. model Package"
+          <a href="ni.model.html" title="3. model Package"
              >next</a> |</li>
         <li class="right" >
-          <a href="results.html" title="1. Results"
+          <a href="index.html" title="Welcome to the Neuroinformatics Toolbox documentation!"
              >previous</a> |</li>
         <li><a href="index.html">Neuroinformatics Toolbox 0.1 documentation</a> &raquo;</li> 
       </ul>
