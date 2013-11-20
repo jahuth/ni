@@ -103,10 +103,25 @@ Get the pdf version <a class="reference external" href="_static/Neuroinformatics
 </div>
 <div class="section" id="tutorial">
 <h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
+<p>To install the toolbox, clone the git repository, or download the zip file from: <a class="reference external" href="https://github.com/jahuth/ni">https://github.com/jahuth/ni</a></p>
+<p>Clone the repository with:</p>
+<div class="highlight-python"><pre>git clone https://github.com/jahuth/ni.git</pre>
+</div>
+<p>In the repository the toolbox, default configuration, the documentation and example files are included. If you have the necessary packages installed, you can start using it right away.</p>
+<p>If you lack any of the following packages, you might want to install them (with eg. <cite>pip</cite>)</p>
+<div class="highlight-python"><pre>ipython matplotlib scipy numpy pandas scikit-learn statsmodels</pre>
+</div>
 </div>
 <div class="section" id="some-examples">
 <h1>Some Examples<a class="headerlink" href="#some-examples" title="Permalink to this headline">¶</a></h1>
-<p>This code can be executed in an <strong>ipython notebook &#8211;pylab inline</strong> in browser maltlab like environment.</p>
+<p>This code can be executed in an ipython notebook (to be used in your browser) or qtconsole.</p>
+<p>To start a notebook:</p>
+<div class="highlight-python"><pre>ipython notebook --pylab=inline</pre>
+</div>
+<p>To start the qtconsole:</p>
+<div class="highlight-python"><pre>ipython qtconsole --pylab=inline</pre>
+</div>
+<p>This will load matplotlib functions for easy plotting and even provide many aliases that use names similar to the ones used in matlab.</p>
 <div class="section" id="basic-example">
 <h2>Basic Example<a class="headerlink" href="#basic-example" title="Permalink to this headline">¶</a></h2>
 <p>The most basic example (if a path to the data is set and accessible) of how to use the toolbox is:</p>
@@ -120,9 +135,30 @@ Get the pdf version <a class="reference external" href="_static/Neuroinformatics
 <p>The first line loads data from the monkey module with the default filename. The second line creates a model for cell 4, using 6 and 7 as crosshistory dependencies.
 Then the model is fitted on half of the data and the rate component is displayed.</p>
 </div>
+<div class="section" id="generating-example-data">
+<h2>Generating example data<a class="headerlink" href="#generating-example-data" title="Permalink to this headline">¶</a></h2>
+<p>If no data is available, some can be generated with the net_sim module:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">ni</span>
+<span class="n">conf</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">net_sim</span><span class="o">.</span><span class="n">SimulationConfiguration</span><span class="p">()</span>
+<span class="n">conf</span><span class="o">.</span><span class="n">Nneur</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">conf</span><span class="o">.</span><span class="n">Ntrials</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">net_sim</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">conf</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">r</span><span class="o">.</span><span class="n">data</span>
+</pre></div>
+</div>
+<p>Will output:</p>
+<blockquote>
+<div>Spike data: 1 Condition(s) 100 Trial(s) of 10 Cell(s) in 1000 Time step(s). No other data.</div></blockquote>
+<p>The data can then be used with a model:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">model</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">ip</span><span class="o">.</span><span class="n">Model</span><span class="p">({</span><span class="s">&#39;cell&#39;</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span><span class="s">&#39;crosshistory&#39;</span><span class="p">:[</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">]})</span>
+<span class="n">fm</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">trial</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">nr_trials</span><span class="o">/</span><span class="mi">2</span><span class="p">)))</span>
+<span class="n">fm</span><span class="o">.</span><span class="n">plot_prototypes</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="using-other-sources-of-data">
 <h2>Using other sources of data<a class="headerlink" href="#using-other-sources-of-data" title="Permalink to this headline">¶</a></h2>
-<p>If the <strong>nltk</strong> is installed, you can also generate data like this:</p>
+<p>If the <strong>nltk</strong> (<a class="reference external" href="http://nltk.org/">http://nltk.org/</a>) is installed, you can also generate data like this:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">ni</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span>
@@ -162,14 +198,24 @@ Then the model is fitted on half of the data and the rate component is displayed
 <p>An example of adding something to a StatCollector:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">ni</span>
 <span class="n">stat</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">StatCollector</span><span class="p">()</span>
-<span class="n">stat</span><span class="o">.</span><span class="n">addNode</span><span class="p">(</span><span class="s">&quot;Model 0&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;ll_test&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">240</span><span class="p">,</span>
+<span class="n">stat</span><span class="o">.</span><span class="n">addNode</span><span class="p">(</span><span class="s">&quot;Model 0&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;First Model&#39;</span><span class="p">,</span>
+                         <span class="s">&#39;ll_test&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">240</span><span class="p">,</span>
                          <span class="s">&#39;ll_train&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">80</span><span class="p">,</span>
                          <span class="s">&#39;complexity&#39;</span><span class="p">:</span><span class="mi">10</span><span class="p">})</span>
-<span class="n">stat</span><span class="o">.</span><span class="n">addNode</span><span class="p">(</span><span class="s">&quot;Model 0/1&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;ll_test&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">100</span><span class="p">,</span>
+<span class="n">stat</span><span class="o">.</span><span class="n">addNode</span><span class="p">(</span><span class="s">&quot;Model 0/1&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;Second Model&#39;</span><span class="p">,</span>
+                           <span class="s">&#39;ll_test&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">100</span><span class="p">,</span>
                            <span class="s">&#39;ll_train&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">90</span><span class="p">,</span>
                            <span class="s">&#39;complexity&#39;</span><span class="p">:</span><span class="mi">14</span><span class="p">})</span>
+<span class="n">stat</span><span class="o">.</span><span class="n">addNode</span><span class="p">(</span><span class="s">&quot;Model 0/2&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;Third Model&#39;</span><span class="p">,</span>
+                           <span class="s">&#39;ll_test&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">130</span><span class="p">,</span>
+                           <span class="s">&#39;ll_train&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">85</span><span class="p">,</span>
+                           <span class="s">&#39;complexity&#39;</span><span class="p">:</span><span class="mi">14</span><span class="p">})</span>
+<span class="n">stat</span><span class="o">.</span><span class="n">plotTree</span><span class="p">(</span><span class="s">&#39;ll_train&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>Will output:</p>
+<img alt="_images/tutorial_statcollector.png" src="_images/tutorial_statcollector.png" />
+<p>Mostly, the output of <a class="reference internal" href="ni.tools.html#module-ni.tools.bootstrap" title="ni.tools.bootstrap: Provides Bootstrapping Methods for models. (Unix)"><tt class="xref py py-mod docutils literal"><span class="pre">ni.tools.bootstrap</span></tt></a> functions will be added to the StatCollector, containing all the important information.</p>
 </div>
 </div>
 
@@ -188,6 +234,7 @@ Then the model is fitted on half of the data and the rate component is displayed
 <li><a class="reference internal" href="#tutorial">Tutorial</a></li>
 <li><a class="reference internal" href="#some-examples">Some Examples</a><ul>
 <li><a class="reference internal" href="#basic-example">Basic Example</a></li>
+<li><a class="reference internal" href="#generating-example-data">Generating example data</a></li>
 <li><a class="reference internal" href="#using-other-sources-of-data">Using other sources of data</a></li>
 <li><a class="reference internal" href="#adding-a-custom-kernel">Adding a custom kernel</a></li>
 <li><a class="reference internal" href="#statcollectors">StatCollectors</a></li>

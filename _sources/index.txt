@@ -32,11 +32,33 @@ Indices and tables
 Tutorial
 ==========
 
+To install the toolbox, clone the git repository, or download the zip file from: https://github.com/jahuth/ni
+
+Clone the repository with::
+	
+	git clone https://github.com/jahuth/ni.git
+
+In the repository the toolbox, default configuration, the documentation and example files are included. If you have the necessary packages installed, you can start using it right away.
+
+If you lack any of the following packages, you might want to install them (with eg. `pip`) ::
+
+	ipython matplotlib scipy numpy pandas scikit-learn statsmodels
+
 
 Some Examples
 ================
 
-This code can be executed in an **ipython notebook --pylab inline** in browser maltlab like environment.
+This code can be executed in an ipython notebook (to be used in your browser) or qtconsole.
+
+To start a notebook::
+
+	ipython notebook --pylab=inline
+
+To start the qtconsole::
+
+	ipython qtconsole --pylab=inline
+
+This will load matplotlib functions for easy plotting and even provide many aliases that use names similar to the ones used in matlab.
 
 Basic Example
 ----------------
@@ -53,10 +75,34 @@ The first line loads data from the monkey module with the default filename. The 
 Then the model is fitted on half of the data and the rate component is displayed.
 
 
+Generating example data
+---------------------------
+
+If no data is available, some can be generated with the net_sim module::
+
+	import ni
+	conf = ni.model.net_sim.SimulationConfiguration()
+	conf.Nneur = 10
+	conf.Ntrials = 100
+	r = ni.model.net_sim.simulate(conf)
+	print r.data
+
+Will output:
+
+	Spike data: 1 Condition(s) 100 Trial(s) of 10 Cell(s) in 1000 Time step(s). No other data.
+
+The data can then be used with a model::
+
+	model = ni.model.ip.Model({'cell':4,'crosshistory':[6,7]})
+	fm = model.fit(data.trial(range(data.nr_trials/2)))
+	fm.plot_prototypes()
+
+
+
 Using other sources of data
 ---------------------------------
 
-If the **nltk** is installed, you can also generate data like this::
+If the **nltk** (http://nltk.org/) is installed, you can also generate data like this::
 
 
 	import ni
@@ -100,9 +146,22 @@ An example of adding something to a StatCollector::
 
 	import ni
 	stat = ni.StatCollector()
-	stat.addNode("Model 0", {'ll_test': -240,
-				 'll_train': -80,
-				 'complexity':10})
-	stat.addNode("Model 0/1", {'ll_test': -100,
-				   'll_train': -90,
-				   'complexity':14})
+	stat.addNode("Model 0", {'name': 'First Model',
+		                 'll_test': -240,
+		                 'll_train': -80,
+		                 'complexity':10})
+	stat.addNode("Model 0/1", {'name': 'Second Model',
+		                   'll_test': -100,
+		                   'll_train': -90,
+		                   'complexity':14})
+	stat.addNode("Model 0/2", {'name': 'Third Model',
+		                   'll_test': -130,
+		                   'll_train': -85,
+		                   'complexity':14})
+	stat.plotTree('ll_train')
+
+Will output:
+
+.. image:: _static/tutorial_statcollector.png
+
+Mostly, the output of :mod:`ni.tools.bootstrap` functions will be added to the StatCollector, containing all the important information.
