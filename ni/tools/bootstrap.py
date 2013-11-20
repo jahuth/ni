@@ -16,7 +16,7 @@ import pylab
 import matplotlib as mpl
 import scipy
 from ni.tools.plot import *
-from ni import StatCollector
+from ni.tools.statcollector import StatCollector
 
 def merge(stats):
 	"""

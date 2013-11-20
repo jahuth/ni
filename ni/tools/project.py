@@ -667,7 +667,7 @@ class Project:
 	"""
 	Project Class
 
-	loads a Project folder (containing eg. a main.py file or a project_manifest.xml)
+	loads a Project folder (containing eg. a main.py file)
 	"""
 	def __init__(self, folder = "unsaved_project", name = ""):
 		self.folder = folder
@@ -681,8 +681,6 @@ class Project:
 		self.job_mode = "no jobs"
 		self.name = name
 		self.path = self.folder
-		self.historymanager = HistoryManager(self)
-		self.figuremanager = FigureManager(self)
 		self.parameters = []
 		self.logging = True
 		self.code_files = []
@@ -703,8 +701,6 @@ class Project:
 		if os.path.exists(self.folder + "main.py"):
 			self.main = "main.py"
 		self.description = ""
-		self.codemanager = CodeManager(self)
-		self.datamanager = DataManager(self)
 		self.logo = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP%2BgvaeTAAAACXBI%0AWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QoYCTQZbfmiOAAAABl0RVh0Q29tbWVudABDcmVhdGVk%0AIHdpdGggR0lNUFeBDhcAAAM/SURBVGje7VhbSBRhFP4m11ugm8iiiD2lIoUPvghC5g3qRbHoRRPx%0AFkj4VLG55hJWQij00hKuRMgi2VYPjqGIZiBroBCY6EKLpmup6Y66eYnNnXX370Ecmd2ZEXdNXJoP%0Ahplz/nMO/zcz5zJD0TRNEMRQAEBRUVFQbr67uxunEOSQCfyXBIYtw0ivT0d0VTRaP7QGH4ESXQnG%0Af4xjy7kF7Ttt8BGIU8Zx18pIZeBl9NjL391uNNFNmLHNoOFqQ/ARSIxNhL5aL1chySfgcDpg27DB%0AyljRO96Lrs9dsK5aQV7tTh62dRvaPrah50sPZplZOFgHkuKSkH8hH9prWsRGxfLieTwe2H/bsbS%2B%0ABMtPCwYmB9A/0Y95%2BzwX80gJpN9Px9TylI%2BeEAJdvw7at1pEhEUg73weMs5lYGR6BGPfxzC5MAnj%0AqBETTyagUqo4v77xPhQ8LTj6R0DTNBGCx%2BMhzDpDKvWVBDfAHcXPiomqRkXah9oJ62I5%2B52dHVKi%0AK%2BHsqvRVPjE3HZvE9NVEMh9k8mL6C5qmiWgOUBQFlVKFxuuNPP2CfQHmZjMqsisQqgjl9CEhIdAU%0AajjZZDH5xIyKjEJWahbaqtv%2BfQ7sIeFMAk8erB9EeFi4oG1yfDJ3PcPMiMZMiU85vlFCoeBzFNs8%0AAESGR%2B7nCsQTUyqGPMzJBGQCMoGTBZfLDZZ1%2B0/AyTp5MutiRW2911w7roBi0p3TSIsxIC3GgPfG%0Ab/4R8G5IcytzorazzKykvAfzgpknW1esgnYPb49g%2B48bzm03Ht0ZPTyB5V/LUHeqeTqNUYO1rTUf%0A29XNVdS/qefp1J1qMBsMJ7vdboxZx1DzsoZnV/e6Dov2Rd/GeHq/iYaFC2%2BVommaCP3Yyn2ciyHL%0AkLATKJRdLIPhlgEAUN5ajo5PHaLdNyc1B7WXa1H6vBSsW/wVbClugbpw/4aZBuZx7%2BbuTNX84hKy%0Ar5z1%2BbElOo0GAySnUbmMygQOSYCiKNEPGynsrXufhXyFbA6CWAz5FZIJyARkAieMACHCc4yY3nvd%0A%2ByzkK2RzEMRiHNgHAqn//tR1KX%2Bpvck5IBOQCcgETmgfCKT%2B%2B1PXpfyl9qbgPo6DFH8BkBmOWDZo%0AfhoAAAAASUVORK5CYII%3D%0A"
 		self.hostname = socket.gethostname()
 		self.instancename = str(uuid.uuid4())
@@ -712,25 +708,6 @@ class Project:
 			with open(self.folder+"description.txt","r") as f:
 				self.description = f.read()
 		if os.path.exists(self.folder):
-			try:
-				self.manifest = ET.parse(self.folder+'project_manifest.xml')
-				self.manifest_root = self.manifest.getroot()
-				if not self.manifest.find("name") is None:
-					self.name = self.manifest.find("name").text
-				for code_root in self.manifest_root.iterfind("code"):
-					if not code_root.find("file") is None:
-						self.codemanager.appendFile(self.folder+code_root.find("file").text)
-					else:
-						self.codemanager.appendCode(code_root.text)
-				for data_root in self.manifest_root.iterfind("data"):
-					self.datamanager.appendXML(data_root)
-			except:
-				e = sys.exc_info()
-				self.name = self.folder
-				self.manifest = ET.ElementTree(ET.Element('project'))
-				self.manifest_root = self.manifest.getroot()
-			print self.codemanager.report(),
-			print self.datamanager.report(),
 			self.containers.append(LogContainer(self.folder + 'log.txt'))
 			self.find_sessions()
 			if len(self.sessions) > 0:
@@ -738,9 +715,6 @@ class Project:
 				self.path = self.session.path
 			self.update_job_status()
 			self.print_job_status()
-		else:
-			self.manifest = ET.ElementTree(ET.Element('project'))
-			self.manifest_root = self.manifest.getroot()
 		if len(self.errors) > 0:
 			print "Errors occured:"
 			for e in self.errors:
@@ -787,48 +761,6 @@ class Project:
 		self.sessions.append(self.session)
 		self.session.setup_jobs(self.folder+"main.py",parameter_string)
 		self.update_job_status()
-		"""
-		self.path = self.session.path
-		os.makedirs(self.session.path)
-		os.makedirs(self.session.path+"jobs/")
-		os.makedirs(self.session.path+"job_code/")
-		if os.path.exists(self.folder+"main.py"):
-			job_file = True
-			try:
-				jobs = self.parse_job_file(self.folder+"main.py",self.session)
-			except Exception as e:
-				if e.args[0] == "Not a job file":
-					job_file = False
-					return
-				else:
-					raise
-			print len(jobs), " Jobs calculated."
-			for job in jobs:
-				with open(self.session.path+"job_code/job_"+str(job["nr"])+".py", "w") as code_file:
-					code_file.write(job["code"])
-				_o = self.session.add_job(job_name = job["job"],job_number = job["nr"], file="job_code/job_"+str(job["nr"])+".py", status= 'pending', dependencies= job["dependencies"])
-		self.update_job_status()
-		#self.print_job_status()"""	
-	"""def get_job_status(self,path):
-		jobs = {}
-		job_status = {}
-		overall_status = {}
-		stat = self.session.get_status()
-		for s in stat:
-			ff = stat[s]
-			jobs[str(job)] = ff
-			if not ff["job_name"] in job_status:
-				job_status[ff["job_name"]] = { ff["status"]: 1 }
-			else:
-				if not ff["status"] in job_status[ff["job_name"]]:
-					job_status[ff["job_name"]][ff["status"]] = 1
-				else:
-					job_status[ff["job_name"]][ff["status"]] = job_status[ff["job_name"]][ff["status"]] + 1
-			if not ff["status"] in overall_status:
-				overall_status[ff["status"]] = 1
-			else:
-				overall_status[ff["status"]] = overall_status[ff["status"]] + 1
-		return  { 'job_status': job_status,'jobs': jobs,'overall_status':overall_status}"""
 	def update_job_status(self):
 		if self.session != False:
 			self.session.update_jobs()
@@ -1222,102 +1154,6 @@ class Project:
 				jobs.append({'nr':j_nr,'job':i_j,'quantified_parameters': quantified_parameters,'code':code,'dependencies':dependencies[i_j]})
 				j_nr = j_nr + 1
 		return jobs
-
-class CodeManager:
-	"""
-	Provides Management for Project Code Files
-	"""
-	def __init__(self, project):
-		self.project = project
-		self.code_files = []
-	def appendFile(self, file):
-		if file[-6:] == ".pyxml":
-			try:
-				code = ET.parse(file)
-				code_file = {'filename': file, 'type': 'cells', 'xml': code, 'cells': [], 'cell_names': [], 'description': ""}
-				if not code.find("description") is None:
-					code_file["description"] = code.find("description").text
-				for c in code.getroot().iterfind("cell"):
-					#print c.attrib
-					code_file["cells"].append(c)
-					if "name" in c.attrib:
-						code_file["cell_names"].append(c.attrib["name"])
-				#print code_file
-				self.code_files.append(code_file)
-			except ET.ParseError, e:
-				self.project.errors.append("Failed to parse "+ file+ " " + e.code + " " + e.position)
-			except IOError, e:
-				self.project.errors.append("Failed to load "+ file)
-			except:
-				self.project.errors.append("Failed to load "+ file + ": "+ str(sys.exc_info()))
-		if file[-3:] == ".py":
-			code_file = {'filename': file, 'type': 'sourcefile', 'description': ""}
-			self.code_files.append(code_file)
-	def appendCode(self,code):
-		code_file = {'filename': '-', 'code': code, 'type': 'source', 'description': ""}
-		self.code_files.append(code_file)	
-	def report(self):
-		if len(self.code_files) > 0:
-			strs = ["Code Files loaded:"]
-			for f in self.code_files:
-				if f["type"] == "cells":
-					strs.append("\t" + f["filename"] + " - " + str(len(f["cells"])) + " Cells")
-				else:
-					strs.append("\t" + f["filename"])
-			return "\n".join(strs)
-		else:
-			return ""#"No Code Files loaded."
-
-class DataManager:
-	"""
-	Provides Management for Project Data Files
-	"""
-	def __init__(self, project):
-		self.project = project
-		self.files = []
-	def appendFile(self, file,options):
-		f = {'filename': file, 'data': None, 'options': options}
-		self.files.append(f)
-	def appendXML(self, xml_root):
-		if xml_root.find("file"):
-			self.appendFile(xml_root.find("file").text,'')
-		if xml_root.find("mat"):
-			options = {}
-			if xml_root.find("mat").attrib:
-				options = xml_root.find("mat").attrib
-			options["format"] = "mat"
-			self.appendFile(xml_root.find("mat").text,options)
-		else:
-			self.appendFile(xml_root.text,{})
-	def report(self):
-		if len(self.files) > 0:
-			strs = ["Data Files specified:"]
-			for f in self.files:
-				strs.append("\t" + str(f))
-			return "\n".join(strs)
-		else:
-			return ""#"No Data Files specified."
-
-
-class HistoryManager:
-	"""
-	Provides Management for Project HistoryManager
-	"""
-	def __init__(self, project):
-		self.project = project
-
-
-class FigureManager:
-	"""
-	Provides Management for Figures
-	"""
-	def __init__(self, project):
-		self.project = project
-
-#def figure(name = ""):
-#	_current_project.figuremanager.figure(name)
-
-
 
 try:
 	_current_project.name
