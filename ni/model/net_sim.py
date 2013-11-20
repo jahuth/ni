@@ -56,7 +56,7 @@ import ni.tools.progressbar
 import pickle
 import create_splines as cs
 import pointprocess
-
+import ni.data.data
 
 class SimulationConfiguration:
 	"""
@@ -77,18 +77,26 @@ class SimulationConfiguration:
 
 	"""
 	def __init__(self):
-		self.Nneur = 100
+		self.Nneur = 10
 		self.sparse_coeff=0.1
 		self.Trial_Time = 1000
 		self.prior_epoch = 250
-		self.Ntrials = 10
-		self.Nsec = self.Ntrials*self.Trial_Time/1000
-		self.Ntime=self.Nsec*1000
+		self.Ntrials = 100
+		#self.Nsec = self.Ntrials*self.Trial_Time/1000
+		#self.Ntime=self.Nsec*1000
 		self.eps =0.1
 		self.frate_mu = 1.0/25.0
 		self.Nhist=50
 		self.output = False
 		self.rate_function = False
+	@property
+	def Nsec(self):
+		return self.Ntrials*self.Trial_Time/1000
+	@property
+	def Ntime(self):
+		return self.Nsec*1000
+
+	
 
 class SimulationResult:
 	"""
@@ -138,6 +146,13 @@ class SimulationResult:
 		pylab.plot(self.spikes.mean())
 	def __str__(self):
 		return "'" +self.sim_name + "' Simulation Result\n" + "Took " + str(round(self.log_time_duration,2)) + "s to compute.\nTimerange: "+str(self.timerange)+"\n" + str(int(self.num_spikes)) + " Spikes in " +str(self.num_channels)+ " channels: \n\t[" + ", ".join([str(int(s)) for s in self.num_spikes_per_channel]) + "]"
+	@property
+	def data(self):
+		datas = []
+		for i in range(self.config.Nneur): 
+			datas.append(self.spikes[i][self.config.prior_epoch:].reshape((self.config.Ntrials,self.config.Trial_Time)))
+		return ni.data.data.Data(np.transpose(np.array(datas), (1, 0, 2)))
+
 
 class Net:
 	"""
@@ -285,6 +300,7 @@ def simulate(config):
 	creates a network and simulates it.
 	"""
 	result = SimulationResult()
+	result.config = config
 	frate= np.random.rand(config.Nneur)*0.4+0.3
 	frate=-(1/config.frate_mu)*np.log(1-frate)+1
 	logit_lam0=np.log(frate/1000 /(1-frate/1000))

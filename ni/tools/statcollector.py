@@ -13,6 +13,7 @@ import matplotlib.pylab as plt
 import matplotlib.pylab as pl
 from ni.tools.plot import *
 from ni.tools.html_view import View
+from copy import copy
 import glob
 
 def listToPath(name):
@@ -38,6 +39,11 @@ def natural_keys(text):
     '''
     return [ atoi(c) for c in re.split('(\d+)', text) ]
 
+def natural_sorted(l):
+	""" sorts a sortable in human order (0 < 20 < 100) """
+	ll = copy(l)
+	ll.sort(key=natural_keys)
+	return ll
     
 class StatCollector:
 	"""
@@ -277,6 +283,45 @@ class StatCollector:
 			new_k = re.sub(pattern,substitution,k)
 			_stats.stats[new_k] = self.stats[k]
 		return _stats
+	def rename_value_to_tree(self, value=-1):
+		"""
+
+			Renames nodes, such that increases of one value are counted as submodels
+
+			`value` is the index (of the slash splitted node name) of the value that is to be replaced. The default is -1, ie. the last value.
+
+			Example::
+
+				import ni
+				stats = ni.StatCollector()
+				stats.addNode('Model 0/10',{'a':100})
+				stats.addNode('Model 0/20',{'a':100})
+				stats.addNode('Model 0/30',{'a':100})
+				stats.addNode('Model 0/50',{'a':100})
+				stats.addNode('Model 0/1000',{'a':100})
+				stats.rename_value_to_tree().plotTree('a')
+
+			The example will rename the last node to 'Model 0/10/20/30/50/1000'
+
+		"""
+		values = []
+		for k in self.stats.keys():
+			if value < len(k.split("/")):
+				values.append(k.split("/")[value])
+		values = natural_sorted(list(set(values)))
+		_stats = StatCollector({})
+		for k in self.stats.keys():
+			new_k = k.split("/")
+			if value < len(new_k):
+				this_value = None
+				for (i,v) in enumerate(values):
+					if v == new_k[value]:
+						this_value=i+1
+						break
+				if this_value is not None:
+					new_k[value] = "/".join(values[:this_value])
+			_stats.stats["/".join(new_k)] = self.stats[k]
+		return _stats
 	def getTree(self,substitution_patterns=[]):
 		"""
 			returns a tuple used by plotTree to plot a tree representation of the nodes.
@@ -321,7 +366,10 @@ class StatCollector:
 				y = np.mean(self.getNode(ll[1][0])[dim])
 				if abs(last_y-y) < 0.1:
 					y = y + 0.1
-				plt.text(x,y, self.getNode(ll[1][0])['name'],rotation=30,va='bottom',size=9)
+				if 'name' in self.getNode(ll[1][0]):
+					plt.text(x,y, self.getNode(ll[1][0])['name'],rotation=30,va='bottom',size=9)
+				else:
+					plt.text(x,y, ll[1][0],rotation=30,va='bottom',size=9)
 		plt.title(dim)
 	def html_view(self):
 		"""
