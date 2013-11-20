@@ -1,0 +1,5 @@
+Experiment 2 from my Master Thesis
+
+Different information criteria are used to infer an optimal number of knots for the model.
+This example project requires the monkey dataset to be accessible by the user. If it is not, it must be replaced by some other data to run the project.
+Also it requires bootstrap data, the path of which has to be specified. If not bootstrap data is available, the jobs should be removed.

@@ -1,0 +1,4 @@
+Experiment 1 from my Master Thesis
+
+Different information criteria are used to infer connections between neuron assemblies.
+This example project requires the monkey dataset to be accessible by the user. If it is not, it must be replaced by some other data to run the project.
