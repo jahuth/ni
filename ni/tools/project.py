@@ -918,12 +918,12 @@ class Project:
 		pickle.dump(val,f)
 		f.close()
 	def dumpheap(self):
-        if hpy is not None:
-    		h = hpy()
-    		h.heap().dump(self.path+"_heap_"+str(self.current_job.replace("/","_"))+".txt", "a")
-    		f = open(self.path+"_heap_"+str(self.current_job).replace("/","_")+"_str.txt","w+")
-    		f.write(str(h.heap()))
-    		f.close()
+		if hpy is not None:
+			h = hpy()
+			h.heap().dump(self.path+"_heap_"+str(self.current_job.replace("/","_"))+".txt", "a")
+			f = open(self.path+"_heap_"+str(self.current_job).replace("/","_")+"_str.txt","w+")
+			f.write(str(h.heap()))
+			f.close()
 	def next(self):
 		return self.run("next")
 	def autorun(self):
