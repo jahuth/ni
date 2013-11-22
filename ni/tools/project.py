@@ -21,15 +21,18 @@ NI Project Management
 
 import os, sys, time, datetime, shutil
 import xml.etree.ElementTree as ET
-import traceback 
+import traceback
 import hashlib
 import pickle
 import html_reporter
-from guppy import hpy
+try:
+    from guppy import hpy
+except:
+    hpy = None
 from ni.tools.alert import alert
 import ni.config
-import glob 
-import re 
+import glob
+import re
 import time
 import socket
 from copy import copy
@@ -112,7 +115,7 @@ class Figure:
 		import ni
 		x = np.arange(0,10,0.1)
 		with ni.figure("some_test.png"):
-		    plot(cos(x)) 	# plots to a first plot 
+		    plot(cos(x)) 	# plots to a first plot
 		    with ni.figure("some_other_test.png"):
 		        plot(-1*np.array(x)) # plots to a second plot
 		    plot(sin(x))	# plots to the first plot again
@@ -122,7 +125,7 @@ class Figure:
 		import ni
 		x = np.arange(0,10,0.1)
 		with ni.figure("some_test.png",close=False):
-			plot(cos(x)) 	# plots to a first plot 
+			plot(cos(x)) 	# plots to a first plot
 				with ni.figure("some_other_test.png",close=False):
 					plot(-1*np.array(x)) # plots to a second plot
 			plot(sin(x))	# plots to the first plot again
@@ -161,7 +164,7 @@ def figure(path,display=False,close=True):
 		import ni
 		x = np.arange(0,10,0.1)
 		with ni.figure("some_test.png"):
-		    plot(cos(x)) 	# plots to a first plot 
+		    plot(cos(x)) 	# plots to a first plot
 		    with ni.figure("some_other_test.png"):
 		        plot(-1*np.array(x)) # plots to a second plot
 		    plot(sin(x))	# plots to the first plot again
@@ -173,7 +176,7 @@ def figure(path,display=False,close=True):
 		import ni
 		x = np.arange(0,10,0.1)
 		with ni.figure("some_test.png",display=True):
-		    plot(cos(x)) 	# plots to a first plot 
+		    plot(cos(x)) 	# plots to a first plot
 		    with ni.figure("some_other_test.png",close=False):
 		        plot(-1*np.array(x)) # plots to a second plot
 		    plot(sin(x))	# plots to the first plot again
@@ -253,7 +256,7 @@ class Job:
 		d = {}
 		for k in self.__dict__.keys():
 			if not k in ["project","session"]:
-				d[k] = self.__dict__[k] 
+				d[k] = self.__dict__[k]
 		with open(self.status_path+".txt","w+") as f:
 			f.write(str(d))
 	def run(self,parameters=[]):
@@ -357,7 +360,7 @@ class Session:
 		self.job_counter = 0
 		self.parameters = {}
 		self.parameter_string = parameter_string
-		try: 
+		try:
 			with open(self.path+"status.txt","r") as f:
 				self.status = f.read()
 		except:
@@ -417,7 +420,7 @@ class Session:
 	def parse_job_file(self,filename,parameter_string=""):
 		if parameter_string == "":
 			parameter_string = self.parameter_string
-			try: 
+			try:
 				with open(self.path+"parameters.txt","r") as f:
 					parameter_string = f.read()
 			except:
@@ -915,11 +918,12 @@ class Project:
 		pickle.dump(val,f)
 		f.close()
 	def dumpheap(self):
-		h = hpy()
-		h.heap().dump(self.path+"_heap_"+str(self.current_job.replace("/","_"))+".txt", "a")
-		f = open(self.path+"_heap_"+str(self.current_job).replace("/","_")+"_str.txt","w+")
-		f.write(str(h.heap()))
-		f.close()
+        if hpy is not None:
+    		h = hpy()
+    		h.heap().dump(self.path+"_heap_"+str(self.current_job.replace("/","_"))+".txt", "a")
+    		f = open(self.path+"_heap_"+str(self.current_job).replace("/","_")+"_str.txt","w+")
+    		f.write(str(h.heap()))
+    		f.close()
 	def next(self):
 		return self.run("next")
 	def autorun(self):
