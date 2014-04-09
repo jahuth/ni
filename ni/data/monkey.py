@@ -15,7 +15,7 @@ import ni.data.data
 
 MILLISECOND_RESOLUTION = 1000
 #path = '/work/jahuth/'
-path = ni.config.get("ni.data.monkey.path") #"/net/store/ni/happycortex/statmodelling/data/"
+#path = ni.config.get("ni.data.monkey.path") #"/net/store/ni/happycortex/statmodelling/data/"
 
 available_trials = ['101a03', '104a10', '107a03', '108a08', '112a03', '101a03', '104a11', '107a04', '109a04', '112b02', '101a04', '105a04', '108a05', '110a03', '113a04', '102a09', '105a05', '108a06', '111a03', '113a05', '103a03', '106a03', '108a07', '111a04']
 available_files = ['101a03', '104a10', '107a03', '108a08', '112a03', '101a03', '104a11', '107a04', '109a04', '112b02', '101a04', '105a04', '108a05', '110a03', '113a04', '102a09', '105a05', '108a06', '111a03', '113a05', '103a03', '106a03', '108a07', '111a04']
@@ -58,6 +58,7 @@ class _Data:
 	Loads Data into a Data Frame
 	"""
 	def __init__(self,trial_nr='101a03',resolution=MILLISECOND_RESOLUTION,trial=[],condition=[],cell=[]):
+		path = ni.config.get("ni.data.monkey.path")
 		mat = scipy.io.loadmat(path + 'nic'+str(trial_nr)+'.mat')
 		try:
 			self.init_dot_indexing(mat,resolution,trial=trial,condition=condition,cell=cell)

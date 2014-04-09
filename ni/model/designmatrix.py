@@ -150,22 +150,25 @@ class AdaptiveRateComponent(Component):
 
 		header: name of the kernel component
 		rate: a rate function that determines
+		exponent: the rate function will be taken to thins power to have a higher selctivity for high firing rates
 		knots: Number of knots
 		length: length of the component. Will be multiplied
 
 		kernel: use this kernel instead of a newly created one
 	"""
-	def __init__(self,header="rate",rate=False,knots=10,length=1000,kernel =False):
+	def __init__(self,header="rate",rate=False,exponent=2,knots=10,length=1000,kernel =False):
 		self.rate = rate
-		if type(rate) == bool:
-			self.knot_points = np.linspace(0,length,knots)
-		else:
-			self.knot_points = [np.sum(rate.cumsum() < n) for n in np.linspace(0,rate.cumsum().max(),knots)]
-		self.header = header
+		self.exponent = exponent
 		self.knots = knots
+		if type(rate) == bool:
+			self.knot_points = np.linspace(0,length,knots-1)
+		else:
+			rate_cumsum = (rate**self.exponent).cumsum()
+			self.knot_points = [np.sum(rate_cumsum < n) for n in np.linspace(0,rate_cumsum.max(),knots-1)]
+		self.header = header
 		self.length = length
 		if type(kernel) == bool:
-			self.kernel = cs.create_splines(self.length, self.knots,0, lambda l,n: self.knot_points)
+			self.kernel = cs.create_splines(self.length, self.knots-1,0, lambda l,n: self.knot_points)
 		else:
 			self.kernel = kernel
 		if type(self.kernel) == str:

@@ -109,6 +109,7 @@ class Configuration(ni.tools.pickler.Picklable):
 		self.constant = True
 		self.be_memory_efficient = True
 		self.adaptive_rate = False
+		self.adaptive_rate_exponent = 2
 		self.adaptive_rate_smooth_width = ni.config.get('model.ip.adaptive_rate_smooth_width',20)
 		self.cell = 0
 		self.backend = ni.config.get('model.ip.backend',"glm")
@@ -453,8 +454,8 @@ class Model(ni.tools.pickler.Picklable):
 						added_rate = True
 			if not added_rate:
 				if self.configuration.adaptive_rate:
-					rate = data.firing_rate(self.configuration.adaptive_rate_smooth_width)[0]
-					design_template.add(designmatrix.AdaptiveRateComponent('rate',rate,self.configuration.knots_rate,trial_length))
+					rate = data.firing_rate(self.configuration.adaptive_rate_smooth_width)
+					design_template.add(designmatrix.AdaptiveRateComponent('rate',rate=rate,exponent=self.configuration.adaptive_rate_exponent,knots=self.configuration.knots_rate,length=trial_length))
 				else:
 					design_template.add(designmatrix.RateComponent('rate',self.configuration.knots_rate,trial_length))
 		if self.configuration.constant:

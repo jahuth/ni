@@ -88,6 +88,7 @@ import os
 from scipy.ndimage import gaussian_filter
 import matplotlib.pyplot as pl
 from ni.tools.html_view import View
+from warnings import warn
 
 MILLISECOND_RESOLUTION = 1000
 
@@ -114,6 +115,9 @@ def merge(datas,dim,keys = False):
 	time_bins = 0
 	if keys == False:
 		keys = range(len(datas))
+	for m in datas:
+		if dim in m.data.index.names:
+			m.data.index = m.data.index.droplevel(dim)#.names[m.data.index.names.index(dim)] = "__"+dim
 	df = pandas.concat([m.data for m in datas], keys = keys, names = [dim])
 	return Data(df)
 
@@ -139,7 +143,7 @@ class Data:
 
 
 	"""
-	def __init__(self,matrix, dimensions = [], other_spikes = False, key_index="i", resolution=MILLISECOND_RESOLUTION):
+	def __init__(self,matrix, dimensions = [], key_index="i", resolution=MILLISECOND_RESOLUTION):
 		"""
 			Can be initialized with a DataFrame, filename or Data instance
 
@@ -153,7 +157,6 @@ class Data:
 		self.nr_trials = 1
 		self.nr_conditions = 1
 		self.time_bins = 1
-		self.other_spikes = other_spikes
 		self.data = pandas.DataFrame(np.zeros((1,1)))
 		self.resolution = resolution
 		if type(matrix) == str:
@@ -161,8 +164,6 @@ class Data:
 		if isinstance(matrix, Data):
 			self = copy(matrix)
 			self.__class__ = Data
-			if not type(other_spikes) == bool:
-				self.other_spikes = Data(other_spikes)
 		if type(matrix) == np.ndarray:
 			if dimensions != []:
 				if len(matrix.shape) == 2:
@@ -261,10 +262,6 @@ class Data:
 			self.nr_cells = 0
 			self.time_bins = 0
 			self.trial_length = self.time_bins
-		if not type(other_spikes) == bool and not isinstance(other_spikes, Data):
-			self.other_spikes = Data(other_spikes)
-		else:
-			self.other_spikes = other_spikes
 	def cell(self,cells=False):
 		"""filters for an array of cells -> see :py:func:`ni.data.data.Data.filter`"""
 		if (cells ==[0] or cells == 0) and self.nr_cells == 1:
@@ -276,6 +273,28 @@ class Data:
 	def trial(self,trials=False):
 		"""filters for an array of trials -> see :py:func:`ni.data.data.Data.filter`"""
 		return self.filter(trials,'Trial')
+	def time(self,begin=None,end=None):
+		"""gives a copy of the data that contains only a part of the timeseries for all trials,cells and conditions.
+
+		This resets the indices for the timeseries to 0...(end-begin)
+		"""
+		if begin == None:
+			begin = 0
+		if end == None or end > len(self.data.columns):
+			end = len(self.data.columns)
+		data = self.data.iloc[:,begin:end]
+		data.columns = range(len(data.columns))
+		data.index = pandas.MultiIndex.from_tuples(self.data.index.tolist(), names=self.data.index.names)
+		return Data(data)
+	def reduce_resolution(self,factor=2):
+		before_spikes = self.data.sum().sum()
+		data = pandas.concat([ self.data.iloc[:,int(a*factor):int((a+1)*factor)].max(axis=1) for a in range(int(self.time_bins/factor)) ],axis=1)
+		data.columns = range(len(data.columns))
+		data.index = pandas.MultiIndex.from_tuples(self.data.index.tolist(), names=self.data.index.names)
+		after_spikes = data.sum().sum()
+		if before_spikes != after_spikes:
+			warn("Lost "+str(int(before_spikes - after_spikes))+" spikes in the process of reducing resolution.", Warning)
+		return Data(data)
 	def filter(self,array=False,level='Cell'):
 		"""filters for arbitrary index levels
 			`array` a number, list or numpy array of indizes that are to be filtered
@@ -290,11 +309,11 @@ class Data:
 			if type(self.data) == pandas.DataFrame:
 				if type(self.data.index) == pandas.Int64Index:
 					data = pandas.concat([self.data.ix[i] for i in array],keys=range(len(array)),names=[level])
-					return Data(data,self.other_spikes)
+					return Data(data)
 				elif type(self.data.index) == pandas.MultiIndex:
 					data = pandas.concat([self.data.xs(i,level=level) for i in array],keys=range(len(array)),names=[level])
 					data.index = pandas.MultiIndex.from_tuples(data.index.tolist(), names=data.index.names)
-					return Data(data,self.other_spikes)
+					return Data(data)
 				else:
 					raise Exception("Unrecognized DataFrame index")
 			else:
@@ -309,14 +328,14 @@ class Data:
 				n = self.cell(cell)
 				d = n.data.sum(0)
 				channels.append(scipy.ndimage.gaussian_filter(d,smooth_width))
-			return channels
+			return np.array(channels).transpose()
 		else:
 			channels = []
 			for cell in range(self.nr_cells):
 				n = self.cell(cell).trial(trials)
 				d = n.data.sum(0)
 				channels.append(scipy.ndimage.gaussian_filter(d,smooth_width))
-			return channels
+			return np.array(channels).transpose()
 	def interspike_intervals(self,smooth_width=0,trials=False):
 		"""
 			computes inter spike intervalls in the data for each cell separately.
@@ -446,11 +465,6 @@ class Data:
 			additional = [str(n) + " (" +str(self.data.index.levshape[ind[n]]) + ") " for n in ind if not n == 'Trial' and not n == 'Condition' and not n == 'Cell']
 			if len(additional) > 0:
 				s = s + " Additional indices: " + ", ".join(additional) 
-		if not type(self.other_spikes) == bool:
-			s = s + " Also there is additional data:\n"
-			s = s + str(self.other_spikes)
-		else:
-			s = s + " No other data."
 		return s
 	def to_pickle(self,path):
 		"""

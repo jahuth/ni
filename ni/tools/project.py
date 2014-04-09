@@ -136,10 +136,19 @@ class Figure:
 	def __init__(self,path,display=False,close=True):
 		self.path = path
 		self.display = display
-		self.last_fig = matplotlib.pyplot.gcf()
-		self.close = close
+		self._close = close
+		self.fig_stack = []
+		self.axis_stack = []
+		self.fig = None
+		self.axis = None
 	def __enter__(self):
-		self.fig = matplotlib.pyplot.figure()
+		self.fig_stack.append(matplotlib.pyplot.gcf())
+		self.axis_stack.append(matplotlib.pyplot.gca())
+		if self.fig is None:
+			self.fig = matplotlib.pyplot.figure()
+			self.axis = self.fig.gca()
+		else:
+			matplotlib.pyplot.figure(self.fig.number)
 	def __exit__(self, type, value, tb):
 		if self.path is not None and self.path != "":
 			self.fig.savefig(self.path)
@@ -150,10 +159,29 @@ class Figure:
 			except:
 				# otherwise presume that we run with some other gui backend. If we don't, nothing will happen.
 				self.fig.show(warn=False)
-		if self.close:
+		if self._close:
 			matplotlib.pyplot.close(self.fig)
+			self.fig = None
+			self.fig_stack.pop()
+			self.axis_stack.pop()
 		else:
-			matplotlib.pyplot.figure(self.last_fig.number)
+			fig = self.fig_stack.pop()
+			ax = self.axis_stack.pop()
+			matplotlib.pyplot.figure(fig.number)
+			matplotlib.pyplot.sca(ax)
+	def show(self,close=True):
+		if self.path is not None and self.path != "":
+			self.fig.savefig(self.path)
+		try:
+			# trying to use ipython display
+			IPython.core.display.display(self.fig)
+		except:
+			# otherwise presume that we run with some other gui backend. If we don't, nothing will happen.
+			self.fig.show(warn=False)
+		if close == True:
+			self.close()
+	def close(self):
+		matplotlib.pyplot.close(self.fig)
 
 def figure(path,display=False,close=True):
 	"""

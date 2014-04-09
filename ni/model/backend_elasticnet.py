@@ -9,6 +9,7 @@ This module provides a backend to the .ip model. It wraps the sklearn.linear_mod
 
 """
 
+import warnings
 import sklearn.linear_model as linear_model 
 import numpy as np
 
@@ -54,11 +55,15 @@ class Model:
 			c = Configuration()
 		self.configuration = c
 		if c.crossvalidation == True:
-			self.model = linear_model.ElasticNetCV(fit_intercept=False)#(alpha=self.configuration.alpha, l1_ratio=self.configuration.l1_ratio)
+			with warnings.catch_warnings():
+				warnings.filterwarnings("ignore",category=DeprecationWarning)
+				self.model = linear_model.ElasticNetCV(fit_intercept=False)#(alpha=self.configuration.alpha, l1_ratio=self.configuration.l1_ratio)
 		else:
 			self.model = linear_model.ElasticNet(fit_intercept=False,alpha=c.alpha, l1_ratio=c.l1_ratio)
 	def fit(self,x,dm):
-		return Fit(self.model.fit(dm,x.squeeze()),self)
+		with warnings.catch_warnings():
+			warnings.filterwarnings("ignore",category=DeprecationWarning)
+			return Fit(self.model.fit(dm,x.squeeze()),self)
 def predict(x,dm):
 	#model = linear_model.ElasticNetCV(fit_intercept=False)
 	#model.intercept_ = 0
