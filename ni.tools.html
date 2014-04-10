@@ -59,132 +59,66 @@
 <h1>2. tools Package<a class="headerlink" href="#tools-package" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-ni.tools.bootstrap">
 <span id="bootstrap-module"></span><h2>2.1. <tt class="xref py py-mod docutils literal"><span class="pre">bootstrap</span></tt> Module<a class="headerlink" href="#module-ni.tools.bootstrap" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-ni.tools.bootstrap"></span><dl class="function">
+<dl class="function">
 <dt id="ni.tools.bootstrap.bootstrap">
-<tt class="descclassname">ni.tools.bootstrap.</tt><tt class="descname">bootstrap</tt><big>(</big><em>bootstrap_repetitions</em>, <em>model</em>, <em>data</em>, <em>test_data=</em><span class="optional">[</span><span class="optional">]</span>, <em>shuffle=True</em>, <em>prefix=''</em>, <em>bootstrap_data=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#ni.tools.bootstrap.bootstrap" title="Permalink to this definition">¶</a></dt>
-<dd><p>A helper function that performs bootstrap evaluation of models.</p>
-<p>A Model <cite>model</cite> is fitted with some data <cite>data</cite>, called &#8220;actual data&#8221; or &#8220;D&#8221; and subsequently on all of a number of bootstrap samples &#8220;D*_n&#8221; for n in range(<cite>bootstrap_repetitions</cite>).
-This yields an <cite>actual fit</cite> and <cite>bootstrap_repetitions</cite> times <cite>boot fit</cite> (or <cite>fit*</cite>) for each sample.</p>
-<p>Use bootstrap_results for explanations on the dimensions of the result.</p>
-<p><cite>bootstrap_repetitions</cite></p>
-<p><cite>model</cite></p>
-<p><cite>data</cite></p>
-<p><a href="#id1"><span class="problematic" id="id2">`</span></a>test_data`=[]</p>
-<p><a href="#id3"><span class="problematic" id="id4">`</span></a>shuffle`=True</p>
-<dl class="docutils">
-<dt><a href="#id5"><span class="problematic" id="id6">`</span></a>prefix`=&#8217;&#8216;</dt>
-<dd>String that is prefixed to the results.</dd>
-<dt><a href="#id7"><span class="problematic" id="id8">`</span></a>bootstrap_data`=[]</dt>
-<dd>If new data instead of trial shuffling is to be used as bootstrap data, this data should be passed here.
-The <cite>ni.data.data.Data</cite> Instance should contain an additional index <cite>Bootstrap Sample</cite></dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="ni.tools.bootstrap.bootstrap_samples">
-<tt class="descclassname">ni.tools.bootstrap.</tt><tt class="descname">bootstrap_samples</tt><big>(</big><em>bootstrap_data</em>, <em>model</em>, <em>data</em>, <em>test_data=</em><span class="optional">[</span><span class="optional">]</span>, <em>shuffle=False</em>, <em>prefix=''</em>, <em>boot_dim='Bootstrap Sample'</em><big>)</big><a class="headerlink" href="#ni.tools.bootstrap.bootstrap_samples" title="Permalink to this definition">¶</a></dt>
-<dd><p>Performs bootstrap evaluation with bootstrap data.</p>
-<p>A Model <cite>model</cite> is fitted with some data <cite>data</cite>, called &#8220;actual data&#8221; or &#8220;D&#8221; and subsequently on all of a number of bootstrap samples &#8220;D*_n&#8221; for n in range(<cite>bootstrap_repetitions</cite>).
-This yields an <cite>actual fit</cite> and <cite>bootstrap_repetitions</cite> times <cite>boot fit</cite> (or <cite>fit*</cite>) for each sample.</p>
-<p>Use bootstrap_results for explanations on the dimensions of the result.</p>
-<dl class="docutils">
-<dt><cite>bootstrap_data</cite></dt>
-<dd>If new data instead of trial shuffling is to be used as bootstrap data, this data should be passed here.
-The <cite>ni.data.data.Data</cite> Instance should contain an additional index <cite>Bootstrap Sample</cite></dd>
-</dl>
-<p><cite>model</cite></p>
-<blockquote>
-<div>Model to be evaluated. It needs to provide an <cite>x()</cite>, <cite>dm()</cite> and <cite>fit(x=, dm=)</cite>/<cite>fit(data)</cite> method.</div></blockquote>
-<p><cite>data</cite></p>
-<p><a href="#id9"><span class="problematic" id="id10">`</span></a>test_data`=[]</p>
-<p><a href="#id11"><span class="problematic" id="id12">`</span></a>shuffle`=True</p>
-<dl class="docutils">
-<dt><a href="#id13"><span class="problematic" id="id14">`</span></a>prefix`=&#8217;&#8216;</dt>
-<dd>String that is prefixed to the results.</dd>
-<dt><cite>boot_dim</cite></dt>
-<dd>The <cite>ni.data.data.Data</cite> Instance should contain an additional index <cite>Bootstrap Sample</cite> or be a list. If some other index should be used as bootstrap samples, <cite>boot_dim</cite> can be set to that.</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="ni.tools.bootstrap.bootstrap_time">
-<tt class="descclassname">ni.tools.bootstrap.</tt><tt class="descname">bootstrap_time</tt><big>(</big><em>bootstrap_repetitions</em>, <em>model</em>, <em>data</em>, <em>test_data=</em><span class="optional">[</span><span class="optional">]</span>, <em>prefix=''</em><big>)</big><a class="headerlink" href="#ni.tools.bootstrap.bootstrap_time" title="Permalink to this definition">¶</a></dt>
-<dd><p>Performs bootstrap evaluation of models.</p>
-<p>A Model <cite>model</cite> is fitted with some data <cite>data</cite>, called &#8220;actual data&#8221; or &#8220;D&#8221; and subsequently on all of a number of bootstrap samples &#8220;D*_n&#8221; for n in range(<cite>bootstrap_repetitions</cite>).
-This yields an <cite>actual fit</cite> and <cite>bootstrap_repetitions</cite> times <cite>boot fit</cite> (or <cite>fit*</cite>) for each sample.</p>
-<p>Use bootstrap_results for explanations on the dimensions of the result.</p>
-<p><cite>bootstrap_repetitions</cite></p>
-<p><cite>model</cite></p>
-<blockquote>
-<div>Model to be evaluated. It needs to provide an <cite>x()</cite>, <cite>dm()</cite> and <cite>fit(x=, dm=)</cite> method.</div></blockquote>
-<p><cite>data</cite></p>
-<p><a href="#id15"><span class="problematic" id="id16">`</span></a>test_data`=[]</p>
-<dl class="docutils">
-<dt><a href="#id17"><span class="problematic" id="id18">`</span></a>prefix`=&#8217;&#8216;</dt>
-<dd>String that is prefixed to the results.</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="ni.tools.bootstrap.bootstrap_trials">
-<tt class="descclassname">ni.tools.bootstrap.</tt><tt class="descname">bootstrap_trials</tt><big>(</big><em>bootstrap_repetitions</em>, <em>model</em>, <em>data</em>, <em>test_data=</em><span class="optional">[</span><span class="optional">]</span>, <em>shuffle=True</em>, <em>prefix=''</em>, <em>bootstrap_data=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#ni.tools.bootstrap.bootstrap_trials" title="Permalink to this definition">¶</a></dt>
-<dd><p>Performs bootstrap evaluation by trial shuffling.</p>
-<p>A Model <cite>model</cite> is fitted with some data <cite>data</cite>, called &#8220;actual data&#8221; or &#8220;D&#8221; and subsequently on all of a number of bootstrap samples &#8220;D*_n&#8221; for n in range(<cite>bootstrap_repetitions</cite>).
-This yields an <cite>actual fit</cite> and <cite>bootstrap_repetitions</cite> times <cite>boot fit</cite> (or <cite>fit*</cite>) for each sample.</p>
-<p>Use bootstrap_results for explanations on the dimensions of the result.</p>
-<p><cite>bootstrap_repetitions</cite></p>
-<blockquote>
-<div>Number of bootstrap repetitions</div></blockquote>
-<p><cite>model</cite></p>
-<blockquote>
-<div>Model to be evaluated. It needs to provide an <cite>x()</cite>, <cite>dm()</cite> and <cite>fit(x=, dm=)</cite>/<cite>fit(data)</cite> method.</div></blockquote>
-<p><cite>data</cite></p>
-<p><a href="#id19"><span class="problematic" id="id20">`</span></a>test_data`=[]</p>
-<p><a href="#id21"><span class="problematic" id="id22">`</span></a>shuffle`=True</p>
-<dl class="docutils">
-<dt><a href="#id23"><span class="problematic" id="id24">`</span></a>prefix`=&#8217;&#8216;</dt>
-<dd>String that is prefixed to the results.</dd>
-<dt><a href="#id25"><span class="problematic" id="id26">`</span></a>bootstrap_data`=[]</dt>
-<dd>If new data instead of trial shuffling is to be used as bootstrap data, this data should be passed here.
-The <cite>ni.data.data.Data</cite> Instance should contain an additional index <cite>Bootstrap Sample</cite></dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="ni.tools.bootstrap.description">
-<tt class="descclassname">ni.tools.bootstrap.</tt><tt class="descname">description</tt><big>(</big><em>prefix=''</em>, <em>additional_information=''</em><big>)</big><a class="headerlink" href="#ni.tools.bootstrap.description" title="Permalink to this definition">¶</a></dt>
-<dd><p>Describes the common bootstrap output variables as a dictionary. <cite>additional_information</cite> will be appended to each entry, <cite>prefix</cite> will be prepended to each key.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="ni.tools.bootstrap.generate">
-<tt class="descclassname">ni.tools.bootstrap.</tt><tt class="descname">generate</tt><big>(</big><em>model</em>, <em>bootstrap_repetitions</em><big>)</big><a class="headerlink" href="#ni.tools.bootstrap.generate" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">ni.tools.bootstrap.</tt><tt class="descname">bootstrap</tt><big>(</big><em>bootstrap_repetitions</em>, <em>model</em>, <em>data</em>, <em>other_data</em><big>)</big><a class="headerlink" href="#ni.tools.bootstrap.bootstrap" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="ni.tools.bootstrap.merge">
-<tt class="descclassname">ni.tools.bootstrap.</tt><tt class="descname">merge</tt><big>(</big><em>stats</em><big>)</big><a class="headerlink" href="#ni.tools.bootstrap.merge" title="Permalink to this definition">¶</a></dt>
-<dd><div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">implement merge function for bootstrap data that calculates EIC etc.</p>
+<dt id="ni.tools.bootstrap.evaluate">
+<tt class="descclassname">ni.tools.bootstrap.</tt><tt class="descname">evaluate</tt><big>(</big><em>Model</em>, <em>Data</em>, <em>bootstrap_repetitions</em>, <em>return_all=False</em><big>)</big><a class="reference internal" href="_modules/ni/tools/bootstrap.html#evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.tools.bootstrap.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executes a certain number of bootstrap repetitions to calculate the bias of the likelihood he model computes</p>
+<blockquote>
+<div><p><strong>Model</strong></p>
+<blockquote>
+<div>A model object that is capable of loglikelihood estimation</div></blockquote>
+<p><strong>Data</strong></p>
+<blockquote>
+<div>Data that is to be reshuffled. A bootstrap sample is drawn from this Data of the same length with each Element of Data being equally probable of being included.</div></blockquote>
+<p><strong>bootstrap_repetitions</strong></p>
+<blockquote>
+<div>Number of repetitions</div></blockquote>
+<p><strong>return_all</strong></p>
+<blockquote>
+<div>Default: False. Whether an array of all bootstrap biases should be returned or just the mean.</div></blockquote>
+</div></blockquote>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">ni.tools.bootstrap</span>
+<span class="nb">reload</span><span class="p">(</span><span class="n">ni</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">bootstrap</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">ni.model.pointprocess</span>
+<span class="nb">reload</span><span class="p">(</span><span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="p">)</span>
+<span class="n">p1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">createPoisson</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span><span class="o">.</span><span class="n">getCounts</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">)])</span>
+<span class="n">p2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">createPoisson</span><span class="p">(</span><span class="n">sin</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">200</span><span class="p">))</span><span class="o">*</span><span class="mf">0.01</span><span class="p">)</span><span class="o">*</span><span class="mf">0.5</span><span class="o">-</span> <span class="mf">0.2</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span><span class="o">.</span><span class="n">getCounts</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">)])</span>
+
+<span class="n">m1</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">SimpleFiringRateModel</span><span class="p">()</span>
+
+<span class="n">ni</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">bootstrap</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span><span class="n">p1</span><span class="p">,</span><span class="mi">10000</span><span class="p">)</span>
+</pre></div>
 </div>
+<p>Or to see the effect of increasing bootstrap size:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">ni</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">bootstrap</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span><span class="n">p1</span><span class="p">,</span><span class="mi">1000</span><span class="p">,</span><span class="n">return_all</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span><span class="o">/</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1001</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">)]</span>
+</pre></div>
+</div>
+<img alt="_images/increasing_bootstrap.png" src="_images/increasing_bootstrap.png" />
+</dd></dl>
+
+<dl class="function">
+<dt id="ni.tools.bootstrap.likelihood_Fun">
+<tt class="descclassname">ni.tools.bootstrap.</tt><tt class="descname">likelihood_Fun</tt><big>(</big><em>y</em>, <em>x</em>, <em>mu</em><big>)</big><a class="headerlink" href="#ni.tools.bootstrap.likelihood_Fun" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the likelihood for a binary vector and a predicted firing rate</p>
+<div class="math">
+\[-(size(y)/2) \cdot log(2 \cdot \pi \cdot x^2) - (1/x^2 \cdot (y-mu)^2)\]</div>
 </dd></dl>
 
 <dl class="function">
 <dt id="ni.tools.bootstrap.plotBootstrap">
 <tt class="descclassname">ni.tools.bootstrap.</tt><tt class="descname">plotBootstrap</tt><big>(</big><em>res</em>, <em>path</em><big>)</big><a class="headerlink" href="#ni.tools.bootstrap.plotBootstrap" title="Permalink to this definition">¶</a></dt>
-<dd><p class="deprecated">
-<span class="versionmodified">Deprecated since version 0.1.</span></p>
-<p>use the plot capabilities of the <a class="reference internal" href="#ni.tools.statcollector.StatCollector" title="ni.tools.statcollector.StatCollector"><tt class="xref py py-class docutils literal"><span class="pre">ni.tools.statcollector.StatCollector</span></tt></a>.</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="function">
 <dt id="ni.tools.bootstrap.plotCompareBootstrap">
 <tt class="descclassname">ni.tools.bootstrap.</tt><tt class="descname">plotCompareBootstrap</tt><big>(</big><em>reses</em>, <em>path</em><big>)</big><a class="headerlink" href="#ni.tools.bootstrap.plotCompareBootstrap" title="Permalink to this definition">¶</a></dt>
-<dd><p class="deprecated">
-<span class="versionmodified">Deprecated since version 0.1.</span></p>
-<p>use the plot capabilities of the <a class="reference internal" href="#ni.tools.statcollector.StatCollector" title="ni.tools.statcollector.StatCollector"><tt class="xref py py-class docutils literal"><span class="pre">ni.tools.statcollector.StatCollector</span></tt></a>.</p>
-</dd></dl>
+<dd></dd></dl>
 
 </div>
 <div class="section" id="module-ni.tools.progressbar">
@@ -233,6 +167,48 @@ manual comments</p>
 </ul>
 </div></blockquote>
 <dl class="class">
+<dt id="ni.tools.project.CodeManager">
+<em class="property">class </em><tt class="descclassname">ni.tools.project.</tt><tt class="descname">CodeManager</tt><big>(</big><em>project</em><big>)</big><a class="headerlink" href="#ni.tools.project.CodeManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides Management for Project Code Files</p>
+<dl class="method">
+<dt id="ni.tools.project.CodeManager.appendCode">
+<tt class="descname">appendCode</tt><big>(</big><em>code</em><big>)</big><a class="headerlink" href="#ni.tools.project.CodeManager.appendCode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ni.tools.project.CodeManager.appendFile">
+<tt class="descname">appendFile</tt><big>(</big><em>file</em><big>)</big><a class="headerlink" href="#ni.tools.project.CodeManager.appendFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ni.tools.project.CodeManager.report">
+<tt class="descname">report</tt><big>(</big><big>)</big><a class="headerlink" href="#ni.tools.project.CodeManager.report" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ni.tools.project.DataManager">
+<em class="property">class </em><tt class="descclassname">ni.tools.project.</tt><tt class="descname">DataManager</tt><big>(</big><em>project</em><big>)</big><a class="headerlink" href="#ni.tools.project.DataManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides Management for Project Data Files</p>
+<dl class="method">
+<dt id="ni.tools.project.DataManager.appendFile">
+<tt class="descname">appendFile</tt><big>(</big><em>file</em>, <em>options</em><big>)</big><a class="headerlink" href="#ni.tools.project.DataManager.appendFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ni.tools.project.DataManager.appendXML">
+<tt class="descname">appendXML</tt><big>(</big><em>xml_root</em><big>)</big><a class="headerlink" href="#ni.tools.project.DataManager.appendXML" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ni.tools.project.DataManager.report">
+<tt class="descname">report</tt><big>(</big><big>)</big><a class="headerlink" href="#ni.tools.project.DataManager.report" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="ni.tools.project.Figure">
 <em class="property">class </em><tt class="descclassname">ni.tools.project.</tt><tt class="descname">Figure</tt><big>(</big><em>path</em>, <em>display=False</em>, <em>close=True</em><big>)</big><a class="headerlink" href="#ni.tools.project.Figure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Figure Context Manager</p>
@@ -256,6 +232,18 @@ with ni.figure("some_test.png",close=False):
         plot(sin(x))    # plots to the first plot again</pre>
 </div>
 <p>Both figures will be displayed, but the second one will remain available after the code. (But keep in mind that in the iPython pylab console, after every input, all figures will be closed)</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="ni.tools.project.FigureManager">
+<em class="property">class </em><tt class="descclassname">ni.tools.project.</tt><tt class="descname">FigureManager</tt><big>(</big><em>project</em><big>)</big><a class="headerlink" href="#ni.tools.project.FigureManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides Management for Figures</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="ni.tools.project.HistoryManager">
+<em class="property">class </em><tt class="descclassname">ni.tools.project.</tt><tt class="descname">HistoryManager</tt><big>(</big><em>project</em><big>)</big><a class="headerlink" href="#ni.tools.project.HistoryManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides Management for Project HistoryManager</p>
 </dd></dl>
 
 <dl class="class">
@@ -352,7 +340,7 @@ with ni.figure("some_test.png",close=False):
 <dt id="ni.tools.project.Project">
 <em class="property">class </em><tt class="descclassname">ni.tools.project.</tt><tt class="descname">Project</tt><big>(</big><em>folder='unsaved_project'</em>, <em>name=''</em><big>)</big><a class="reference internal" href="_modules/ni/tools/project.html#Project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.tools.project.Project" title="Permalink to this definition">¶</a></dt>
 <dd><p>Project Class</p>
-<p>loads a Project folder (containing eg. a main.py file)</p>
+<p>loads a Project folder (containing eg. a main.py file or a project_manifest.xml)</p>
 <dl class="method">
 <dt id="ni.tools.project.Project.abandon">
 <tt class="descname">abandon</tt><big>(</big><big>)</big><a class="headerlink" href="#ni.tools.project.Project.abandon" title="Permalink to this definition">¶</a></dt>
@@ -679,7 +667,11 @@ with ni.figure("some_test.png",close=False):
 <dl class="function">
 <dt id="ni.tools.project.figure">
 <tt class="descclassname">ni.tools.project.</tt><tt class="descname">figure</tt><big>(</big><em>path</em>, <em>display=False</em>, <em>close=True</em><big>)</big><a class="headerlink" href="#ni.tools.project.figure" title="Permalink to this definition">¶</a></dt>
-<dd><p>Can be used with the <strong>with</strong> statement:</p>
+<dd><div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">integrate with projects, write to default paths</p>
+</div>
+<p>Can be used with the <strong>with</strong> statement:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">ni</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mf">0.1</span><span class="p">)</span>
 <span class="k">with</span> <span class="n">ni</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="s">&quot;some_test.png&quot;</span><span class="p">):</span>
@@ -913,12 +905,12 @@ This yields an <cite>actual fit</cite> and <cite>bootstrap_repetitions</cite> ti
 <p><cite>bootstrap_repetitions</cite></p>
 <p><cite>model</cite></p>
 <p><cite>data</cite></p>
-<p><a href="#id27"><span class="problematic" id="id28">`</span></a>test_data`=[]</p>
-<p><a href="#id29"><span class="problematic" id="id30">`</span></a>shuffle`=True</p>
+<p><a href="#id1"><span class="problematic" id="id2">`</span></a>test_data`=[]</p>
+<p><a href="#id3"><span class="problematic" id="id4">`</span></a>shuffle`=True</p>
 <dl class="docutils">
-<dt><a href="#id31"><span class="problematic" id="id32">`</span></a>prefix`=&#8217;&#8216;</dt>
+<dt><a href="#id5"><span class="problematic" id="id6">`</span></a>prefix`=&#8217;&#8216;</dt>
 <dd>String that is prefixed to the results.</dd>
-<dt><a href="#id33"><span class="problematic" id="id34">`</span></a>bootstrap_data`=[]</dt>
+<dt><a href="#id7"><span class="problematic" id="id8">`</span></a>bootstrap_data`=[]</dt>
 <dd>If new data instead of trial shuffling is to be used as bootstrap data, this data should be passed here.
 The <cite>ni.data.data.Data</cite> Instance should contain an additional index <cite>Bootstrap Sample</cite></dd>
 </dl>
@@ -940,10 +932,10 @@ The <cite>ni.data.data.Data</cite> Instance should contain an additional index <
 <blockquote>
 <div>Model to be evaluated. It needs to provide an <cite>x()</cite>, <cite>dm()</cite> and <cite>fit(x=, dm=)</cite>/<cite>fit(data)</cite> method.</div></blockquote>
 <p><cite>data</cite></p>
-<p><a href="#id35"><span class="problematic" id="id36">`</span></a>test_data`=[]</p>
-<p><a href="#id37"><span class="problematic" id="id38">`</span></a>shuffle`=True</p>
+<p><a href="#id9"><span class="problematic" id="id10">`</span></a>test_data`=[]</p>
+<p><a href="#id11"><span class="problematic" id="id12">`</span></a>shuffle`=True</p>
 <dl class="docutils">
-<dt><a href="#id39"><span class="problematic" id="id40">`</span></a>prefix`=&#8217;&#8216;</dt>
+<dt><a href="#id13"><span class="problematic" id="id14">`</span></a>prefix`=&#8217;&#8216;</dt>
 <dd>String that is prefixed to the results.</dd>
 <dt><cite>boot_dim</cite></dt>
 <dd>The <cite>ni.data.data.Data</cite> Instance should contain an additional index <cite>Bootstrap Sample</cite> or be a list. If some other index should be used as bootstrap samples, <cite>boot_dim</cite> can be set to that.</dd>
@@ -962,9 +954,9 @@ This yields an <cite>actual fit</cite> and <cite>bootstrap_repetitions</cite> ti
 <blockquote>
 <div>Model to be evaluated. It needs to provide an <cite>x()</cite>, <cite>dm()</cite> and <cite>fit(x=, dm=)</cite> method.</div></blockquote>
 <p><cite>data</cite></p>
-<p><a href="#id41"><span class="problematic" id="id42">`</span></a>test_data`=[]</p>
+<p><a href="#id15"><span class="problematic" id="id16">`</span></a>test_data`=[]</p>
 <dl class="docutils">
-<dt><a href="#id43"><span class="problematic" id="id44">`</span></a>prefix`=&#8217;&#8216;</dt>
+<dt><a href="#id17"><span class="problematic" id="id18">`</span></a>prefix`=&#8217;&#8216;</dt>
 <dd>String that is prefixed to the results.</dd>
 </dl>
 </dd></dl>
@@ -983,12 +975,12 @@ This yields an <cite>actual fit</cite> and <cite>bootstrap_repetitions</cite> ti
 <blockquote>
 <div>Model to be evaluated. It needs to provide an <cite>x()</cite>, <cite>dm()</cite> and <cite>fit(x=, dm=)</cite>/<cite>fit(data)</cite> method.</div></blockquote>
 <p><cite>data</cite></p>
-<p><a href="#id45"><span class="problematic" id="id46">`</span></a>test_data`=[]</p>
-<p><a href="#id47"><span class="problematic" id="id48">`</span></a>shuffle`=True</p>
+<p><a href="#id19"><span class="problematic" id="id20">`</span></a>test_data`=[]</p>
+<p><a href="#id21"><span class="problematic" id="id22">`</span></a>shuffle`=True</p>
 <dl class="docutils">
-<dt><a href="#id49"><span class="problematic" id="id50">`</span></a>prefix`=&#8217;&#8216;</dt>
+<dt><a href="#id23"><span class="problematic" id="id24">`</span></a>prefix`=&#8217;&#8216;</dt>
 <dd>String that is prefixed to the results.</dd>
-<dt><a href="#id51"><span class="problematic" id="id52">`</span></a>bootstrap_data`=[]</dt>
+<dt><a href="#id25"><span class="problematic" id="id26">`</span></a>bootstrap_data`=[]</dt>
 <dd>If new data instead of trial shuffling is to be used as bootstrap data, this data should be passed here.
 The <cite>ni.data.data.Data</cite> Instance should contain an additional index <cite>Bootstrap Sample</cite></dd>
 </dl>
@@ -1218,25 +1210,6 @@ As the bootstrap functions add the statistics dictionary of the model fit to the
 </dd></dl>
 
 <dl class="method">
-<dt id="ni.tools.statcollector.StatCollector.rename_value_to_tree">
-<tt class="descname">rename_value_to_tree</tt><big>(</big><em>value=-1</em><big>)</big><a class="headerlink" href="#ni.tools.statcollector.StatCollector.rename_value_to_tree" title="Permalink to this definition">¶</a></dt>
-<dd><p>Renames nodes, such that increases of one value are counted as submodels</p>
-<p><cite>value</cite> is the index (of the slash splitted node name) of the value that is to be replaced. The default is -1, ie. the last value.</p>
-<p>Example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">ni</span>
-<span class="n">stats</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">StatCollector</span><span class="p">()</span>
-<span class="n">stats</span><span class="o">.</span><span class="n">addNode</span><span class="p">(</span><span class="s">&#39;Model 0/10&#39;</span><span class="p">,{</span><span class="s">&#39;a&#39;</span><span class="p">:</span><span class="mi">100</span><span class="p">})</span>
-<span class="n">stats</span><span class="o">.</span><span class="n">addNode</span><span class="p">(</span><span class="s">&#39;Model 0/20&#39;</span><span class="p">,{</span><span class="s">&#39;a&#39;</span><span class="p">:</span><span class="mi">100</span><span class="p">})</span>
-<span class="n">stats</span><span class="o">.</span><span class="n">addNode</span><span class="p">(</span><span class="s">&#39;Model 0/30&#39;</span><span class="p">,{</span><span class="s">&#39;a&#39;</span><span class="p">:</span><span class="mi">100</span><span class="p">})</span>
-<span class="n">stats</span><span class="o">.</span><span class="n">addNode</span><span class="p">(</span><span class="s">&#39;Model 0/50&#39;</span><span class="p">,{</span><span class="s">&#39;a&#39;</span><span class="p">:</span><span class="mi">100</span><span class="p">})</span>
-<span class="n">stats</span><span class="o">.</span><span class="n">addNode</span><span class="p">(</span><span class="s">&#39;Model 0/1000&#39;</span><span class="p">,{</span><span class="s">&#39;a&#39;</span><span class="p">:</span><span class="mi">100</span><span class="p">})</span>
-<span class="n">stats</span><span class="o">.</span><span class="n">rename_value_to_tree</span><span class="p">()</span><span class="o">.</span><span class="n">plotTree</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>The example will rename the last node to &#8216;Model 0/10/20/30/50/1000&#8217;</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="ni.tools.statcollector.StatCollector.save">
 <tt class="descname">save</tt><big>(</big><em>filename</em><big>)</big><a class="headerlink" href="#ni.tools.statcollector.StatCollector.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Saves the StatCollector to <cite>filename</cite>.</p>
@@ -1274,12 +1247,6 @@ As the bootstrap functions add the statistics dictionary of the model fit to the
 <tt class="descclassname">ni.tools.statcollector.</tt><tt class="descname">natural_keys</tt><big>(</big><em>text</em><big>)</big><a class="headerlink" href="#ni.tools.statcollector.natural_keys" title="Permalink to this definition">¶</a></dt>
 <dd><p>alist.sort(key=natural_keys) sorts in human order
 (See Toothy&#8217;s implementation in the comments of <a class="reference external" href="http://nedbatchelder.com/blog/200712/human_sorting.html">http://nedbatchelder.com/blog/200712/human_sorting.html</a> )</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="ni.tools.statcollector.natural_sorted">
-<tt class="descclassname">ni.tools.statcollector.</tt><tt class="descname">natural_sorted</tt><big>(</big><em>l</em><big>)</big><a class="headerlink" href="#ni.tools.statcollector.natural_sorted" title="Permalink to this definition">¶</a></dt>
-<dd><p>sorts a sortable in human order (0 &lt; 20 &lt; 100)</p>
 </dd></dl>
 
 </div>
