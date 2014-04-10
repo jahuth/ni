@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -8,15 +6,15 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>1. model Package &mdash; Neuroinformatics Toolbox 0.1 documentation</title>
+    <title>1. model Package &mdash; Neuroinformatics Toolbox 0.2 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
-        VERSION:     '0.1',
+        URL_ROOT:    './',
+        VERSION:     '0.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -26,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="Neuroinformatics Toolbox 0.1 documentation" href="index.html" />
+    <link rel="top" title="Neuroinformatics Toolbox 0.2 documentation" href="index.html" />
     <link rel="next" title="2. tools Package" href="ni.tools.html" />
     <link rel="prev" title="Welcome to the Neuroinformatics Toolbox documentation!" href="index.html" /> 
   </head>
@@ -46,7 +44,7 @@
         <li class="right" >
           <a href="index.html" title="Welcome to the Neuroinformatics Toolbox documentation!"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Neuroinformatics Toolbox 0.1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">Neuroinformatics Toolbox 0.2 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -99,7 +97,7 @@
 
 <dl class="function">
 <dt id="ni.model.pointprocess.PointProcessFromSpikeTimes">
-<tt class="descclassname">ni.model.pointprocess.</tt><tt class="descname">PointProcessFromSpikeTimes</tt><big>(</big><em>times</em><big>)</big><a class="headerlink" href="#ni.model.pointprocess.PointProcessFromSpikeTimes" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">ni.model.pointprocess.</tt><tt class="descname">PointProcessFromSpikeTimes</tt><big>(</big><em>times</em><big>)</big><a class="reference internal" href="_modules/ni/model/pointprocess.html#PointProcessFromSpikeTimes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.pointprocess.PointProcessFromSpikeTimes" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="class">
@@ -108,7 +106,7 @@
 <dd><p>Uses just the firing rate as a predictor</p>
 <dl class="method">
 <dt id="ni.model.pointprocess.SimpleFiringRateModel.compare">
-<tt class="descname">compare</tt><big>(</big><em>Data</em>, <em>Prediction</em><big>)</big><a class="headerlink" href="#ni.model.pointprocess.SimpleFiringRateModel.compare" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">compare</tt><big>(</big><em>Data</em>, <em>Prediction</em><big>)</big><a class="reference internal" href="_modules/ni/model/pointprocess.html#SimpleFiringRateModel.compare"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.pointprocess.SimpleFiringRateModel.compare" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -177,19 +175,19 @@
 
 <dl class="function">
 <dt id="ni.model.pointprocess.getBinary">
-<tt class="descclassname">ni.model.pointprocess.</tt><tt class="descname">getBinary</tt><big>(</big><em>spikes</em>, <em>min_length=1</em><big>)</big><a class="headerlink" href="#ni.model.pointprocess.getBinary" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">ni.model.pointprocess.</tt><tt class="descname">getBinary</tt><big>(</big><em>spikes</em>, <em>min_length=1</em><big>)</big><a class="reference internal" href="_modules/ni/model/pointprocess.html#getBinary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.pointprocess.getBinary" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gives back a binary array from an array of spike times. The maximum for each bin is 1.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="ni.model.pointprocess.getCounts">
-<tt class="descclassname">ni.model.pointprocess.</tt><tt class="descname">getCounts</tt><big>(</big><em>spikes</em><big>)</big><a class="headerlink" href="#ni.model.pointprocess.getCounts" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">ni.model.pointprocess.</tt><tt class="descname">getCounts</tt><big>(</big><em>spikes</em><big>)</big><a class="reference internal" href="_modules/ni/model/pointprocess.html#getCounts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.pointprocess.getCounts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gives back an array of spike counts from an array of spike times. If the output is suppsed to be a Binomial, use <cite>getBinary</cite> instead.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="ni.model.pointprocess.interspike_interval">
-<tt class="descclassname">ni.model.pointprocess.</tt><tt class="descname">interspike_interval</tt><big>(</big><em>spikes_a</em>, <em>spikes_b=False</em><big>)</big><a class="headerlink" href="#ni.model.pointprocess.interspike_interval" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">ni.model.pointprocess.</tt><tt class="descname">interspike_interval</tt><big>(</big><em>spikes_a</em>, <em>spikes_b=False</em><big>)</big><a class="reference internal" href="_modules/ni/model/pointprocess.html#interspike_interval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.pointprocess.interspike_interval" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
@@ -215,7 +213,7 @@
 
 <dl class="function">
 <dt id="ni.model.pointprocess.reverse_correlation">
-<tt class="descclassname">ni.model.pointprocess.</tt><tt class="descname">reverse_correlation</tt><big>(</big><em>spikes_a</em>, <em>spikes_b=False</em><big>)</big><a class="headerlink" href="#ni.model.pointprocess.reverse_correlation" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">ni.model.pointprocess.</tt><tt class="descname">reverse_correlation</tt><big>(</big><em>spikes_a</em>, <em>spikes_b=False</em><big>)</big><a class="reference internal" href="_modules/ni/model/pointprocess.html#reverse_correlation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.pointprocess.reverse_correlation" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -223,31 +221,32 @@
 <span id="designmatrix-module"></span><h2>1.2. <tt class="xref py py-mod docutils literal"><span class="pre">designmatrix</span></tt> Module<a class="headerlink" href="#module-ni.model.designmatrix" title="Permalink to this headline">¶</a></h2>
 <span class="target" id="module-ni.model.designmatrix"></span><dl class="class">
 <dt id="ni.model.designmatrix.AdaptiveRateComponent">
-<em class="property">class </em><tt class="descclassname">ni.model.designmatrix.</tt><tt class="descname">AdaptiveRateComponent</tt><big>(</big><em>header='rate'</em>, <em>rate=False</em>, <em>knots=10</em>, <em>length=1000</em>, <em>kernel=False</em><big>)</big><a class="headerlink" href="#ni.model.designmatrix.AdaptiveRateComponent" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">ni.model.designmatrix.</tt><tt class="descname">AdaptiveRateComponent</tt><big>(</big><em>header='rate'</em>, <em>rate=False</em>, <em>exponent=2</em>, <em>knots=10</em>, <em>length=1000</em>, <em>kernel=False</em><big>)</big><a class="reference internal" href="_modules/ni/model/designmatrix.html#AdaptiveRateComponent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.designmatrix.AdaptiveRateComponent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ni.model.designmatrix.Component" title="ni.model.designmatrix.Component"><tt class="xref py py-class docutils literal"><span class="pre">ni.model.designmatrix.Component</span></tt></a></p>
 <p>Rate Design Matrix Component</p>
 <p>header: name of the kernel component
 rate: a rate function that determines
+exponent: the rate function will be taken to thins power to have a higher selctivity for high firing rates
 knots: Number of knots
 length: length of the component. Will be multiplied</p>
 <p>kernel: use this kernel instead of a newly created one</p>
 <dl class="method">
 <dt id="ni.model.designmatrix.AdaptiveRateComponent.getSplines">
-<tt class="descname">getSplines</tt><big>(</big><em>data=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#ni.model.designmatrix.AdaptiveRateComponent.getSplines" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">getSplines</tt><big>(</big><em>data=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="_modules/ni/model/designmatrix.html#AdaptiveRateComponent.getSplines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.designmatrix.AdaptiveRateComponent.getSplines" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="ni.model.designmatrix.Component">
-<em class="property">class </em><tt class="descclassname">ni.model.designmatrix.</tt><tt class="descname">Component</tt><big>(</big><em>header='Undefined'</em>, <em>kernel=0</em><big>)</big><a class="headerlink" href="#ni.model.designmatrix.Component" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">ni.model.designmatrix.</tt><tt class="descname">Component</tt><big>(</big><em>header='Undefined'</em>, <em>kernel=0</em><big>)</big><a class="reference internal" href="_modules/ni/model/designmatrix.html#Component"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.designmatrix.Component" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">ni.tools.pickler.Picklable</span></tt></p>
 <p>Design Matrix Component</p>
 <p>header: name of the kernel component
 kernel: kernel that will be tiled to fill the design matrix</p>
 <dl class="method">
 <dt id="ni.model.designmatrix.Component.getSplines">
-<tt class="descname">getSplines</tt><big>(</big><em>data=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#ni.model.designmatrix.Component.getSplines" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">getSplines</tt><big>(</big><em>data=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="_modules/ni/model/designmatrix.html#Component.getSplines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.designmatrix.Component.getSplines" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -256,8 +255,8 @@ kernel: kernel that will be tiled to fill the design matrix</p>
 <dt id="ni.model.designmatrix.DesignMatrix">
 <em class="property">class </em><tt class="descclassname">ni.model.designmatrix.</tt><tt class="descname">DesignMatrix</tt><big>(</big><em>length</em>, <em>width=1</em><big>)</big><a class="reference internal" href="_modules/ni/model/designmatrix.html#DesignMatrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.designmatrix.DesignMatrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">ni.tools.pickler.Picklable</span></tt></p>
-<p class="deprecated">
-<span class="versionmodified">Deprecated since version 0.1.</span></p>
+<p>Use <a class="reference internal" href="#ni.model.designmatrix.DesignMatrixTemplate" title="ni.model.designmatrix.DesignMatrixTemplate"><tt class="xref py py-class docutils literal"><span class="pre">DesignMatrixTemplate</span></tt></a> to create a design matrix.</p>
+<p>This class computes an actual matrix, where <a class="reference internal" href="#ni.model.designmatrix.DesignMatrixTemplate" title="ni.model.designmatrix.DesignMatrixTemplate"><tt class="xref py py-class docutils literal"><span class="pre">DesignMatrixTemplate</span></tt></a> can be saved before the matrix is instanciated.</p>
 <dl class="method">
 <dt id="ni.model.designmatrix.DesignMatrix.add">
 <tt class="descname">add</tt><big>(</big><em>splines</em>, <em>header</em><big>)</big><a class="reference internal" href="_modules/ni/model/designmatrix.html#DesignMatrix.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.designmatrix.DesignMatrix.add" title="Permalink to this definition">¶</a></dt>
@@ -290,7 +289,7 @@ kernel: kernel that will be tiled to fill the design matrix</p>
 
 <dl class="method">
 <dt id="ni.model.designmatrix.DesignMatrix.getMask">
-<tt class="descname">getMask</tt><big>(</big><em>filt</em><big>)</big><a class="headerlink" href="#ni.model.designmatrix.DesignMatrix.getMask" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">getMask</tt><big>(</big><em>filt</em><big>)</big><a class="reference internal" href="_modules/ni/model/designmatrix.html#DesignMatrix.getMask"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.designmatrix.DesignMatrix.getMask" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -300,7 +299,7 @@ kernel: kernel that will be tiled to fill the design matrix</p>
 
 <dl class="method">
 <dt id="ni.model.designmatrix.DesignMatrix.setMask">
-<tt class="descname">setMask</tt><big>(</big><em>mask</em><big>)</big><a class="headerlink" href="#ni.model.designmatrix.DesignMatrix.setMask" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">setMask</tt><big>(</big><em>mask</em><big>)</big><a class="reference internal" href="_modules/ni/model/designmatrix.html#DesignMatrix.setMask"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.designmatrix.DesignMatrix.setMask" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -323,43 +322,51 @@ kernel: kernel that will be tiled to fill the design matrix</p>
 <dl class="method">
 <dt id="ni.model.designmatrix.DesignMatrixTemplate.add">
 <tt class="descname">add</tt><big>(</big><em>component</em><big>)</big><a class="reference internal" href="_modules/ni/model/designmatrix.html#DesignMatrixTemplate.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.designmatrix.DesignMatrixTemplate.add" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Adds a component</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="ni.model.designmatrix.DesignMatrixTemplate.combine">
 <tt class="descname">combine</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="_modules/ni/model/designmatrix.html#DesignMatrixTemplate.combine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.designmatrix.DesignMatrixTemplate.combine" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>combines the design matrix template into an actual design matrix.</p>
+<p>It needs an ni.Data instance for this to place the history splines.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="ni.model.designmatrix.DesignMatrixTemplate.get">
-<tt class="descname">get</tt><big>(</big><em>filt</em><big>)</big><a class="headerlink" href="#ni.model.designmatrix.DesignMatrixTemplate.get" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<tt class="descname">get</tt><big>(</big><em>filt</em><big>)</big><a class="reference internal" href="_modules/ni/model/designmatrix.html#DesignMatrixTemplate.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.designmatrix.DesignMatrixTemplate.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the splines of the first component, the header of which matches <cite>filt</cite></p>
+</dd></dl>
 
 <dl class="method">
 <dt id="ni.model.designmatrix.DesignMatrixTemplate.getIndex">
-<tt class="descname">getIndex</tt><big>(</big><em>filt</em><big>)</big><a class="headerlink" href="#ni.model.designmatrix.DesignMatrixTemplate.getIndex" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<tt class="descname">getIndex</tt><big>(</big><em>filt</em><big>)</big><a class="reference internal" href="_modules/ni/model/designmatrix.html#DesignMatrixTemplate.getIndex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.designmatrix.DesignMatrixTemplate.getIndex" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the index (design matrix rows) of the component matching <cite>filt</cite></p>
+</dd></dl>
 
 <dl class="method">
 <dt id="ni.model.designmatrix.DesignMatrixTemplate.getMask">
-<tt class="descname">getMask</tt><big>(</big><em>filt</em><big>)</big><a class="headerlink" href="#ni.model.designmatrix.DesignMatrixTemplate.getMask" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<tt class="descname">getMask</tt><big>(</big><em>filt</em><big>)</big><a class="reference internal" href="_modules/ni/model/designmatrix.html#DesignMatrixTemplate.getMask"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.designmatrix.DesignMatrixTemplate.getMask" title="Permalink to this definition">¶</a></dt>
+<dd><p>reurns the mask of the component matching <cite>filt</cite></p>
+</dd></dl>
 
 <dl class="method">
 <dt id="ni.model.designmatrix.DesignMatrixTemplate.get_components">
-<tt class="descname">get_components</tt><big>(</big><em>filt</em><big>)</big><a class="headerlink" href="#ni.model.designmatrix.DesignMatrixTemplate.get_components" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<tt class="descname">get_components</tt><big>(</big><em>filt</em><big>)</big><a class="reference internal" href="_modules/ni/model/designmatrix.html#DesignMatrixTemplate.get_components"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.designmatrix.DesignMatrixTemplate.get_components" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns all component, the header of which matches <cite>filt</cite></p>
+</dd></dl>
 
 <dl class="method">
 <dt id="ni.model.designmatrix.DesignMatrixTemplate.setMask">
-<tt class="descname">setMask</tt><big>(</big><em>mask</em><big>)</big><a class="headerlink" href="#ni.model.designmatrix.DesignMatrixTemplate.setMask" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<tt class="descname">setMask</tt><big>(</big><em>mask</em><big>)</big><a class="reference internal" href="_modules/ni/model/designmatrix.html#DesignMatrixTemplate.setMask"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.designmatrix.DesignMatrixTemplate.setMask" title="Permalink to this definition">¶</a></dt>
+<dd><p>sets a mask (list of boolean values), which design matrix rows to use. Default is all True. If <cite>mask</cite> is shorter` than the desgin matrix, all following values are assumed True.</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="ni.model.designmatrix.HistoryComponent">
-<em class="property">class </em><tt class="descclassname">ni.model.designmatrix.</tt><tt class="descname">HistoryComponent</tt><big>(</big><em>header='autohistory'</em>, <em>channel=0</em>, <em>history_length=100</em>, <em>knot_number=4</em>, <em>order_flag=1</em>, <em>kernel=False</em>, <em>delete_last_spline=True</em><big>)</big><a class="headerlink" href="#ni.model.designmatrix.HistoryComponent" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">ni.model.designmatrix.</tt><tt class="descname">HistoryComponent</tt><big>(</big><em>header='autohistory'</em>, <em>channel=0</em>, <em>history_length=100</em>, <em>knot_number=4</em>, <em>order_flag=1</em>, <em>kernel=False</em>, <em>delete_last_spline=True</em><big>)</big><a class="reference internal" href="_modules/ni/model/designmatrix.html#HistoryComponent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.designmatrix.HistoryComponent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ni.model.designmatrix.Component" title="ni.model.designmatrix.Component"><tt class="xref py py-class docutils literal"><span class="pre">ni.model.designmatrix.Component</span></tt></a></p>
 <blockquote>
 <div><p>History Design Matrix Component</p>
@@ -374,7 +381,7 @@ order_flag: default 0 (no higher order interactions)</p>
 <p>Atm only order 1 interactions</p>
 <dl class="method">
 <dt id="ni.model.designmatrix.HistoryComponent.getSplines">
-<tt class="descname">getSplines</tt><big>(</big><em>channels=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#ni.model.designmatrix.HistoryComponent.getSplines" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">getSplines</tt><big>(</big><em>channels=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="_modules/ni/model/designmatrix.html#HistoryComponent.getSplines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.designmatrix.HistoryComponent.getSplines" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -382,12 +389,12 @@ order_flag: default 0 (no higher order interactions)</p>
 <dl class="class">
 <dt id="ni.model.designmatrix.HistoryDesignMatrix">
 <em class="property">class </em><tt class="descclassname">ni.model.designmatrix.</tt><tt class="descname">HistoryDesignMatrix</tt><big>(</big><em>spikes</em>, <em>history_length=100</em>, <em>knot_number=5</em>, <em>order_flag=1</em>, <em>kernel=False</em><big>)</big><a class="reference internal" href="_modules/ni/model/designmatrix.html#HistoryDesignMatrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.designmatrix.HistoryDesignMatrix" title="Permalink to this definition">¶</a></dt>
-<dd><p>Internal helper class - will be turned into a function</p>
+<dd><p>Internal helper class</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="ni.model.designmatrix.RateComponent">
-<em class="property">class </em><tt class="descclassname">ni.model.designmatrix.</tt><tt class="descname">RateComponent</tt><big>(</big><em>header='rate'</em>, <em>knots=10</em>, <em>length=1000</em>, <em>kernel=False</em><big>)</big><a class="headerlink" href="#ni.model.designmatrix.RateComponent" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">ni.model.designmatrix.</tt><tt class="descname">RateComponent</tt><big>(</big><em>header='rate'</em>, <em>knots=10</em>, <em>length=1000</em>, <em>kernel=False</em><big>)</big><a class="reference internal" href="_modules/ni/model/designmatrix.html#RateComponent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.designmatrix.RateComponent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ni.model.designmatrix.Component" title="ni.model.designmatrix.Component"><tt class="xref py py-class docutils literal"><span class="pre">ni.model.designmatrix.Component</span></tt></a></p>
 <p>Rate Design Matrix Component</p>
 <p>header: name of the kernel component
@@ -396,14 +403,14 @@ length: length of the component. Will be multiplied</p>
 <p>kernel: use this kernel instead of a newly created one</p>
 <dl class="method">
 <dt id="ni.model.designmatrix.RateComponent.getSplines">
-<tt class="descname">getSplines</tt><big>(</big><em>data=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#ni.model.designmatrix.RateComponent.getSplines" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">getSplines</tt><big>(</big><em>data=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="_modules/ni/model/designmatrix.html#RateComponent.getSplines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.designmatrix.RateComponent.getSplines" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="ni.model.designmatrix.SecondOrderHistoryComponent">
-<em class="property">class </em><tt class="descclassname">ni.model.designmatrix.</tt><tt class="descname">SecondOrderHistoryComponent</tt><big>(</big><em>header='autohistory'</em>, <em>channel_1=0</em>, <em>channel_2=0</em>, <em>history_length=100</em>, <em>knot_number=4</em>, <em>order_flag=1</em>, <em>kernel_1=False</em>, <em>kernel_2=False</em>, <em>delete_last_spline=True</em><big>)</big><a class="headerlink" href="#ni.model.designmatrix.SecondOrderHistoryComponent" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">ni.model.designmatrix.</tt><tt class="descname">SecondOrderHistoryComponent</tt><big>(</big><em>header='autohistory'</em>, <em>channel_1=0</em>, <em>channel_2=0</em>, <em>history_length=100</em>, <em>knot_number=4</em>, <em>order_flag=1</em>, <em>kernel_1=False</em>, <em>kernel_2=False</em>, <em>delete_last_spline=True</em><big>)</big><a class="reference internal" href="_modules/ni/model/designmatrix.html#SecondOrderHistoryComponent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.designmatrix.SecondOrderHistoryComponent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ni.model.designmatrix.Component" title="ni.model.designmatrix.Component"><tt class="xref py py-class docutils literal"><span class="pre">ni.model.designmatrix.Component</span></tt></a></p>
 <blockquote>
 <div><p>History Design Matrix Component with Second Order Kernels</p>
@@ -418,20 +425,22 @@ order_flag: default 0 (no higher order interactions)</p>
 <p>Atm only order 1 interactions</p>
 <dl class="method">
 <dt id="ni.model.designmatrix.SecondOrderHistoryComponent.getSplines">
-<tt class="descname">getSplines</tt><big>(</big><em>channels=</em><span class="optional">[</span><span class="optional">]</span>, <em>get_1d_splines=False</em>, <em>beta=False</em><big>)</big><a class="headerlink" href="#ni.model.designmatrix.SecondOrderHistoryComponent.getSplines" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">getSplines</tt><big>(</big><em>channels=</em>, <span class="optional">[</span><span class="optional">]</span><em>get_1d_splines=False</em>, <em>beta=False</em><big>)</big><a class="reference internal" href="_modules/ni/model/designmatrix.html#SecondOrderHistoryComponent.getSplines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.designmatrix.SecondOrderHistoryComponent.getSplines" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="function">
 <dt id="ni.model.designmatrix.convolve_spikes">
-<tt class="descclassname">ni.model.designmatrix.</tt><tt class="descname">convolve_spikes</tt><big>(</big><em>spikes</em>, <em>kernel</em><big>)</big><a class="headerlink" href="#ni.model.designmatrix.convolve_spikes" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<tt class="descclassname">ni.model.designmatrix.</tt><tt class="descname">convolve_spikes</tt><big>(</big><em>spikes</em>, <em>kernel</em><big>)</big><a class="reference internal" href="_modules/ni/model/designmatrix.html#convolve_spikes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.designmatrix.convolve_spikes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convolves a spike train with a kernel by adding the kernel onto every spiketime.</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="ni.model.designmatrix.convolve_spikes_2d">
-<tt class="descclassname">ni.model.designmatrix.</tt><tt class="descname">convolve_spikes_2d</tt><big>(</big><em>spikes_a</em>, <em>spikes_b</em>, <em>kernel_a</em>, <em>kernel_b</em><big>)</big><a class="headerlink" href="#ni.model.designmatrix.convolve_spikes_2d" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<tt class="descclassname">ni.model.designmatrix.</tt><tt class="descname">convolve_spikes_2d</tt><big>(</big><em>spikes_a</em>, <em>spikes_b</em>, <em>kernel_a</em>, <em>kernel_b</em><big>)</big><a class="reference internal" href="_modules/ni/model/designmatrix.html#convolve_spikes_2d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.designmatrix.convolve_spikes_2d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does a 2d convolution</p>
+</dd></dl>
 
 </div>
 <div class="section" id="module-ni.model.ip">
@@ -447,8 +456,8 @@ The linear predictor of the form:</p>
 Each row my model a certain aspect (ie. time in trial, time after spike of some neuron) and is then weighted by the corresponding <span class="math">\(\beta\)</span> parameter value. Each aspect may be scaled arbitrarily and shifted.
 This weighted matrix is then added up into a firing probability that is passed on to the link function.</p>
 <blockquote>
-<div><img alt="_images/design_matrix_cross_component.png" src="_images/design_matrix_cross_component.png" />
-<img alt="_images/design_matrix_rate_component.png" src="_images/design_matrix_rate_component.png" />
+<div><img alt="_static/examples/design_matrix_cross_component.png" src="_static/examples/design_matrix_cross_component.png" />
+<img alt="_static/examples/design_matrix_rate_component.png" src="_static/examples/design_matrix_rate_component.png" />
 </div></blockquote>
 <p>The link function in our case of pointprocesses (ie. a poisson, bernoulli or binomial distribution, depending on notation) it is either the <em>log</em> or <em>logit</em> function (<span class="math">\(ln\left(\frac{\mu}{(1-\mu)}\right)\)</span>).</p>
 <p>Uses one of two backends <a class="reference internal" href="#module-ni.model.backend_glm" title="ni.model.backend_glm: Model Backend using statsmodels.api.GLM (Unix)"><tt class="xref py py-mod docutils literal"><span class="pre">ni.model.backend_glm</span></tt></a> and <a class="reference internal" href="#module-ni.model.backend_elasticnet" title="ni.model.backend_elasticnet: Model Backend using sklearn.linear_model.ElasticNet (Unix)"><tt class="xref py py-mod docutils literal"><span class="pre">ni.model.backend_elasticnet</span></tt></a></p>
@@ -497,7 +506,7 @@ This weighted matrix is then added up into a firing probability that is passed o
 </div></blockquote>
 <dl class="method">
 <dt id="ni.model.ip.FittedModel.compare">
-<tt class="descname">compare</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#ni.model.ip.FittedModel.compare" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">compare</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="_modules/ni/model/ip.html#FittedModel.compare"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.ip.FittedModel.compare" title="Permalink to this definition">¶</a></dt>
 <dd><p>Using the model this will predict a firing probability function according to a design matrix.</p>
 <p>Returns:</p>
 <blockquote>
@@ -511,30 +520,33 @@ This weighted matrix is then added up into a firing probability that is passed o
 
 <dl class="attribute">
 <dt id="ni.model.ip.FittedModel.complexity">
-<tt class="descname">complexity</tt><a class="headerlink" href="#ni.model.ip.FittedModel.complexity" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<tt class="descname">complexity</tt><a class="reference internal" href="_modules/ni/model/ip.html#FittedModel.complexity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.ip.FittedModel.complexity" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the length of the parameter vector</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="ni.model.ip.FittedModel.dumps">
-<tt class="descname">dumps</tt><big>(</big><big>)</big><a class="headerlink" href="#ni.model.ip.FittedModel.dumps" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<tt class="descname">dumps</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ni/model/ip.html#FittedModel.dumps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.ip.FittedModel.dumps" title="Permalink to this definition">¶</a></dt>
+<dd><p>see <tt class="xref py py-mod docutils literal"><span class="pre">ni.tools.pickler</span></tt></p>
+</dd></dl>
 
 <dl class="method">
 <dt id="ni.model.ip.FittedModel.family_fitted_function">
-<tt class="descname">family_fitted_function</tt><big>(</big><em>p</em><big>)</big><a class="headerlink" href="#ni.model.ip.FittedModel.family_fitted_function" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">family_fitted_function</tt><big>(</big><em>p</em><big>)</big><a class="reference internal" href="_modules/ni/model/ip.html#FittedModel.family_fitted_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.ip.FittedModel.family_fitted_function" title="Permalink to this definition">¶</a></dt>
 <dd><p>only implemented family: Binomial</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ni.model.ip.FittedModel.firing_rate_model">
-<tt class="descname">firing_rate_model</tt><big>(</big><big>)</big><a class="headerlink" href="#ni.model.ip.FittedModel.firing_rate_model" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<tt class="descname">firing_rate_model</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ni/model/ip.html#FittedModel.firing_rate_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.ip.FittedModel.firing_rate_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns a time series which contains the rate and constant component</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="ni.model.ip.FittedModel.generate">
 <tt class="descname">generate</tt><big>(</big><em>bins=-1</em><big>)</big><a class="reference internal" href="_modules/ni/model/ip.html#FittedModel.generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.ip.FittedModel.generate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates new spike trains from the extracted staistics</p>
-<p>Currently uses rate model and autohistory.</p>
+<p>This function only uses rate model and autohistory. For crosshistory dependence, use <tt class="xref py py-mod docutils literal"><span class="pre">ip_generator</span></tt>.</p>
 <blockquote>
 <div><p><strong>bins</strong></p>
 <blockquote>
@@ -545,38 +557,38 @@ This weighted matrix is then added up into a firing probability that is passed o
 <dl class="method">
 <dt id="ni.model.ip.FittedModel.getParams">
 <tt class="descname">getParams</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ni/model/ip.html#FittedModel.getParams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.ip.FittedModel.getParams" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>returns the parameters of each design matrix component as a list</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="ni.model.ip.FittedModel.getPvalues">
 <tt class="descname">getPvalues</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ni/model/ip.html#FittedModel.getPvalues"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.ip.FittedModel.getPvalues" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="ni.model.ip.FittedModel.history_model">
-<tt class="descname">history_model</tt><big>(</big><em>n='autohistory'</em><big>)</big><a class="headerlink" href="#ni.model.ip.FittedModel.history_model" title="Permalink to this definition">¶</a></dt>
-<dd><p>TODO: sort out what is saved where</p>
+<dd><p>returns pvalues of each component as a dictionary</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ni.model.ip.FittedModel.html_view">
-<tt class="descname">html_view</tt><big>(</big><big>)</big><a class="headerlink" href="#ni.model.ip.FittedModel.html_view" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<tt class="descname">html_view</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ni/model/ip.html#FittedModel.html_view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.ip.FittedModel.html_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>see <a class="reference internal" href="ni.tools.html#module-ni.tools.html_view" title="ni.tools.html_view: HTML View Object for easy reporting of results (Unix)"><tt class="xref py py-mod docutils literal"><span class="pre">ni.tools.html_view</span></tt></a></p>
+</dd></dl>
 
 <dl class="method">
 <dt id="ni.model.ip.FittedModel.plotParams">
 <tt class="descname">plotParams</tt><big>(</big><em>x=-1</em><big>)</big><a class="reference internal" href="_modules/ni/model/ip.html#FittedModel.plotParams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.ip.FittedModel.plotParams" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>plots the parameters and returns a dictionary of figures</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="ni.model.ip.FittedModel.plot_firing_rate_model">
-<tt class="descname">plot_firing_rate_model</tt><big>(</big><big>)</big><a class="headerlink" href="#ni.model.ip.FittedModel.plot_firing_rate_model" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<tt class="descname">plot_firing_rate_model</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ni/model/ip.html#FittedModel.plot_firing_rate_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.ip.FittedModel.plot_firing_rate_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns a time series which contains the rate and constant component</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="ni.model.ip.FittedModel.plot_prototypes">
-<tt class="descname">plot_prototypes</tt><big>(</big><big>)</big><a class="headerlink" href="#ni.model.ip.FittedModel.plot_prototypes" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<tt class="descname">plot_prototypes</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ni/model/ip.html#FittedModel.plot_prototypes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.ip.FittedModel.plot_prototypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>plots each of the components as a prototype (sum of fitted b-splines) and returns a dictionary of figures</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="ni.model.ip.FittedModel.predict">
@@ -586,23 +598,15 @@ This weighted matrix is then added up into a firing probability that is passed o
 
 <dl class="method">
 <dt id="ni.model.ip.FittedModel.prototypes">
-<tt class="descname">prototypes</tt><big>(</big><big>)</big><a class="headerlink" href="#ni.model.ip.FittedModel.prototypes" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<tt class="descname">prototypes</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ni/model/ip.html#FittedModel.prototypes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.ip.FittedModel.prototypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns a dictionary with a prototype (numpy.ndarray) per component</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="ni.model.ip.FittedModel.pvalues_by_component">
-<tt class="descname">pvalues_by_component</tt><big>(</big><big>)</big><a class="headerlink" href="#ni.model.ip.FittedModel.pvalues_by_component" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="ni.model.ip.FittedModel.read_pickle">
-<tt class="descname">read_pickle</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#ni.model.ip.FittedModel.read_pickle" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="ni.model.ip.FittedModel.to_pickle">
-<tt class="descname">to_pickle</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#ni.model.ip.FittedModel.to_pickle" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<tt class="descname">pvalues_by_component</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ni/model/ip.html#FittedModel.pvalues_by_component"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.ip.FittedModel.pvalues_by_component" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns pvalues of each component as a dictionary</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -612,19 +616,31 @@ This weighted matrix is then added up into a firing probability that is passed o
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">ni.tools.pickler.Picklable</span></tt></p>
 <dl class="attribute">
 <dt id="ni.model.ip.Model.backend">
-<tt class="descname">backend</tt><a class="headerlink" href="#ni.model.ip.Model.backend" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">backend</tt><a class="reference internal" href="_modules/ni/model/ip.html#Model.backend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.ip.Model.backend" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="ni.model.ip.Model.compare">
-<tt class="descname">compare</tt><big>(</big><em>data</em>, <em>p</em>, <em>nr_trials=1</em><big>)</big><a class="headerlink" href="#ni.model.ip.Model.compare" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<tt class="descname">compare</tt><big>(</big><em>data</em>, <em>p</em>, <em>nr_trials=1</em><big>)</big><a class="reference internal" href="_modules/ni/model/ip.html#Model.compare"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.ip.Model.compare" title="Permalink to this definition">¶</a></dt>
+<dd><p>will compare a timeseries of probabilities <cite>p</cite> to a binary timeseries or Data instance <cite>data</cite>.</p>
+<p>Returns:</p>
+<blockquote>
+<div><strong>Deviance_all</strong>: dv, 
+<strong>LogLikelihood_all</strong>: ll, 
+<strong>Deviance</strong>: dv/nr_trials, 
+<strong>LogLikelihood</strong>: ll/nr_trials, 
+<strong>llf</strong>: Likelihood function over time 
+<strong>ll</strong>: np.sum(ll)/nr_trials</div></blockquote>
+</dd></dl>
 
 <dl class="method">
 <dt id="ni.model.ip.Model.dm">
-<tt class="descname">dm</tt><big>(</big><em>in_spikes</em>, <em>design=False</em><big>)</big><a class="headerlink" href="#ni.model.ip.Model.dm" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">dm</tt><big>(</big><em>in_spikes</em>, <em>design=None</em><big>)</big><a class="reference internal" href="_modules/ni/model/ip.html#Model.dm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.ip.Model.dm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a design matrix from data and self.design</p>
-<p><strong>in_spikes</strong> <cite>ni.data.data.Data</cite> instance</p>
+<blockquote>
+<div><p><strong>in_spikes</strong> <cite>ni.data.data.Data</cite> instance</p>
+<p><strong>design</strong> (optional) a different <tt class="xref py py-class docutils literal"><span class="pre">designmatrix.DesignMatrixTemplate</span></tt></p>
+</div></blockquote>
 </dd></dl>
 
 <dl class="method">
@@ -669,59 +685,33 @@ This weighted matrix is then added up into a firing probability that is passed o
 <dl class="method">
 <dt id="ni.model.ip.Model.fit_with_design_matrix">
 <tt class="descname">fit_with_design_matrix</tt><big>(</big><em>fittedmodel</em>, <em>spike_train_all_trial</em>, <em>dm</em><big>)</big><a class="reference internal" href="_modules/ni/model/ip.html#Model.fit_with_design_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.ip.Model.fit_with_design_matrix" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>internal function</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="ni.model.ip.Model.generateDesignMatrix">
 <tt class="descname">generateDesignMatrix</tt><big>(</big><em>data</em>, <em>trial_length</em><big>)</big><a class="reference internal" href="_modules/ni/model/ip.html#Model.generateDesignMatrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.ip.Model.generateDesignMatrix" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>generates a design matrix template. Uses meta data from <cite>data</cite> to determine number of trials and trial length.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="ni.model.ip.Model.html_view">
-<tt class="descname">html_view</tt><big>(</big><big>)</big><a class="headerlink" href="#ni.model.ip.Model.html_view" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<tt class="descname">html_view</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ni/model/ip.html#Model.html_view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.ip.Model.html_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>see <a class="reference internal" href="ni.tools.html#module-ni.tools.html_view" title="ni.tools.html_view: HTML View Object for easy reporting of results (Unix)"><tt class="xref py py-mod docutils literal"><span class="pre">ni.tools.html_view</span></tt></a></p>
+</dd></dl>
 
 <dl class="method">
 <dt id="ni.model.ip.Model.predict">
-<tt class="descname">predict</tt><big>(</big><em>beta</em>, <em>data</em><big>)</big><a class="headerlink" href="#ni.model.ip.Model.predict" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="ni.model.ip.Model.read_pickle">
-<tt class="descname">read_pickle</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#ni.model.ip.Model.read_pickle" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="ni.model.ip.Model.to_pickle">
-<tt class="descname">to_pickle</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#ni.model.ip.Model.to_pickle" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<tt class="descname">predict</tt><big>(</big><em>beta</em>, <em>data</em><big>)</big><a class="reference internal" href="_modules/ni/model/ip.html#Model.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.ip.Model.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>will predict a firing probability function according to a design matrix.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="ni.model.ip.Model.x">
-<tt class="descname">x</tt><big>(</big><em>in_spikes</em><big>)</big><a class="headerlink" href="#ni.model.ip.Model.x" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<tt class="descname">x</tt><big>(</big><em>in_spikes</em><big>)</big><a class="reference internal" href="_modules/ni/model/ip.html#Model.x"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.ip.Model.x" title="Permalink to this definition">¶</a></dt>
+<dd><p>converts data into a dependent variable time series, ie. it chooses the cell that was configured and extracts only this timeseries.</p>
 </dd></dl>
 
-<dl class="class">
-<dt id="ni.model.ip.MultiChannelModel">
-<em class="property">class </em><tt class="descclassname">ni.model.ip.</tt><tt class="descname">MultiChannelModel</tt><big>(</big><em>configuration={}</em><big>)</big><a class="headerlink" href="#ni.model.ip.MultiChannelModel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">ni.tools.pickler.Picklable</span></tt></p>
-<dl class="method">
-<dt id="ni.model.ip.MultiChannelModel.append">
-<tt class="descname">append</tt><big>(</big><em>m</em><big>)</big><a class="headerlink" href="#ni.model.ip.MultiChannelModel.append" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="function">
-<dt id="ni.model.ip.generate_to_file">
-<tt class="descclassname">ni.model.ip.</tt><tt class="descname">generate_to_file</tt><big>(</big><em>path, data, eval_trials, use_cells=[0], eval_bootstrap_repetitions=10</em><big>)</big><a class="headerlink" href="#ni.model.ip.generate_to_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function fits two models and generates data for each saved to path + &#8216;data0.pkl&#8217; and path + &#8216;data1.pkl&#8217;</p>
-<div class="admonition-todo admonition" id="index-1">
-<p class="first admonition-title">Todo</p>
-<p class="last">split into more usefull and modular functions</p>
-</div>
 </dd></dl>
 
 </div>
@@ -730,7 +720,7 @@ This weighted matrix is then added up into a firing probability that is passed o
 <span id="net-sim-module"></span><h2>1.4. <tt class="xref py py-mod docutils literal"><span class="pre">net_sim</span></tt> Module<a class="headerlink" href="#module-ni.model.net_sim" title="Permalink to this headline">¶</a></h2>
 <span class="target" id="module-ni.model.net_sim"></span><p>The Net Simulator is divided into a Configuration, Net and a Result object.</p>
 <p>After configuration of the network it can be instantiated by calling <cite>Net(conf)</cite> with a valid configuration <cite>conf</cite>. This creates eg. random connectivity so that the simulation with the same network can be repeated multiple times.</p>
-<div class="admonition-todo admonition" id="index-2">
+<div class="admonition-todo admonition" id="index-1">
 <p class="first admonition-title">Todo</p>
 <p class="last">Add options for random number generator seeds, so that the <em>exact</em> same trial can be run over and over again.</p>
 </div>
@@ -762,35 +752,35 @@ Firing Rates plot
 <dl class="class">
 <dt id="ni.model.net_sim.Net">
 <em class="property">class </em><tt class="descclassname">ni.model.net_sim.</tt><tt class="descname">Net</tt><big>(</big><em>config</em><big>)</big><a class="reference internal" href="_modules/ni/model/net_sim.html#Net"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.net_sim.Net" title="Permalink to this definition">¶</a></dt>
-<dd><p>Undocumented</p>
+<dd><p>The Net Simulator class. Use with an Configuration instance.</p>
 <dl class="method">
 <dt id="ni.model.net_sim.Net.load">
 <tt class="descname">load</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="_modules/ni/model/net_sim.html#Net.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.net_sim.Net.load" title="Permalink to this definition">¶</a></dt>
-<dd><p>Undocumented</p>
+<dd><p>loads itself from a file</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ni.model.net_sim.Net.plot_firing_rates">
 <tt class="descname">plot_firing_rates</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ni/model/net_sim.html#Net.plot_firing_rates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.net_sim.Net.plot_firing_rates" title="Permalink to this definition">¶</a></dt>
-<dd><p>Undocumented</p>
+<dd><p>plots the intended firing rates</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ni.model.net_sim.Net.plot_interaction">
 <tt class="descname">plot_interaction</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ni/model/net_sim.html#Net.plot_interaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.net_sim.Net.plot_interaction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Undocumented</p>
+<dd><p>plots the interactions of the network</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ni.model.net_sim.Net.save">
 <tt class="descname">save</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="_modules/ni/model/net_sim.html#Net.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.net_sim.Net.save" title="Permalink to this definition">¶</a></dt>
-<dd><p>Undocumented</p>
+<dd><p>saves itself to a file</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ni.model.net_sim.Net.simulate">
 <tt class="descname">simulate</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ni/model/net_sim.html#Net.simulate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.net_sim.Net.simulate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Undocumented</p>
+<dd><p>Simulates the network</p>
 </dd></dl>
 
 </dd></dl>
@@ -798,41 +788,69 @@ Firing Rates plot
 <dl class="class">
 <dt id="ni.model.net_sim.SimulationConfiguration">
 <em class="property">class </em><tt class="descclassname">ni.model.net_sim.</tt><tt class="descname">SimulationConfiguration</tt><a class="reference internal" href="_modules/ni/model/net_sim.html#SimulationConfiguration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.net_sim.SimulationConfiguration" title="Permalink to this definition">¶</a></dt>
-<dd><p>Undocumented</p>
+<dd><p>Configures the simulation. The default values are:</p>
+<blockquote>
+<div><strong>Nneur</strong>  = 100
+<strong>sparse_coeff</strong> = 0.1
+<strong>Trial_Time</strong>  = 1000
+<strong>prior_epoch</strong>  = 250
+<strong>Ntrials</strong>  = 10
+<strong>Nsec</strong>  = Ntrials*Trial_Time/1000
+<strong>Ntime</strong> = Nsec*1000
+<strong>eps</strong>  =0.1
+<strong>frate_mu</strong>  = 1.0/25.0
+<strong>Nhist</strong> = 50
+<strong>output</strong>  = False
+<strong>rate_function</strong>  = False</div></blockquote>
+<dl class="attribute">
+<dt id="ni.model.net_sim.SimulationConfiguration.Nsec">
+<tt class="descname">Nsec</tt><a class="reference internal" href="_modules/ni/model/net_sim.html#SimulationConfiguration.Nsec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.net_sim.SimulationConfiguration.Nsec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ni.model.net_sim.SimulationConfiguration.Ntime">
+<tt class="descname">Ntime</tt><a class="reference internal" href="_modules/ni/model/net_sim.html#SimulationConfiguration.Ntime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.net_sim.SimulationConfiguration.Ntime" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="ni.model.net_sim.SimulationResult">
 <em class="property">class </em><tt class="descclassname">ni.model.net_sim.</tt><tt class="descname">SimulationResult</tt><a class="reference internal" href="_modules/ni/model/net_sim.html#SimulationResult"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.net_sim.SimulationResult" title="Permalink to this definition">¶</a></dt>
-<dd><p>Undocumented</p>
+<dd><p>Holds the results of a simulation</p>
+<dl class="attribute">
+<dt id="ni.model.net_sim.SimulationResult.data">
+<tt class="descname">data</tt><a class="reference internal" href="_modules/ni/model/net_sim.html#SimulationResult.data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.net_sim.SimulationResult.data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="ni.model.net_sim.SimulationResult.plot">
 <tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ni/model/net_sim.html#SimulationResult.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.net_sim.SimulationResult.plot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Undocumented</p>
+<dd><p>plots the resulting spike train</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ni.model.net_sim.SimulationResult.plot_firing_rates">
 <tt class="descname">plot_firing_rates</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ni/model/net_sim.html#SimulationResult.plot_firing_rates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.net_sim.SimulationResult.plot_firing_rates" title="Permalink to this definition">¶</a></dt>
-<dd><p>Undocumented</p>
+<dd><p>plots the resulting firing rate</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ni.model.net_sim.SimulationResult.plot_firing_rates_per_channel">
-<tt class="descname">plot_firing_rates_per_channel</tt><big>(</big><big>)</big><a class="headerlink" href="#ni.model.net_sim.SimulationResult.plot_firing_rates_per_channel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Undocumented</p>
+<tt class="descname">plot_firing_rates_per_channel</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ni/model/net_sim.html#SimulationResult.plot_firing_rates_per_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.net_sim.SimulationResult.plot_firing_rates_per_channel" title="Permalink to this definition">¶</a></dt>
+<dd><p>plots the firing rate for each channel</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ni.model.net_sim.SimulationResult.stopTimer">
 <tt class="descname">stopTimer</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ni/model/net_sim.html#SimulationResult.stopTimer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.net_sim.SimulationResult.stopTimer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Undocumented</p>
+<dd><p>stops the internal timer</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ni.model.net_sim.SimulationResult.store">
 <tt class="descname">store</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="_modules/ni/model/net_sim.html#SimulationResult.store"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.net_sim.SimulationResult.store" title="Permalink to this definition">¶</a></dt>
-<dd><p>Undocumented</p>
+<dd><p>stores data in the container</p>
 </dd></dl>
 
 </dd></dl>
@@ -840,7 +858,7 @@ Firing Rates plot
 <dl class="function">
 <dt id="ni.model.net_sim.simulate">
 <tt class="descclassname">ni.model.net_sim.</tt><tt class="descname">simulate</tt><big>(</big><em>config</em><big>)</big><a class="reference internal" href="_modules/ni/model/net_sim.html#simulate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.net_sim.simulate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Undocumented</p>
+<dd><p>creates a network and simulates it.</p>
 </dd></dl>
 
 </div>
@@ -970,7 +988,8 @@ the ith basis of knots evaluated on x.</dd>
 </div>
 <div class="section" id="module-ni.model.backend_elasticnet">
 <span id="backend-elasticnet-module"></span><h2>1.7. <tt class="xref py py-mod docutils literal"><span class="pre">backend_elasticnet</span></tt> Module<a class="headerlink" href="#module-ni.model.backend_elasticnet" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-ni.model.backend_elasticnet"></span><dl class="class">
+<span class="target" id="module-ni.model.backend_elasticnet"></span><p>This module provides a backend to the .ip model. It wraps the sklearn.linear_model.ElasticNet / ElasticNetCV objects.</p>
+<dl class="class">
 <dt id="ni.model.backend_elasticnet.Configuration">
 <em class="property">class </em><tt class="descclassname">ni.model.backend_elasticnet.</tt><tt class="descname">Configuration</tt><a class="reference internal" href="_modules/ni/model/backend_elasticnet.html#Configuration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.backend_elasticnet.Configuration" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default Values:</p>
@@ -1020,7 +1039,8 @@ the ith basis of knots evaluated on x.</dd>
 </div>
 <div class="section" id="module-ni.model.backend_glm">
 <span id="backend-glm-module"></span><h2>1.8. <tt class="xref py py-mod docutils literal"><span class="pre">backend_glm</span></tt> Module<a class="headerlink" href="#module-ni.model.backend_glm" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-ni.model.backend_glm"></span><dl class="class">
+<span class="target" id="module-ni.model.backend_glm"></span><p>This module provides a backend to the .ip model. It wraps the statsmodels.api.GLM object.</p>
+<dl class="class">
 <dt id="ni.model.backend_glm.Configuration">
 <em class="property">class </em><tt class="descclassname">ni.model.backend_glm.</tt><tt class="descname">Configuration</tt><a class="reference internal" href="_modules/ni/model/backend_glm.html#Configuration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.backend_glm.Configuration" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default Values:</p>
@@ -1132,12 +1152,12 @@ the ith basis of knots evaluated on x.</dd>
         <li class="right" >
           <a href="index.html" title="Welcome to the Neuroinformatics Toolbox documentation!"
              >previous</a> |</li>
-        <li><a href="index.html">Neuroinformatics Toolbox 0.1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">Neuroinformatics Toolbox 0.2 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
         &copy; Copyright 2013, Jacob Huth.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

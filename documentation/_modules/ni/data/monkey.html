@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -8,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>ni.data.monkey &mdash; Neuroinformatics Toolbox 0.1 documentation</title>
+    <title>ni.data.monkey &mdash; Neuroinformatics Toolbox 0.2 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -16,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '0.1',
+        VERSION:     '0.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -26,7 +24,7 @@
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="Neuroinformatics Toolbox 0.1 documentation" href="../../../index.html" />
+    <link rel="top" title="Neuroinformatics Toolbox 0.2 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body>
@@ -39,7 +37,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../../index.html">Neuroinformatics Toolbox 0.1 documentation</a> &raquo;</li>
+        <li><a href="../../../index.html">Neuroinformatics Toolbox 0.2 documentation</a> &raquo;</li>
           <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
@@ -57,47 +55,67 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">ni</span>
 <span class="kn">import</span> <span class="nn">scipy.io</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">import</span> <span class="nn">ni.model.pointprocess</span>
-<span class="nb">reload</span> <span class="p">(</span><span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">ni.data.data</span>
 
-<span class="n">path</span> <span class="o">=</span> <span class="s">&#39;/work/jahuth/&#39;</span>
+<span class="n">MILLISECOND_RESOLUTION</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="c">#path = &#39;/work/jahuth/&#39;</span>
+<span class="c">#path = ni.config.get(&quot;ni.data.monkey.path&quot;) #&quot;/net/store/ni/happycortex/statmodelling/data/&quot;</span>
 
 <span class="n">available_trials</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;101a03&#39;</span><span class="p">,</span> <span class="s">&#39;104a10&#39;</span><span class="p">,</span> <span class="s">&#39;107a03&#39;</span><span class="p">,</span> <span class="s">&#39;108a08&#39;</span><span class="p">,</span> <span class="s">&#39;112a03&#39;</span><span class="p">,</span> <span class="s">&#39;101a03&#39;</span><span class="p">,</span> <span class="s">&#39;104a11&#39;</span><span class="p">,</span> <span class="s">&#39;107a04&#39;</span><span class="p">,</span> <span class="s">&#39;109a04&#39;</span><span class="p">,</span> <span class="s">&#39;112b02&#39;</span><span class="p">,</span> <span class="s">&#39;101a04&#39;</span><span class="p">,</span> <span class="s">&#39;105a04&#39;</span><span class="p">,</span> <span class="s">&#39;108a05&#39;</span><span class="p">,</span> <span class="s">&#39;110a03&#39;</span><span class="p">,</span> <span class="s">&#39;113a04&#39;</span><span class="p">,</span> <span class="s">&#39;102a09&#39;</span><span class="p">,</span> <span class="s">&#39;105a05&#39;</span><span class="p">,</span> <span class="s">&#39;108a06&#39;</span><span class="p">,</span> <span class="s">&#39;111a03&#39;</span><span class="p">,</span> <span class="s">&#39;113a05&#39;</span><span class="p">,</span> <span class="s">&#39;103a03&#39;</span><span class="p">,</span> <span class="s">&#39;106a03&#39;</span><span class="p">,</span> <span class="s">&#39;108a07&#39;</span><span class="p">,</span> <span class="s">&#39;111a04&#39;</span><span class="p">]</span>
+<span class="n">available_files</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;101a03&#39;</span><span class="p">,</span> <span class="s">&#39;104a10&#39;</span><span class="p">,</span> <span class="s">&#39;107a03&#39;</span><span class="p">,</span> <span class="s">&#39;108a08&#39;</span><span class="p">,</span> <span class="s">&#39;112a03&#39;</span><span class="p">,</span> <span class="s">&#39;101a03&#39;</span><span class="p">,</span> <span class="s">&#39;104a11&#39;</span><span class="p">,</span> <span class="s">&#39;107a04&#39;</span><span class="p">,</span> <span class="s">&#39;109a04&#39;</span><span class="p">,</span> <span class="s">&#39;112b02&#39;</span><span class="p">,</span> <span class="s">&#39;101a04&#39;</span><span class="p">,</span> <span class="s">&#39;105a04&#39;</span><span class="p">,</span> <span class="s">&#39;108a05&#39;</span><span class="p">,</span> <span class="s">&#39;110a03&#39;</span><span class="p">,</span> <span class="s">&#39;113a04&#39;</span><span class="p">,</span> <span class="s">&#39;102a09&#39;</span><span class="p">,</span> <span class="s">&#39;105a05&#39;</span><span class="p">,</span> <span class="s">&#39;108a06&#39;</span><span class="p">,</span> <span class="s">&#39;111a03&#39;</span><span class="p">,</span> <span class="s">&#39;113a05&#39;</span><span class="p">,</span> <span class="s">&#39;103a03&#39;</span><span class="p">,</span> <span class="s">&#39;106a03&#39;</span><span class="p">,</span> <span class="s">&#39;108a07&#39;</span><span class="p">,</span> <span class="s">&#39;111a04&#39;</span><span class="p">]</span>
 
-<div class="viewcode-block" id="Data"><a class="viewcode-back" href="../../../ni.data.html#ni.data.monkey.Data">[docs]</a><span class="k">class</span> <span class="nc">Data</span><span class="p">:</span>
+<div class="viewcode-block" id="Data"><a class="viewcode-back" href="../../../ni.data.html#ni.data.monkey.Data">[docs]</a><span class="k">def</span> <span class="nf">Data</span><span class="p">(</span><span class="n">file_nr</span><span class="o">=</span><span class="s">&#39;101a03&#39;</span><span class="p">,</span><span class="n">resolution</span><span class="o">=</span><span class="n">MILLISECOND_RESOLUTION</span><span class="p">,</span><span class="n">trial</span><span class="o">=</span><span class="p">[],</span><span class="n">condition</span><span class="o">=</span><span class="p">[],</span><span class="n">cell</span><span class="o">=</span><span class="p">[]):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Loads Data into a Panda Data Frame</span>
+<span class="sd">	Loads Data into a Data Frame</span>
 
-<span class="sd">	Use like this::</span>
+<span class="sd">	Expects a file number. Available file numbers are in ni.data.monkey.available_files::</span>
 
-<span class="sd">		data = ni.data.decoding_data.DecodingData()</span>
-<span class="sd">		plot(data.data.ix[(0,0,0):(0,3,-1)].transpose().cumsum())</span>
+<span class="sd">		&gt;&gt;&gt; print ni.data.monkey.available_files</span>
+<span class="sd">			[&#39;101a03&#39;, &#39;104a10&#39;, &#39;107a03&#39;, &#39;108a08&#39;, &#39;112a03&#39;, &#39;101a03&#39;, &#39;104a11&#39;, &#39;107a04&#39;, &#39;109a04&#39;, &#39;112b02&#39;, &#39;101a04&#39;, &#39;105a04&#39;, &#39;108a05&#39;, &#39;110a03&#39;, &#39;113a04&#39;, &#39;102a09&#39;, &#39;105a05&#39;, &#39;108a06&#39;, &#39;111a03&#39;, &#39;113a05&#39;, &#39;103a03&#39;, &#39;106a03&#39;, &#39;108a07&#39;, &#39;111a04&#39;]</span>
 
-<span class="sd">	.ix slices a portion of the data. The three indices are: Condition, Trial, then Cell. So the code above plots the cummulative firing rate for the first the trials of the first condition for all cells.</span>
+<span class="sd">	**trial**</span>
+
+<span class="sd">		number of trial to load or list of trials to load.</span>
+<span class="sd">		Non-existent trial numbers are ignored.</span>
+
+<span class="sd">	**condition**</span>
+
+<span class="sd">		number of condition to load or list of conditions to load.</span>
+<span class="sd">		Non-existent condition numbers are ignored.</span>
+
+<span class="sd">	**cell**</span>
+
+<span class="sd">		number of cell to load or list of cells to load.</span>
+<span class="sd">		Non-existent cell numbers are ignored.</span>
+
+<span class="sd">	Example::</span>
+
+<span class="sd">		data = ni.data.monkey.Data(trial_nr = ni.data.monkey.available_trials[3], trial=range(10), condition = 0)</span>
 
 
-<span class="sd">	.. image:: _static/decoding_data_slice.png</span>
-
-<span class="sd">	or::</span>
-
-<span class="sd">		data = ni.data.decoding_data.DecodingData()</span>
-<span class="sd">		pylab.plot(data.data.xs(0,level=&#39;Condition&#39;).xs(0,level=&#39;Cell&#39;).ix[:5].transpose().cumsum())</span>
-<span class="sd">		pylab.show()</span>
-
-<span class="sd">	With .xs one can slice at any level, ie. get specific trials and cells. this can be combined with .ix to get slices of data.</span>
-<span class="sd">	</span>
 <span class="sd">	&quot;&quot;&quot;</span>
-	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">trial_nr</span><span class="o">=</span><span class="s">&#39;101a03&#39;</span><span class="p">):</span>
+	<span class="n">d</span> <span class="o">=</span> <span class="n">_Data</span><span class="p">(</span><span class="n">file_nr</span><span class="p">,</span><span class="n">resolution</span><span class="p">,</span><span class="n">trial</span><span class="o">=</span><span class="n">trial</span><span class="p">,</span><span class="n">condition</span><span class="o">=</span><span class="n">condition</span><span class="p">,</span><span class="n">cell</span><span class="o">=</span><span class="n">cell</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">ni</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+</div>
+<span class="k">class</span> <span class="nc">_Data</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Loads Data into a Data Frame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">trial_nr</span><span class="o">=</span><span class="s">&#39;101a03&#39;</span><span class="p">,</span><span class="n">resolution</span><span class="o">=</span><span class="n">MILLISECOND_RESOLUTION</span><span class="p">,</span><span class="n">trial</span><span class="o">=</span><span class="p">[],</span><span class="n">condition</span><span class="o">=</span><span class="p">[],</span><span class="n">cell</span><span class="o">=</span><span class="p">[]):</span>
+		<span class="n">path</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;ni.data.monkey.path&quot;</span><span class="p">)</span>
 		<span class="n">mat</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s">&#39;nic&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">trial_nr</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;.mat&#39;</span><span class="p">)</span>
 		<span class="k">try</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">init_dot_indexing</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">init_dot_indexing</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span><span class="n">resolution</span><span class="p">,</span><span class="n">trial</span><span class="o">=</span><span class="n">trial</span><span class="p">,</span><span class="n">condition</span><span class="o">=</span><span class="n">condition</span><span class="p">,</span><span class="n">cell</span><span class="o">=</span><span class="n">cell</span><span class="p">)</span>
 		<span class="k">except</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">init_square_brackets_indexing</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
-<div class="viewcode-block" id="Data.init_dot_indexing"><a class="viewcode-back" href="../../../ni.data.html#ni.data.monkey.Data.init_dot_indexing">[docs]</a>	<span class="k">def</span> <span class="nf">init_dot_indexing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">mat</span><span class="p">):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">init_square_brackets_indexing</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span><span class="n">resolution</span><span class="p">,</span><span class="n">trial</span><span class="o">=</span><span class="n">trial</span><span class="p">,</span><span class="n">condition</span><span class="o">=</span><span class="n">condition</span><span class="p">,</span><span class="n">cell</span><span class="o">=</span><span class="n">cell</span><span class="p">)</span>
+	<span class="k">def</span> <span class="nf">init_dot_indexing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">mat</span><span class="p">,</span><span class="n">resolution</span><span class="o">=</span><span class="n">MILLISECOND_RESOLUTION</span><span class="p">,</span><span class="n">trial</span><span class="o">=</span><span class="p">[],</span><span class="n">condition</span><span class="o">=</span><span class="p">[],</span><span class="n">cell</span><span class="o">=</span><span class="p">[]):</span>
+		<span class="sd">&quot;&quot;&quot; one of two possible indexing methods (differs by python version and file) &quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">Spike_times_STC</span> <span class="o">=</span> <span class="n">mat</span><span class="p">[</span><span class="s">&#39;Data&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Spike_times_STC</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">T</span> <span class="o">=</span> <span class="n">mat</span><span class="p">[</span><span class="s">&#39;Data&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">Stimulus</span> <span class="o">=</span> <span class="n">mat</span><span class="p">[</span><span class="s">&#39;Data&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Stimlus</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
@@ -109,16 +127,20 @@
 		<span class="n">d</span> <span class="o">=</span> <span class="p">[]</span>
 		<span class="n">tuples</span> <span class="o">=</span> <span class="p">[]</span>
 		<span class="k">for</span> <span class="n">con</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nr_conditions</span><span class="p">):</span>
-			<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nr_trials</span><span class="p">):</span>
-				<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nr_cells</span><span class="p">):</span>
-						<span class="n">spikes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">getBinary</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Spike_times_STC</span><span class="o">.</span><span class="n">all_SUA</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">spike_times</span><span class="p">[</span><span class="n">con</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">*</span><span class="mi">1000</span><span class="p">))</span>
-						<span class="k">if</span> <span class="n">spikes</span> <span class="o">!=</span> <span class="p">[]:</span>
-							<span class="n">d</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">spikes</span><span class="p">)</span>
-							<span class="n">tuples</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">con</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">c</span><span class="p">))</span>
+			<span class="k">if</span> <span class="n">condition</span> <span class="o">==</span> <span class="p">[]</span> <span class="ow">or</span> <span class="n">con</span> <span class="o">==</span> <span class="n">condition</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">condition</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span> <span class="ow">and</span> <span class="n">con</span> <span class="ow">in</span> <span class="n">condition</span><span class="p">):</span>
+				<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nr_trials</span><span class="p">):</span>
+					<span class="k">if</span> <span class="n">trial</span> <span class="o">==</span> <span class="p">[]</span> <span class="ow">or</span> <span class="n">t</span> <span class="o">==</span> <span class="n">trial</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">trial</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span> <span class="ow">and</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">trial</span><span class="p">):</span>
+						<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nr_cells</span><span class="p">):</span>
+							<span class="k">if</span> <span class="n">cell</span> <span class="o">==</span> <span class="p">[]</span> <span class="ow">or</span> <span class="n">c</span> <span class="o">==</span> <span class="n">cell</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span> <span class="ow">and</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cell</span><span class="p">):</span>
+								<span class="n">spikes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">getBinary</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Spike_times_STC</span><span class="o">.</span><span class="n">all_SUA</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">spike_times</span><span class="p">[</span><span class="n">con</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">*</span><span class="n">resolution</span><span class="p">))</span>
+								<span class="k">if</span> <span class="n">spikes</span> <span class="o">!=</span> <span class="p">[]:</span>
+									<span class="n">d</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">spikes</span><span class="p">)</span>
+									<span class="n">tuples</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">con</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">c</span><span class="p">))</span>
 		<span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_tuples</span><span class="p">(</span><span class="n">tuples</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;Condition&#39;</span><span class="p">,</span><span class="s">&#39;Trial&#39;</span><span class="p">,</span><span class="s">&#39;Cell&#39;</span><span class="p">])</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="n">index</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">time_bins</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span></div>
-<div class="viewcode-block" id="Data.init_square_brackets_indexing"><a class="viewcode-back" href="../../../ni.data.html#ni.data.monkey.Data.init_square_brackets_indexing">[docs]</a>	<span class="k">def</span> <span class="nf">init_square_brackets_indexing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">mat</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">time_bins</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+	<span class="k">def</span> <span class="nf">init_square_brackets_indexing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">mat</span><span class="p">,</span><span class="n">resolution</span><span class="o">=</span><span class="n">MILLISECOND_RESOLUTION</span><span class="p">,</span><span class="n">trial</span><span class="o">=</span><span class="p">[],</span><span class="n">condition</span><span class="o">=</span><span class="p">[],</span><span class="n">cell</span><span class="o">=</span><span class="p">[]):</span>
+		<span class="sd">&quot;&quot;&quot; one of two possible indexing methods (differs by python version and file) &quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">Spike_times_STC</span> <span class="o">=</span> <span class="n">mat</span><span class="p">[</span><span class="s">&#39;Data&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;Spike_times_STC&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">T</span> <span class="o">=</span> <span class="n">mat</span><span class="p">[</span><span class="s">&#39;Data&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">Stimulus</span> <span class="o">=</span> <span class="n">mat</span><span class="p">[</span><span class="s">&#39;Data&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;Stimlus&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
@@ -130,19 +152,22 @@
 		<span class="n">d</span> <span class="o">=</span> <span class="p">[]</span>
 		<span class="n">tuples</span> <span class="o">=</span> <span class="p">[]</span>
 		<span class="k">for</span> <span class="n">con</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nr_conditions</span><span class="p">):</span>
-			<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nr_trials</span><span class="p">):</span>
-				<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nr_cells</span><span class="p">):</span>
-						<span class="n">spikes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">getBinary</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Spike_times_STC</span><span class="p">[</span><span class="s">&#39;all_SUA&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;spike_times&#39;</span><span class="p">][</span><span class="n">con</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">*</span><span class="mi">1000</span><span class="p">))</span>
-						<span class="k">if</span> <span class="n">spikes</span> <span class="o">!=</span> <span class="p">[]:</span>
-							<span class="n">d</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">spikes</span><span class="p">)</span>
-							<span class="n">tuples</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">con</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">c</span><span class="p">))</span>
+			<span class="k">if</span> <span class="n">condition</span> <span class="o">==</span> <span class="p">[]</span> <span class="ow">or</span> <span class="n">con</span> <span class="o">==</span> <span class="n">condition</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">condition</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span> <span class="ow">and</span> <span class="n">con</span> <span class="ow">in</span> <span class="n">condition</span><span class="p">):</span>
+				<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nr_trials</span><span class="p">):</span>
+					<span class="k">if</span> <span class="n">trial</span> <span class="o">==</span> <span class="p">[]</span> <span class="ow">or</span> <span class="n">t</span> <span class="o">==</span> <span class="n">trial</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">trial</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span> <span class="ow">and</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">trial</span><span class="p">):</span>
+						<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nr_cells</span><span class="p">):</span>
+							<span class="k">if</span> <span class="n">cell</span> <span class="o">==</span> <span class="p">[]</span> <span class="ow">or</span> <span class="n">c</span> <span class="o">==</span> <span class="n">cell</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span> <span class="ow">and</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cell</span><span class="p">):</span>
+								<span class="n">spikes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">getBinary</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Spike_times_STC</span><span class="p">[</span><span class="s">&#39;all_SUA&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;spike_times&#39;</span><span class="p">][</span><span class="n">con</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">*</span><span class="n">resolution</span><span class="p">))</span>
+								<span class="k">if</span> <span class="n">spikes</span> <span class="o">!=</span> <span class="p">[]:</span>
+									<span class="n">d</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">spikes</span><span class="p">)</span>
+									<span class="n">tuples</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">con</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">c</span><span class="p">))</span>
 		<span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_tuples</span><span class="p">(</span><span class="n">tuples</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;Condition&#39;</span><span class="p">,</span><span class="s">&#39;Trial&#39;</span><span class="p">,</span><span class="s">&#39;Cell&#39;</span><span class="p">])</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="n">index</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">time_bins</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span></div>
+		<span class="bp">self</span><span class="o">.</span><span class="n">time_bins</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
 	<span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="n">s</span> <span class="o">=</span>  <span class="s">&quot;Spike data: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nr_conditions</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; Condition(s) &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nr_trials</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; Trial(s) of &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nr_cells</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; Cell(s) in &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_bins</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; Time step(s).&quot;</span>
 		<span class="k">return</span> <span class="n">s</span>
-</pre></div></div>
+</pre></div>
 
           </div>
         </div>
@@ -175,13 +200,13 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../../index.html">Neuroinformatics Toolbox 0.1 documentation</a> &raquo;</li>
+        <li><a href="../../../index.html">Neuroinformatics Toolbox 0.2 documentation</a> &raquo;</li>
           <li><a href="../../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
         &copy; Copyright 2013, Jacob Huth.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>
