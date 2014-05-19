@@ -97,18 +97,18 @@ def N(u,i,p,knots):
     at knot i and point u.
     """
     if p == 0:
-        if knots[i] < u and u <=knots[i+1]:
+        if knots[int(i)] < u and u <=knots[int(i+1)]:
             return 1.0
         else:
             return 0.0
     else:
         try:
-            k = (( float((u-knots[i]))/float((knots[i+p] - knots[i]) )) 
+            k = (( float((u-knots[int(i)]))/float((knots[int(i+p)] - knots[int(i)]) )) 
                     * N(u,i,p-1,knots))
         except ZeroDivisionError:
             k = 0.0
         try:
-            q = (( float((knots[i+p+1] - u))/float((knots[i+p+1] - knots[i+1])))
+            q = (( float((knots[int(i+p+1)] - u))/float((knots[int(i+p+1)] - knots[int(i+1)])))
                     * N(u,i+1,p-1,knots))
         except ZeroDivisionError:
             q  = 0.0 

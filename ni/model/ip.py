@@ -365,6 +365,12 @@ class Model(ni.tools.pickler.Picklable):
 			self._backend = backend_glm
 		elif b == "elasticnet":
 			self._backend = backend_elasticnet
+	@property
+	def cell(self):
+	    return self.configuration.cell
+	@cell.setter
+	def cell(self, c):
+		self.configuration.cell = c
 	def predict(self,beta,data):
 		"""
 		will predict a firing probability function according to a design matrix.
