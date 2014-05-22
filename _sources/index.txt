@@ -9,6 +9,11 @@ Welcome to the Neuroinformatics Toolbox documentation!
 The NI Toolbox contains functions to deal with spike data.
 
 
+ * `Get the toolbox <https://github.com/jahuth/ni>`_ 
+ * `Search in this Documentation <http://jahuth.github.io/ni/search.html>`_
+
+
+
 Using the toolbox looks like this::
 
 	data = ni.Data('spike_data.pkl')
@@ -49,8 +54,8 @@ The toolbox provides some shortcuts for functions and classes that are used regu
 
 
 
-Contents:
-----------
+Contents of this Documentation:
+---------------------------------
 
 .. toctree::
    :numbered:
