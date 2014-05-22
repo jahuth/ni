@@ -1,0 +1,25 @@
+Additional Information
+========================
+
+Inhomogeneous Pointprocess Generalized Linear Model
+--------------------------------------------------------
+
+
+Adapted from FMTP by Robert Costa
+
+
+A `generalized linear model <http://en.wikipedia.org/wiki/Generalized_linear_model>`_ predicts a variable *Y* with a linear predictor and a link function.
+The linear predictor of the form:
+        :math:`\eta = X\cdot\\beta`
+
+Where **X** is a matrix consisting of rows of values that correspond to a specific point in time of the modeled process.
+Each row my model a certain aspect (ie. time in trial, time after spike of some neuron) and is then weighted by the corresponding :math:`\\beta` parameter value. Each aspect may be scaled arbitrarily and shifted.
+This weighted matrix is then added up into a firing probability that is passed on to the link function.
+        .. image:: _static/examples/design_matrix_cross_component.png
+        .. image:: _static/examples/design_matrix_rate_component.png
+
+
+The link function in our case of pointprocesses (ie. a poisson, bernoulli or binomial distribution, depending on notation) it is either the *log* or *logit* function (:math:`ln\left(\\frac{\mu}{(1-\mu)}\\right)`).
+
+Uses one of two backends :py:mod:`ni.model.backend_glm` and :py:mod:`ni.model.backend_elasticnet`
+

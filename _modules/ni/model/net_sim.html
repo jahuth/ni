@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -8,15 +6,15 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>ni.model.net_sim &mdash; Neuroinformatics Toolbox 0.1 documentation</title>
+    <title>ni.model.net_sim &mdash; Neuroinformatics Toolbox 0.2 documentation</title>
     
-    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '0.1',
+        VERSION:     '0.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -26,29 +24,25 @@
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="Neuroinformatics Toolbox 0.1 documentation" href="../../../index.html" />
-    <link rel="up" title="Module code" href="../../index.html" /> 
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="top" title="Neuroinformatics Toolbox 0.2 documentation" href="../../../index.html" />
+    <link rel="up" title="ni.model" href="../model.html" /> 
   </head>
   <body>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="../../../index.html">Neuroinformatics Toolbox 0.1 documentation</a> &raquo;</li>
-          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
-      </ul>
-    </div>  
+      <div class="header"><h1 class="heading"><a href="../../../index.html">
+          <span>Neuroinformatics Toolbox 0.2 documentation</span></a></h1>
+        <h2 class="heading"><span>ni.model.net_sim</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body">
-            
+      </div>
+      <div class="content">
+        
+        
   <h1>Source code for ni.model.net_sim</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">.. module:: ni.model.net_sim</span>
@@ -106,86 +100,123 @@
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">ni.tools.progressbar</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">create_splines</span> <span class="kn">as</span> <span class="nn">cs</span>
+<span class="kn">import</span> <span class="nn">pointprocess</span>
+<span class="kn">import</span> <span class="nn">ni.data.data</span>
 
 <div class="viewcode-block" id="SimulationConfiguration"><a class="viewcode-back" href="../../../ni.model.html#ni.model.net_sim.SimulationConfiguration">[docs]</a><span class="k">class</span> <span class="nc">SimulationConfiguration</span><span class="p">:</span>
 	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Undocumented</span>
+<span class="sd">	Configures the simulation. The default values are:</span>
+
+<span class="sd">		**Nneur**  = 100</span>
+<span class="sd">		**sparse_coeff** = 0.1</span>
+<span class="sd">		**Trial_Time**  = 1000</span>
+<span class="sd">		**prior_epoch**  = 250</span>
+<span class="sd">		**Ntrials**  = 10</span>
+<span class="sd">		**Nsec**  = Ntrials*Trial_Time/1000</span>
+<span class="sd">		**Ntime** = Nsec*1000</span>
+<span class="sd">		**eps**  =0.1</span>
+<span class="sd">		**frate_mu**  = 1.0/25.0</span>
+<span class="sd">		**Nhist** = 50</span>
+<span class="sd">		**output**  = False</span>
+<span class="sd">		**rate_function**  = False</span>
+
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Undocumented</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">Nneur</span> <span class="o">=</span> <span class="mi">100</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">Nneur</span> <span class="o">=</span> <span class="mi">10</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">sparse_coeff</span><span class="o">=</span><span class="mf">0.1</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">Trial_Time</span> <span class="o">=</span> <span class="mi">1000</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">prior_epoch</span> <span class="o">=</span> <span class="mi">250</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">Ntrials</span> <span class="o">=</span> <span class="mi">10</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">Nsec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Ntrials</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Trial_Time</span><span class="o">/</span><span class="mi">1000</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">Ntime</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Nsec</span><span class="o">*</span><span class="mi">1000</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">Ntrials</span> <span class="o">=</span> <span class="mi">100</span>
+		<span class="c">#self.Nsec = self.Ntrials*self.Trial_Time/1000</span>
+		<span class="c">#self.Ntime=self.Nsec*1000</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">eps</span> <span class="o">=</span><span class="mf">0.1</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">frate_mu</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span><span class="mf">25.0</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">Nhist</span><span class="o">=</span><span class="mi">50</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="bp">False</span>
-</div>
+		<span class="bp">self</span><span class="o">.</span><span class="n">rate_function</span> <span class="o">=</span> <span class="bp">False</span>
+	<span class="nd">@property</span>
+<div class="viewcode-block" id="SimulationConfiguration.Nsec"><a class="viewcode-back" href="../../../ni.model.html#ni.model.net_sim.SimulationConfiguration.Nsec">[docs]</a>	<span class="k">def</span> <span class="nf">Nsec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Ntrials</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Trial_Time</span><span class="o">/</span><span class="mi">1000</span></div>
+	<span class="nd">@property</span>
+<div class="viewcode-block" id="SimulationConfiguration.Ntime"><a class="viewcode-back" href="../../../ni.model.html#ni.model.net_sim.SimulationConfiguration.Ntime">[docs]</a>	<span class="k">def</span> <span class="nf">Ntime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Nsec</span><span class="o">*</span><span class="mi">1000</span>
+
+	
+</div></div>
 <div class="viewcode-block" id="SimulationResult"><a class="viewcode-back" href="../../../ni.model.html#ni.model.net_sim.SimulationResult">[docs]</a><span class="k">class</span> <span class="nc">SimulationResult</span><span class="p">:</span>
 	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Undocumented</span>
+<span class="sd">	Holds the results of a simulation</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Undocumented</span>
-<span class="sd">		&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">sim_name</span> <span class="o">=</span> <span class="s">&quot;ni.model.net_sim&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">log_time_begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="p">{}</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">spikes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span>
 <div class="viewcode-block" id="SimulationResult.stopTimer"><a class="viewcode-back" href="../../../ni.model.html#ni.model.net_sim.SimulationResult.stopTimer">[docs]</a>	<span class="k">def</span> <span class="nf">stopTimer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Undocumented</span>
+<span class="sd">		stops the internal timer</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">log_time_end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">log_time_duration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_time_end</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_time_begin</span></div>
 <div class="viewcode-block" id="SimulationResult.store"><a class="viewcode-back" href="../../../ni.model.html#ni.model.net_sim.SimulationResult.store">[docs]</a>	<span class="k">def</span> <span class="nf">store</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Undocumented</span>
+<span class="sd">		stores data in the container</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">spikes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 		<span class="n">spikes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">spike_times</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="n">spikes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">spikes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="n">i</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">Nneur</span><span class="p">)]))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">spike_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="n">spikes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">spikes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="n">i</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">Nneur</span><span class="p">)])</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">num_spikes_per_channel</span> <span class="o">=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">spikes</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">num_spikes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_spikes_per_channel</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">num_channels</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spikes</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">timerange</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spikes</span><span class="p">))</span></div>
 <div class="viewcode-block" id="SimulationResult.plot"><a class="viewcode-back" href="../../../ni.model.html#ni.model.net_sim.SimulationResult.plot">[docs]</a>	<span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Undocumented</span>
+<span class="sd">		plots the resulting spike train</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="p">[</span><span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spikes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">spikes</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">spikes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">i</span><span class="p">,</span><span class="s">&#39;|&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spikes</span><span class="o">.</span><span class="n">T</span><span class="p">))]</span>
 		<span class="n">pylab</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spikes</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
 		<span class="k">return</span></div>
 <div class="viewcode-block" id="SimulationResult.plot_firing_rates"><a class="viewcode-back" href="../../../ni.model.html#ni.model.net_sim.SimulationResult.plot_firing_rates">[docs]</a>	<span class="k">def</span> <span class="nf">plot_firing_rates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Undocumented</span>
+<span class="sd">		plots the resulting firing rate</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">print</span> <span class="s">&quot;Firing Rates plot&quot;</span>
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_channels</span><span class="p">):</span>
+			<span class="n">pointprocess</span><span class="o">.</span><span class="n">plotGaussed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spikes</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="mi">100</span><span class="p">)</span></div>
+<div class="viewcode-block" id="SimulationResult.plot_firing_rates_per_channel"><a class="viewcode-back" href="../../../ni.model.html#ni.model.net_sim.SimulationResult.plot_firing_rates_per_channel">[docs]</a>	<span class="k">def</span> <span class="nf">plot_firing_rates_per_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		plots the firing rate for each channel</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">print</span> <span class="s">&quot;Firing Rates plot&quot;</span>
 		<span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spikes</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span></div>
 	<span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Undocumented</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="k">return</span> <span class="s">&quot;&#39;&quot;</span> <span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">sim_name</span> <span class="o">+</span> <span class="s">&quot;&#39; Simulation Result</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">+</span> <span class="s">&quot;Took &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log_time_duration</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="s">&quot;s to compute.</span><span class="se">\n</span><span class="s">Timerange: &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timerange</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_spikes</span><span class="p">))</span> <span class="o">+</span> <span class="s">&quot; Spikes in &quot;</span> <span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_channels</span><span class="p">)</span><span class="o">+</span> <span class="s">&quot; channels: </span><span class="se">\n\t</span><span class="s">[&quot;</span> <span class="o">+</span> <span class="s">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">))</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_spikes_per_channel</span><span class="p">])</span> <span class="o">+</span> <span class="s">&quot;]&quot;</span></div>
+		<span class="k">return</span> <span class="s">&quot;&#39;&quot;</span> <span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">sim_name</span> <span class="o">+</span> <span class="s">&quot;&#39; Simulation Result</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">+</span> <span class="s">&quot;Took &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log_time_duration</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="s">&quot;s to compute.</span><span class="se">\n</span><span class="s">Timerange: &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timerange</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_spikes</span><span class="p">))</span> <span class="o">+</span> <span class="s">&quot; Spikes in &quot;</span> <span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_channels</span><span class="p">)</span><span class="o">+</span> <span class="s">&quot; channels: </span><span class="se">\n\t</span><span class="s">[&quot;</span> <span class="o">+</span> <span class="s">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">))</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_spikes_per_channel</span><span class="p">])</span> <span class="o">+</span> <span class="s">&quot;]&quot;</span>
+	<span class="nd">@property</span>
+<div class="viewcode-block" id="SimulationResult.data"><a class="viewcode-back" href="../../../ni.model.html#ni.model.net_sim.SimulationResult.data">[docs]</a>	<span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="n">datas</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">Nneur</span><span class="p">):</span> 
+			<span class="n">datas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spikes</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">prior_epoch</span><span class="p">:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">Ntrials</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">Trial_Time</span><span class="p">)))</span>
+		<span class="k">return</span> <span class="n">ni</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">datas</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+
+</div></div>
 <div class="viewcode-block" id="Net"><a class="viewcode-back" href="../../../ni.model.html#ni.model.net_sim.Net">[docs]</a><span class="k">class</span> <span class="nc">Net</span><span class="p">:</span>
 	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Undocumented</span>
+<span class="sd">	The Net Simulator class. Use with an Configuration instance.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">config</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Undocumented</span>
-<span class="sd">		&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">sim_name</span> <span class="o">=</span> <span class="s">&quot;ni.model.net_sim&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">frate</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">Nneur</span><span class="p">)</span><span class="o">*</span><span class="mf">0.4</span><span class="o">+</span><span class="mf">0.3</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">frate</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">Nneur</span><span class="p">)</span><span class="o">*</span><span class="mf">0.2</span><span class="o">+</span><span class="mf">0.4</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">frate</span><span class="o">=-</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">frate_mu</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">frate</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">frate_function</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frate</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">prior_epoch</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">Ntime</span><span class="p">)</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">rate_function</span><span class="p">:</span>
+			<span class="n">rate_splines</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">create_splines_linspace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">prior_epoch</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">Ntime</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+			<span class="n">rate_function</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">Nneur</span><span class="p">,</span> <span class="n">rate_splines</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">rate_splines</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">())</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">frate_function</span> <span class="o">=</span> <span class="n">rate_function</span><span class="p">[:,</span> <span class="p">:(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">prior_epoch</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">Ntime</span><span class="p">)]</span> 
+			<span class="bp">self</span><span class="o">.</span><span class="n">frate_function</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frate_function</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frate_function</span><span class="p">))</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">frate_function</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frate_function</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">frate</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">Nneur</span><span class="p">)])</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">frate_function</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frate_function</span><span class="p">,(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">Nneur</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">prior_epoch</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">Ntime</span><span class="p">))</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">logit_lam0</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frate</span><span class="o">/</span><span class="mi">1000</span> <span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">frate</span><span class="o">/</span><span class="mi">1000</span><span class="p">))</span>
 		<span class="c"># now make coupling we will use a simple </span>
 		<span class="c"># exponential decay function</span>
@@ -213,13 +244,10 @@
 			<span class="bp">self</span><span class="o">.</span><span class="n">Jall</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="p">,]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">Nhist</span><span class="p">))</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
 	<span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Undocumented</span>
-<span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">return</span> <span class="s">&quot;&#39;&quot;</span> <span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">sim_name</span> <span class="o">+</span> <span class="s">&quot;&#39; Simulation Setup</span><span class="se">\n</span><span class="s">Timerange: &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">prior_epoch</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">Ntime</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">prior_epoch</span><span class="p">))</span><span class="o">+</span><span class="s">&quot;</span><span class="se">\n</span><span class="s"> &quot;</span> <span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">Nneur</span><span class="p">)</span><span class="o">+</span> <span class="s">&quot; channels with firing rates: </span><span class="se">\n\t</span><span class="s">[&quot;</span> <span class="o">+</span> <span class="s">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">frate</span><span class="p">])</span> <span class="o">+</span> <span class="s">&quot;]&quot;</span>
 <div class="viewcode-block" id="Net.save"><a class="viewcode-back" href="../../../ni.model.html#ni.model.net_sim.Net.save">[docs]</a>	<span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Undocumented</span>
+<span class="sd">		saves itself to a file</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">fileame</span><span class="p">,</span> <span class="s">&quot;wb&quot;</span><span class="p">)</span>
 		<span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
@@ -227,7 +255,7 @@
 		<span class="k">return</span> <span class="mi">1</span></div>
 <div class="viewcode-block" id="Net.load"><a class="viewcode-back" href="../../../ni.model.html#ni.model.net_sim.Net.load">[docs]</a>	<span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Undocumented</span>
+<span class="sd">		loads itself from a file</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">fileame</span><span class="p">,</span> <span class="s">&quot;rb&quot;</span><span class="p">)</span>
 		<span class="n">tmp_dict</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
@@ -236,7 +264,7 @@
 		<span class="k">return</span> <span class="mi">1</span></div>
 <div class="viewcode-block" id="Net.simulate"><a class="viewcode-back" href="../../../ni.model.html#ni.model.net_sim.Net.simulate">[docs]</a>	<span class="k">def</span> <span class="nf">simulate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Undocumented</span>
+<span class="sd">		Simulates the network</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">result</span> <span class="o">=</span> <span class="n">SimulationResult</span><span class="p">()</span>
 		<span class="n">result</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span>
@@ -270,7 +298,7 @@
 					<span class="k">if</span> <span class="n">neur</span> <span class="o">!=</span> <span class="n">j</span><span class="p">:</span>
 						<span class="k">if</span> <span class="n">last_spike_time</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">50</span><span class="p">:</span>
 							<span class="n">interact</span> <span class="o">=</span> <span class="n">interact</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">Jall</span><span class="p">[</span><span class="n">neur</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">last_spike_time</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span>
-				<span class="n">exp_logit_lam</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frate</span><span class="p">[</span><span class="n">neur</span><span class="p">]</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">frate</span><span class="p">[</span><span class="n">neur</span><span class="p">]</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span> <span class="p">)</span> <span class="o">+</span> <span class="n">self_interact</span> <span class="o">+</span><span class="n">interact</span><span class="p">)</span>
+				<span class="n">exp_logit_lam</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frate_function</span><span class="p">[</span><span class="n">t</span><span class="p">,</span><span class="n">neur</span><span class="p">]</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">frate_function</span><span class="p">[</span><span class="n">t</span><span class="p">,</span><span class="n">neur</span><span class="p">]</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span> <span class="p">)</span> <span class="o">+</span> <span class="n">self_interact</span> <span class="o">+</span><span class="n">interact</span><span class="p">)</span>
 				<span class="n">p</span><span class="o">=</span><span class="n">exp_logit_lam</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">exp_logit_lam</span><span class="p">)</span>
 				<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span><span class="o">&lt;=</span><span class="n">p</span><span class="p">:</span>
 					<span class="n">spikes_all</span><span class="p">[</span><span class="n">t</span><span class="p">,</span><span class="n">neur</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
@@ -297,7 +325,7 @@
 	<span class="c"># Plots:</span></div>
 <div class="viewcode-block" id="Net.plot_interaction"><a class="viewcode-back" href="../../../ni.model.html#ni.model.net_sim.Net.plot_interaction">[docs]</a>	<span class="k">def</span> <span class="nf">plot_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Undocumented</span>
+<span class="sd">		plots the interactions of the network</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">print</span> <span class="s">&quot;Interaction plot&quot;</span>
 		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">Nneur</span><span class="p">):</span>
@@ -308,16 +336,17 @@
 			<span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span></div>
 <div class="viewcode-block" id="Net.plot_firing_rates"><a class="viewcode-back" href="../../../ni.model.html#ni.model.net_sim.Net.plot_firing_rates">[docs]</a>	<span class="k">def</span> <span class="nf">plot_firing_rates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Undocumented</span>
+<span class="sd">		plots the intended firing rates</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">print</span> <span class="s">&quot;Firing Rates plot&quot;</span>
 		<span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frate</span><span class="p">)</span>
 </div></div>
 <div class="viewcode-block" id="simulate"><a class="viewcode-back" href="../../../ni.model.html#ni.model.net_sim.simulate">[docs]</a><span class="k">def</span> <span class="nf">simulate</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Undocumented</span>
+<span class="sd">	creates a network and simulates it.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="n">result</span> <span class="o">=</span> <span class="n">SimulationResult</span><span class="p">()</span>
+	<span class="n">result</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
 	<span class="n">frate</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">Nneur</span><span class="p">)</span><span class="o">*</span><span class="mf">0.4</span><span class="o">+</span><span class="mf">0.3</span>
 	<span class="n">frate</span><span class="o">=-</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">config</span><span class="o">.</span><span class="n">frate_mu</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">frate</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
 	<span class="n">logit_lam0</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">frate</span><span class="o">/</span><span class="mi">1000</span> <span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">frate</span><span class="o">/</span><span class="mi">1000</span><span class="p">))</span>
@@ -419,44 +448,18 @@
 	<span class="k">return</span> <span class="n">result</span>
 </pre></div></div>
 
-          </div>
-        </div>
       </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="../../../index.html">Neuroinformatics Toolbox 0.1 documentation</a> &raquo;</li>
-          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
-      </ul>
-    </div>
+
     <div class="footer">
         &copy; Copyright 2013, Jacob Huth.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

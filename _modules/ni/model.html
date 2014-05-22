@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ni.model &mdash; Neuroinformatics Toolbox 0.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="top" title="Neuroinformatics Toolbox 0.2 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../index.html">
+          <span>Neuroinformatics Toolbox 0.2 documentation</span></a></h1>
+        <h2 class="heading"><span>ni.model</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for ni.model</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">designmatrix</span>
+<span class="kn">import</span> <span class="nn">ip</span>
+<span class="kn">import</span> <span class="nn">pointprocess</span>
+<span class="kn">import</span> <span class="nn">net_sim</span>
+<span class="kn">import</span> <span class="nn">ip_generator</span>
+
+<div class="viewcode-block" id="BareModel"><a class="viewcode-back" href="../../ni.model.html#ni.model.BareModel">[docs]</a><span class="k">class</span> <span class="nc">BareModel</span><span class="p">(</span><span class="n">ip</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;This is a shorthand class for an Inhomogenous Pointprocess model that contains only a RateComponent and nothing else.</span>
+
+<span class="sd">	This is completely equivalent to using:</span>
+
+<span class="sd">		ni.model.ip.Model({&#39;name&#39;:&#39;Rate Model&#39;,&#39;autohistory&#39;:False, &#39;crosshistory&#39;:False, &#39;knots_rate&#39;:knots_rate})</span>
+<span class="sd">		</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">configuration</span><span class="o">=</span><span class="p">{}):</span>
+		<span class="n">config</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span><span class="s">&#39;Model&#39;</span><span class="p">,</span><span class="s">&#39;autohistory&#39;</span><span class="p">:</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;crosshistory&#39;</span><span class="p">:</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;rate&#39;</span><span class="p">:</span><span class="bp">False</span><span class="p">}</span>
+		<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">configuration</span><span class="p">:</span>
+			<span class="n">config</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">configuration</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+		<span class="nb">super</span><span class="p">(</span><span class="n">BareModel</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="RateModel"><a class="viewcode-back" href="../../ni.model.html#ni.model.RateModel">[docs]</a><span class="k">class</span> <span class="nc">RateModel</span><span class="p">(</span><span class="n">ip</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;This is a shorthand class for an Inhomogenous Pointprocess model that contains only a RateComponent and nothing else.</span>
+
+<span class="sd">	This is completely equivalent to using:</span>
+
+<span class="sd">		ni.model.ip.Model({&#39;name&#39;:&#39;Rate Model&#39;,&#39;autohistory&#39;:False, &#39;crosshistory&#39;:False, &#39;knots_rate&#39;:knots_rate})</span>
+<span class="sd">		</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">knots_rate</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+		<span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">knots_rate</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
+			<span class="nb">super</span><span class="p">(</span><span class="n">RateModel</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">({</span><span class="s">&#39;name&#39;</span><span class="p">:</span><span class="s">&#39;Rate Model&#39;</span><span class="p">,</span><span class="s">&#39;autohistory&#39;</span><span class="p">:</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;crosshistory&#39;</span><span class="p">:</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;knots_rate&#39;</span><span class="p">:</span><span class="n">knots_rate</span><span class="p">})</span>
+		<span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">knots_rate</span><span class="p">)</span> <span class="o">==</span> <span class="nb">dict</span><span class="p">:</span>
+			<span class="n">conf</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span><span class="s">&#39;Rate Model&#39;</span><span class="p">,</span><span class="s">&#39;autohistory&#39;</span><span class="p">:</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;crosshistory&#39;</span><span class="p">:</span><span class="bp">False</span><span class="p">,</span><span class="s">&#39;knots_rate&#39;</span><span class="p">:</span><span class="mi">10</span><span class="p">};</span>
+			<span class="n">conf</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">knots_rate</span><span class="p">)</span>
+		        <span class="nb">super</span><span class="p">(</span><span class="n">RateModel</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">conf</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="RateAndHistoryModel"><a class="viewcode-back" href="../../ni.model.html#ni.model.RateAndHistoryModel">[docs]</a><span class="k">class</span> <span class="nc">RateAndHistoryModel</span><span class="p">(</span><span class="n">ip</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;This is a shorthand class for an Inhomogenous Pointprocess model that contains only a RateComponent, a Autohistory Component and nothing else.</span>
+
+<span class="sd">	This is completely equivalent to using:</span>
+
+<span class="sd">		ni.model.ip.Model({&#39;name&#39;:&#39;Rate Model with Autohistory Component&#39;,&#39;autohistory&#39;:True, &#39;crosshistory&#39;:False, &#39;knots_rate&#39;:knots_rate, &#39;history_length&#39;:history_length, &#39;knot_number&#39;:history_knots})</span>
+<span class="sd">		</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">knots_rate</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">history_length</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span><span class="n">history_knots</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+		<span class="nb">super</span><span class="p">(</span><span class="n">RateAndHistoryModel</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">({</span><span class="s">&#39;name&#39;</span><span class="p">:</span><span class="s">&#39;Rate Model with Autohistory Component&#39;</span><span class="p">,</span><span class="s">&#39;autohistory&#39;</span><span class="p">:</span><span class="bp">True</span><span class="p">,</span> <span class="s">&#39;crosshistory&#39;</span><span class="p">:</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;knots_rate&#39;</span><span class="p">:</span><span class="n">knots_rate</span><span class="p">,</span> <span class="s">&#39;history_length&#39;</span><span class="p">:</span><span class="n">history_length</span><span class="p">,</span> <span class="s">&#39;knot_number&#39;</span><span class="p">:</span><span class="n">history_knots</span><span class="p">})</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">knots_rate</span><span class="p">)</span></div>
+</pre></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, Jacob Huth.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

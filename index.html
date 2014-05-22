@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -8,15 +6,15 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Welcome to the Neuroinformatics Toolbox documentation! &mdash; Neuroinformatics Toolbox 0.1 documentation</title>
+    <title>Welcome to the Neuroinformatics Toolbox documentation! &mdash; Neuroinformatics Toolbox 0.2 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
-        VERSION:     '0.1',
+        URL_ROOT:    './',
+        VERSION:     '0.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -26,50 +24,77 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="Neuroinformatics Toolbox 0.1 documentation" href="#" />
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="Neuroinformatics Toolbox 0.2 documentation" href="#" />
     <link rel="next" title="1. model Package" href="ni.model.html" /> 
   </head>
   <body>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="ni.model.html" title="1. model Package"
-             accesskey="N">next</a> |</li>
-        <li><a href="#">Neuroinformatics Toolbox 0.1 documentation</a> &raquo;</li> 
-      </ul>
-    </div>  
+      <div class="header"><h1 class="heading"><a href="#">
+          <span>Neuroinformatics Toolbox 0.2 documentation</span></a></h1>
+        <h2 class="heading"><span>Welcome to the Neuroinformatics Toolbox documentation!</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="#">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="ni.model.html">1. model Package</a>&#160;&#160;»
+        </p>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body">
-            
+      </div>
+      <div class="content">
+        
+        
   <div class="section" id="welcome-to-the-neuroinformatics-toolbox-documentation">
 <h1>Welcome to the Neuroinformatics Toolbox documentation!<a class="headerlink" href="#welcome-to-the-neuroinformatics-toolbox-documentation" title="Permalink to this headline">¶</a></h1>
-<p>The NI Toolbox contains python versions of commonly used functions to deal with spike data.
-Get the pdf version <a class="reference external" href="_static/NeuroinformaticsToolbox.pdf">here</a></p>
-<p>Contents:</p>
+<p>The NI Toolbox contains functions to deal with spike data.</p>
+<p>Using the toolbox looks like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="s">&#39;spike_data.pkl&#39;</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">RateAndHistoryModel</span><span class="p">({</span><span class="s">&#39;cell&#39;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="s">&#39;crosshistory&#39;</span><span class="p">:[</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">]})</span>
+
+<span class="n">fitted_model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="n">plot</span><span class="p">(</span><span class="n">fitted_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">trial</span><span class="p">(</span><span class="mi">0</span><span class="p">)))</span>
+</pre></div>
+</div>
+<div class="section" id="ni-shortcuts">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">ni.</span></tt> Shortcuts<a class="headerlink" href="#ni-shortcuts" title="Permalink to this headline">¶</a></h2>
+<p>The toolbox provides some shortcuts for functions and classes that are used regularly:</p>
+<blockquote>
+<div><p><cite>ni.Data</cite> -&gt; <a class="reference internal" href="ni.data.html#ni.data.data.Data" title="ni.data.data.Data"><tt class="xref py py-class docutils literal"><span class="pre">ni.data.data.Data</span></tt></a></p>
+<blockquote>
+<div><p>A container for spike data. Can load pickled numpy arrays:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ni</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="s">&#39;some_matrix.pkl&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p><cite>ni.merge</cite> -&gt; <a class="reference internal" href="ni.data.html#ni.data.data.merge" title="ni.data.data.merge"><tt class="xref py py-func docutils literal"><span class="pre">ni.data.data.merge()</span></tt></a></p>
+<blockquote>
+<div>Merges mutliple <a class="reference internal" href="ni.data.html#ni.data.data.Data" title="ni.data.data.Data"><tt class="xref py py-func docutils literal"><span class="pre">ni.data.data.Data()</span></tt></a> instances into one, adding a new index.</div></blockquote>
+<p><cite>ni.load</cite> -&gt; <tt class="xref py py-func docutils literal"><span class="pre">ni.tools.pickler.load()</span></tt></p>
+<blockquote>
+<div>Loads a ni. object that has been <a href="#id1"><span class="problematic" id="id2">`</span></a>.save()`d.</div></blockquote>
+<p><cite>ni.figure</cite> -&gt; <a class="reference internal" href="ni.tools.html#ni.tools.project.figure" title="ni.tools.project.figure"><tt class="xref py py-func docutils literal"><span class="pre">ni.tools.project.figure()</span></tt></a></p>
+<blockquote>
+<div>Creates a context manager</div></blockquote>
+<p><cite>ni.View</cite> -&gt; <a class="reference internal" href="ni.tools.html#ni.tools.html_view.View" title="ni.tools.html_view.View"><tt class="xref py py-class docutils literal"><span class="pre">ni.tools.html_view.View</span></tt></a></p>
+<p><cite>ni.StatCollector</cite> -&gt; <tt class="xref py py-class docutils literal"><span class="pre">tools.statcollector.StatCollector</span></tt></p>
+</div></blockquote>
+</div>
+<div class="section" id="contents">
+<h2>Contents:<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="ni.model.html">1. model Package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ni.model.html#module-ni.model.pointprocess">1.1. <tt class="docutils literal"><span class="pre">pointprocess</span></tt> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ni.model.html#module-ni.model.designmatrix">1.2. <tt class="docutils literal"><span class="pre">designmatrix</span></tt> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ni.model.html#module-ni.model.ip">1.3. <tt class="docutils literal"><span class="pre">ip</span></tt> Module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="ni.model.html#inhomogeneous-pointprocess-generalized-linear-model">1.3.1. Inhomogeneous Pointprocess Generalized Linear Model</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="ni.model.html#module-ni.model.net_sim">1.4. <tt class="docutils literal"><span class="pre">net_sim</span></tt> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ni.model.html#module-ni.model.create_design_matrix_vk">1.5. <tt class="docutils literal"><span class="pre">create_design_matrix_vk</span></tt> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ni.model.html#module-ni.model.create_splines">1.6. <tt class="docutils literal"><span class="pre">create_splines</span></tt> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ni.model.html#module-ni.model.backend_elasticnet">1.7. <tt class="docutils literal"><span class="pre">backend_elasticnet</span></tt> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ni.model.html#module-ni.model.backend_glm">1.8. <tt class="docutils literal"><span class="pre">backend_glm</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ni.model.html#module-ni.model">1.1. <tt class="docutils literal"><span class="pre">model</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ni.model.html#module-ni.model.ip">1.2. <tt class="docutils literal"><span class="pre">ip</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ni.model.html#module-ni.model.backend_elasticnet">1.3. <tt class="docutils literal"><span class="pre">backend_elasticnet</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ni.model.html#module-ni.model.backend_glm">1.4. <tt class="docutils literal"><span class="pre">backend_glm</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ni.model.html#module-ni.model.pointprocess">1.5. <tt class="docutils literal"><span class="pre">pointprocess</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ni.model.html#module-ni.model.designmatrix">1.6. <tt class="docutils literal"><span class="pre">designmatrix</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ni.model.html#module-ni.model.net_sim">1.7. <tt class="docutils literal"><span class="pre">net_sim</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ni.model.html#module-ni.model.create_design_matrix_vk">1.8. <tt class="docutils literal"><span class="pre">create_design_matrix_vk</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ni.model.html#module-ni.model.create_splines">1.9. <tt class="docutils literal"><span class="pre">create_splines</span></tt> Module</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="ni.tools.html">2. tools Package</a><ul>
@@ -82,54 +107,18 @@ Get the pdf version <a class="reference external" href="_static/Neuroinformatics
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="ni.data.html">3. data Package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ni.data.html#module-ni.data.data">3.1. <tt class="docutils literal"><span class="pre">data</span></tt> Module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="ni.data.html#storing-spike-data-in-python-with-pandas">3.1.1. Storing Spike Data in Python with Pandas</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="ni.data.html#module-ni.data.data">3.1. <tt class="docutils literal"><span class="pre">ni.data.data</span></tt> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ni.data.html#module-ni.data.decoding_data">3.2. <tt class="docutils literal"><span class="pre">decoding_data</span></tt> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ni.data.html#module-ni.data.monkey">3.3. <tt class="docutils literal"><span class="pre">monkey</span></tt> Module</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">4. Additional Information</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="about.html#inhomogeneous-pointprocess-generalized-linear-model">4.1. Inhomogeneous Pointprocess Generalized Linear Model</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
-<div class="section" id="list-of-todo-items">
-<h1>List of ToDo Items<a class="headerlink" href="#list-of-todo-items" title="Permalink to this headline">¶</a></h1>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">Use different internal representations, depending on use. Ie. Spike times vs. binary array</p>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="ni.data.html#index-0"><em>original entry</em></a> is located in  /home/plogic/uni/MT/EIC/py/ni/data/data.py:docstring of ni.data.data, line 7.)</p>
-<div class="admonition-todo admonition" id="index-1">
-<p class="first admonition-title">Todo</p>
-<p class="last">Lazy loading and prevention from data duplicates where unnecessary. See also: <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy">indexing view versus copy</a></p>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="ni.data.html#index-1"><em>original entry</em></a> is located in  /home/plogic/uni/MT/EIC/py/ni/data/data.py:docstring of ni.data.data, line 10.)</p>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">Find out what this is</p>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="ni.model.html#index-0"><em>original entry</em></a> is located in  /home/plogic/uni/MT/EIC/py/ni/model/ip.py:docstring of ni.model.ip.Configuration, line 19.)</p>
-<div class="admonition-todo admonition" id="index-1">
-<p class="first admonition-title">Todo</p>
-<p class="last">split into more usefull and modular functions</p>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="ni.model.html#index-1"><em>original entry</em></a> is located in  /home/plogic/uni/MT/EIC/py/ni/model/ip.py:docstring of ni.model.ip.generate_to_file, line 3.)</p>
-<div class="admonition-todo admonition" id="index-2">
-<p class="first admonition-title">Todo</p>
-<p class="last">Add options for random number generator seeds, so that the <em>exact</em> same trial can be run over and over again.</p>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="ni.model.html#index-2"><em>original entry</em></a> is located in  /home/plogic/uni/MT/EIC/py/ni/model/net_sim.py:docstring of ni.model.net_sim, line 11.)</p>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">integrate with projects, write to default paths</p>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="ni.tools.html#index-0"><em>original entry</em></a> is located in  /home/plogic/uni/MT/EIC/py/ni/tools/project.py:docstring of ni.tools.project.figure, line 1.)</p>
-<div class="admonition-todo admonition" id="index-1">
-<p class="first admonition-title">Todo</p>
-<p class="last">implement merge function for bootstrap data that calculates EIC etc.</p>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="ni.tools.html#index-1"><em>original entry</em></a> is located in  /home/plogic/uni/MT/EIC/py/ni/tools/strap.py:docstring of ni.tools.strap.merge, line 1.)</p>
 </div>
 <div class="section" id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
@@ -139,65 +128,132 @@ Get the pdf version <a class="reference external" href="_static/Neuroinformatics
 <li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
 </ul>
 </div>
-
-
-          </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="#">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Welcome to the Neuroinformatics Toolbox documentation!</a><ul>
-</ul>
-</li>
-<li><a class="reference internal" href="#list-of-todo-items">List of ToDo Items</a></li>
-<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
-</ul>
-
-  <h4>Next topic</h4>
-  <p class="topless"><a href="ni.model.html"
-                        title="next chapter">1. model Package</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/index.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
+<div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>To install the toolbox, clone the git repository, or download the zip file from: <a class="reference external" href="https://github.com/jahuth/ni">https://github.com/jahuth/ni</a></p>
+<p>Clone the repository with:</p>
+<div class="highlight-python"><div class="highlight"><pre>git clone https://github.com/jahuth/ni.git
+</pre></div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
+<p>In the repository the toolbox, default configuration, the documentation and example files are included. If you have the necessary packages installed, you can start using it right away.</p>
+<p>If you lack any of the following packages, you might want to install them (with eg. <cite>pip</cite>)</p>
+<div class="highlight-python"><div class="highlight"><pre>ipython matplotlib scipy numpy pandas scikit-learn statsmodels
+</pre></div>
+</div>
+</div>
+<div class="section" id="some-examples">
+<h1>Some Examples<a class="headerlink" href="#some-examples" title="Permalink to this headline">¶</a></h1>
+<p>This code can be executed in an ipython notebook (to be used in your browser) or qtconsole.</p>
+<p>To start a notebook:</p>
+<div class="highlight-python"><div class="highlight"><pre>ipython notebook --pylab=inline
+</pre></div>
+</div>
+<p>To start the qtconsole:</p>
+<div class="highlight-python"><div class="highlight"><pre>ipython qtconsole --pylab=inline
+</pre></div>
+</div>
+<p>This will load matplotlib functions for easy plotting and even provide many aliases that use names similar to the ones used in matlab.</p>
+<div class="section" id="basic-example">
+<h2>Basic Example<a class="headerlink" href="#basic-example" title="Permalink to this headline">¶</a></h2>
+<p>If no data is available, some can be generated with the net_sim module:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">ni</span>
+<span class="n">conf</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">net_sim</span><span class="o">.</span><span class="n">SimulationConfiguration</span><span class="p">()</span>
+<span class="n">conf</span><span class="o">.</span><span class="n">Nneur</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">conf</span><span class="o">.</span><span class="n">Ntrials</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">net_sim</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">conf</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">r</span><span class="o">.</span><span class="n">data</span>
+</pre></div>
+</div>
+<p>Will output:</p>
+<blockquote>
+<div>Spike data: 1 Condition(s) 100 Trial(s) of 10 Cell(s) in 1000 Time step(s). No other data.</div></blockquote>
+<p>The data fitted with a model:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">model</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">ip</span><span class="o">.</span><span class="n">Model</span><span class="p">({</span><span class="s">&#39;cell&#39;</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span><span class="s">&#39;crosshistory&#39;</span><span class="p">:[</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">]})</span>
+<span class="n">fm</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">trial</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">nr_trials</span><span class="o">/</span><span class="mi">2</span><span class="p">)))</span>
+<span class="n">fm</span><span class="o">.</span><span class="n">plot_prototypes</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The first line creates a model on cell 4, using 6 and 7 as crosshistory dependencies.
+Then the model is fitted on half of the data and the rate component is displayed.</p>
+</div>
+<div class="section" id="using-other-sources-of-data">
+<h2>Using other sources of data<a class="headerlink" href="#using-other-sources-of-data" title="Permalink to this headline">¶</a></h2>
+<p>If the <strong>nltk</strong> (<a class="reference external" href="http://nltk.org/">http://nltk.org/</a>) is installed, you can also generate data like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">ni</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span>
+<span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">genesis</span>
+<span class="kn">from</span> <span class="nn">ni.model.pointprocess</span> <span class="kn">import</span> <span class="n">getBinary</span>
+<span class="n">trial_length</span> <span class="o">=</span> <span class="mi">1000</span> <span class="c"># use blocks of this many characters as a trial</span>
+<span class="n">d</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">index_tuples</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="n">txt_file</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="s">&#39;english-kjv.txt&#39;</span><span class="p">,</span><span class="s">&#39;finnish.txt&#39;</span><span class="p">,</span><span class="s">&#39;german.txt&#39;</span><span class="p">,</span><span class="s">&#39;french.txt&#39;</span><span class="p">]):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">genesis</span><span class="o">.</span><span class="n">raw</span><span class="p">(</span><span class="n">txt_file</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;.</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">,</span><span class="s">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">,</span><span class="s">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">,</span><span class="s">&#39; &#39;</span><span class="p">)</span> <span class="c"># to make the end of sentences also ends of words</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">/</span><span class="n">trial_length</span><span class="p">):</span>
+                <span class="k">for</span> <span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">letter</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="s">&#39; &#39;</span><span class="p">,</span> <span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;e&#39;</span><span class="p">,</span> <span class="s">&#39;i&#39;</span><span class="p">]):</span>
+                        <span class="n">d</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">getBinary</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">s</span><span class="p">[(</span><span class="n">t</span><span class="o">*</span><span class="n">trial_length</span><span class="p">):((</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">trial_length</span><span class="p">)]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">letter</span><span class="p">)])</span> <span class="p">)))</span>
+                        <span class="n">index_tuples</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">condition</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">cell</span><span class="p">))</span>
+<span class="n">index</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_tuples</span><span class="p">(</span><span class="n">index_tuples</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;Condition&#39;</span><span class="p">,</span><span class="s">&#39;Trial&#39;</span><span class="p">,</span><span class="s">&#39;Cell&#39;</span><span class="p">])</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="n">index</span><span class="p">))</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">ip</span><span class="o">.</span><span class="n">Model</span><span class="p">({</span><span class="s">&#39;history_length&#39;</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span> <span class="s">&#39;rate&#39;</span><span class="p">:</span><span class="bp">False</span><span class="p">})</span>
+<span class="k">for</span> <span class="n">condition</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+        <span class="n">fm</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">condition</span><span class="p">(</span><span class="n">condition</span><span class="p">)</span><span class="o">.</span><span class="n">trial</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">)))</span>
+        <span class="k">print</span> <span class="nb">str</span><span class="p">(</span><span class="n">condition</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;: &#39;</span> <span class="o">+</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">compare</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">condition</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">trial</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span><span class="mi">100</span><span class="p">)))[</span><span class="s">&#39;ll&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="adding-a-custom-kernel">
+<h2>Adding a custom kernel<a class="headerlink" href="#adding-a-custom-kernel" title="Permalink to this headline">¶</a></h2>
+<p>To add a designmatrix component to the default model, include it in the <cite>custom_components</cite> list of the configuration.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">ni</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">monkey</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="n">condition</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">long_kernel</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">create_splines</span><span class="o">.</span><span class="n">create_splines_linspace</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">nr_trials</span> <span class="o">*</span> <span class="n">data</span><span class="o">.</span><span class="n">trial_length</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">ip</span><span class="o">.</span><span class="n">Model</span><span class="p">({</span><span class="s">&#39;custom_components&#39;</span><span class="p">:</span> <span class="p">[</span> <span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">designmatrix</span><span class="o">.</span><span class="n">Component</span><span class="p">(</span><span class="n">header</span><span class="o">=</span><span class="s">&#39;trend&#39;</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="n">long_kernel</span><span class="p">)</span> <span class="p">]})</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="statcollectors">
+<h2>StatCollectors<a class="headerlink" href="#statcollectors" title="Permalink to this headline">¶</a></h2>
+<p>An example of adding something to a StatCollector:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">ni</span>
+<span class="n">stat</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">StatCollector</span><span class="p">()</span>
+<span class="n">stat</span><span class="o">.</span><span class="n">addNode</span><span class="p">(</span><span class="s">&quot;Model 0&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;First Model&#39;</span><span class="p">,</span>
+                         <span class="s">&#39;ll_test&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">240</span><span class="p">,</span>
+                         <span class="s">&#39;ll_train&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">80</span><span class="p">,</span>
+                         <span class="s">&#39;complexity&#39;</span><span class="p">:</span><span class="mi">10</span><span class="p">})</span>
+<span class="n">stat</span><span class="o">.</span><span class="n">addNode</span><span class="p">(</span><span class="s">&quot;Model 0/1&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;Second Model&#39;</span><span class="p">,</span>
+                           <span class="s">&#39;ll_test&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">100</span><span class="p">,</span>
+                           <span class="s">&#39;ll_train&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">90</span><span class="p">,</span>
+                           <span class="s">&#39;complexity&#39;</span><span class="p">:</span><span class="mi">14</span><span class="p">})</span>
+<span class="n">stat</span><span class="o">.</span><span class="n">addNode</span><span class="p">(</span><span class="s">&quot;Model 0/2&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;Third Model&#39;</span><span class="p">,</span>
+                           <span class="s">&#39;ll_test&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">130</span><span class="p">,</span>
+                           <span class="s">&#39;ll_train&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">85</span><span class="p">,</span>
+                           <span class="s">&#39;complexity&#39;</span><span class="p">:</span><span class="mi">14</span><span class="p">})</span>
+<span class="n">stat</span><span class="o">.</span><span class="n">plotTree</span><span class="p">(</span><span class="s">&#39;ll_train&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Will output:</p>
+<img alt="_images/tutorial_statcollector.png" src="_images/tutorial_statcollector.png" />
+<p>Mostly, the output of <a class="reference internal" href="ni.tools.html#module-ni.tools.bootstrap" title="ni.tools.bootstrap: Provides Bootstrapping Methods for models. (Unix)"><tt class="xref py py-mod docutils literal"><span class="pre">ni.tools.bootstrap</span></tt></a> functions will be added to the StatCollector, containing all the important information.</p>
+</div>
+</div>
+
+
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="ni.model.html" title="1. model Package"
-             >next</a> |</li>
-        <li><a href="#">Neuroinformatics Toolbox 0.1 documentation</a> &raquo;</li> 
-      </ul>
-    </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="#">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="ni.model.html">1. model Package</a>&#160;&#160;»
+        </p>
+
+      </div>
+
     <div class="footer">
         &copy; Copyright 2013, Jacob Huth.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

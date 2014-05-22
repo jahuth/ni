@@ -1,10 +1,11 @@
 data Package
 =================
 
-Provides easy access to some data.
+Provides easy access to data.
 
 
-:mod:`data` Module
+
+:mod:`ni.data.data` Module
 ----------------------------
 
 .. automodule:: ni.data.data

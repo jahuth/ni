@@ -1,6 +1,40 @@
 model Package
 =============
 
+:mod:`model` Module
+--------------------------
+
+.. automodule:: ni.model
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+:mod:`ip` Module
+------------------
+
+.. automodule:: ni.model.ip
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+
+:mod:`backend_elasticnet` Module
+-----------------------------------
+
+.. automodule:: ni.model.backend_elasticnet
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`backend_glm` Module
+-----------------------------------
+
+.. automodule:: ni.model.backend_glm
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
 
 :mod:`pointprocess` Module
@@ -19,14 +53,6 @@ model Package
     :undoc-members:
     :show-inheritance:
 
-
-:mod:`ip` Module
-------------------
-
-.. automodule:: ni.model.ip
-    :members:
-    :undoc-members:
-    :show-inheritance:
 
 :mod:`net_sim` Module
 ---------------------
@@ -55,19 +81,4 @@ model Package
     :show-inheritance:
 
 
-:mod:`backend_elasticnet` Module
------------------------------------
-
-.. automodule:: ni.model.backend_elasticnet
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-:mod:`backend_glm` Module
------------------------------------
-
-.. automodule:: ni.model.backend_glm
-    :members:
-    :undoc-members:
-    :show-inheritance:
 

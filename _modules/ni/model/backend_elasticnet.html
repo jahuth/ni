@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -8,15 +6,15 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>ni.model.backend_elasticnet &mdash; Neuroinformatics Toolbox 0.1 documentation</title>
+    <title>ni.model.backend_elasticnet &mdash; Neuroinformatics Toolbox 0.2 documentation</title>
     
-    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '0.1',
+        VERSION:     '0.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -26,34 +24,56 @@
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="Neuroinformatics Toolbox 0.1 documentation" href="../../../index.html" />
-    <link rel="up" title="Module code" href="../../index.html" /> 
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="top" title="Neuroinformatics Toolbox 0.2 documentation" href="../../../index.html" />
+    <link rel="up" title="ni.model" href="../model.html" /> 
   </head>
   <body>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="../../../index.html">Neuroinformatics Toolbox 0.1 documentation</a> &raquo;</li>
-          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
-      </ul>
-    </div>  
+      <div class="header"><h1 class="heading"><a href="../../../index.html">
+          <span>Neuroinformatics Toolbox 0.2 documentation</span></a></h1>
+        <h2 class="heading"><span>ni.model.backend_elasticnet</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body">
-            
+      </div>
+      <div class="content">
+        
+        
   <h1>Source code for ni.model.backend_elasticnet</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">.. module:: ni.model.backend_elasticnet</span>
+<span class="sd">   :platform: Unix</span>
+<span class="sd">   :synopsis: Model Backend using sklearn.linear_model.ElasticNet</span>
+
+<span class="sd">.. moduleauthor:: Jacob Huth &lt;jahuth@uos.de&gt;</span>
+
+<span class="sd">This module provides a backend to the .ip model. It wraps the sklearn.linear_model.ElasticNet / ElasticNetCV objects.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">sklearn.linear_model</span> <span class="kn">as</span> <span class="nn">linear_model</span> 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
 <div class="viewcode-block" id="Configuration"><a class="viewcode-back" href="../../../ni.model.html#ni.model.backend_elasticnet.Configuration">[docs]</a><span class="k">class</span> <span class="nc">Configuration</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Default Values:</span>
+
+<span class="sd">			crossvalidation = True</span>
+
+<span class="sd">				If true, alpha and l1_ratio will be calculated by crossvalidation.</span>
+
+<span class="sd">			alpha = 0.5</span>
+
+<span class="sd">			l1_ratio = 1</span>
+
+<span class="sd">			be_memory_efficient = True</span>
+<span class="sd">				Does not keep the data with which it is fitted.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">crossvalidation</span> <span class="o">=</span> <span class="bp">True</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span>
@@ -81,11 +101,15 @@
 			<span class="n">c</span> <span class="o">=</span> <span class="n">Configuration</span><span class="p">()</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">configuration</span> <span class="o">=</span> <span class="n">c</span>
 		<span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">crossvalidation</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">ElasticNetCV</span><span class="p">(</span><span class="n">fit_intercept</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span><span class="c">#(alpha=self.configuration.alpha, l1_ratio=self.configuration.l1_ratio)</span>
+			<span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+				<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s">&quot;ignore&quot;</span><span class="p">,</span><span class="n">category</span><span class="o">=</span><span class="ne">DeprecationWarning</span><span class="p">)</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">ElasticNetCV</span><span class="p">(</span><span class="n">fit_intercept</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span><span class="c">#(alpha=self.configuration.alpha, l1_ratio=self.configuration.l1_ratio)</span>
 		<span class="k">else</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">ElasticNet</span><span class="p">(</span><span class="n">fit_intercept</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="n">c</span><span class="o">.</span><span class="n">alpha</span><span class="p">,</span> <span class="n">l1_ratio</span><span class="o">=</span><span class="n">c</span><span class="o">.</span><span class="n">l1_ratio</span><span class="p">)</span>
 <div class="viewcode-block" id="Model.fit"><a class="viewcode-back" href="../../../ni.model.html#ni.model.backend_elasticnet.Model.fit">[docs]</a>	<span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">dm</span><span class="p">):</span>
-		<span class="k">return</span> <span class="n">Fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">dm</span><span class="p">,</span><span class="n">x</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()),</span><span class="bp">self</span><span class="p">)</span></div></div>
+		<span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+			<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s">&quot;ignore&quot;</span><span class="p">,</span><span class="n">category</span><span class="o">=</span><span class="ne">DeprecationWarning</span><span class="p">)</span>
+			<span class="k">return</span> <span class="n">Fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">dm</span><span class="p">,</span><span class="n">x</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()),</span><span class="bp">self</span><span class="p">)</span></div></div>
 <div class="viewcode-block" id="predict"><a class="viewcode-back" href="../../../ni.model.html#ni.model.backend_elasticnet.predict">[docs]</a><span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">dm</span><span class="p">):</span>
 	<span class="c">#model = linear_model.ElasticNetCV(fit_intercept=False)</span>
 	<span class="c">#model.intercept_ = 0</span>
@@ -103,44 +127,18 @@
 	<span class="k">return</span> <span class="p">{</span><span class="s">&#39;Deviance&#39;</span><span class="p">:</span> <span class="n">dv</span><span class="o">/</span><span class="n">nr_trials</span><span class="p">,</span> <span class="s">&#39;Deviance_all&#39;</span><span class="p">:</span> <span class="n">dv</span><span class="p">,</span> <span class="s">&#39;LogLikelihood&#39;</span><span class="p">:</span> <span class="n">ll</span><span class="o">/</span><span class="n">nr_trials</span><span class="p">,</span> <span class="s">&#39;LogLikelihood_all&#39;</span><span class="p">:</span> <span class="n">ll</span><span class="p">}</span></div>
 </pre></div>
 
-          </div>
-        </div>
       </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="../../../index.html">Neuroinformatics Toolbox 0.1 documentation</a> &raquo;</li>
-          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
-      </ul>
-    </div>
+
     <div class="footer">
         &copy; Copyright 2013, Jacob Huth.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -8,15 +6,15 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>ni.data.decoding_data &mdash; Neuroinformatics Toolbox 0.1 documentation</title>
+    <title>ni.data.decoding_data &mdash; Neuroinformatics Toolbox 0.2 documentation</title>
     
-    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '0.1',
+        VERSION:     '0.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -26,29 +24,25 @@
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="Neuroinformatics Toolbox 0.1 documentation" href="../../../index.html" />
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="top" title="Neuroinformatics Toolbox 0.2 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="../../../index.html">Neuroinformatics Toolbox 0.1 documentation</a> &raquo;</li>
-          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
-      </ul>
-    </div>  
+      <div class="header"><h1 class="heading"><a href="../../../index.html">
+          <span>Neuroinformatics Toolbox 0.2 documentation</span></a></h1>
+        <h2 class="heading"><span>ni.data.decoding_data</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body">
-            
+      </div>
+      <div class="content">
+        
+        
   <h1>Source code for ni.data.decoding_data</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">.. module:: ni.data.decoding_data</span>
@@ -59,28 +53,6 @@
 
 <span class="sd">Loads Data into a Panda Data Frame</span>
 
-<span class="sd">Use like this:</span>
-
-<span class="sd">	data = ni.data.decoding_data.DecodingData()</span>
-<span class="sd">	plot(data.data.ix[(0,0,0):(0,3,-1)].transpose().cumsum())</span>
-
-<span class="sd">.ix slices a portion of the data. The three indices are: Condition, Trial, then Cell. So the code above plots the cummulative firing rate for the first the trials of the first condition for all cells.</span>
-
-
-<span class="sd">.. image:: _static/decoding_data_slice.png</span>
-
-<span class="sd">or:</span>
-
-<span class="sd">	data = ni.data.decoding_data.DecodingData()</span>
-<span class="sd">	pylab.plot(data.data.xs(0,level=&#39;Condition&#39;).xs(0,level=&#39;Cell&#39;).ix[:5].transpose().cumsum())</span>
-<span class="sd">	pylab.show()</span>
-
-<span class="sd">With .xs one can slice at any level, ie. get specific trials and cells. this can be combined with .ix to get slices of data.</span>
-
-
-<span class="sd">.. todo::</span>
-<span class="sd">		Integrate with modules that use data</span>
-<span class="sd">		</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">scipy.io</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
@@ -119,25 +91,7 @@
 <div class="viewcode-block" id="DecodingData"><a class="viewcode-back" href="../../../ni.data.html#ni.data.decoding_data.DecodingData">[docs]</a><span class="k">class</span> <span class="nc">DecodingData</span><span class="p">:</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Loads Data into a Panda Data Frame</span>
-
-<span class="sd">	Use like this:</span>
-
-<span class="sd">		data = ni.data.decoding_data.DecodingData()</span>
-<span class="sd">		plot(data.data.ix[(0,0,0):(0,3,-1)].transpose().cumsum())</span>
-
-<span class="sd">	.ix slices a portion of the data. The three indices are: Condition, Trial, then Cell. So the code above plots the cummulative firing rate for the first the trials of the first condition for all cells.</span>
-
-
-<span class="sd">	.. image:: _static/decoding_data_slice.png</span>
-
-<span class="sd">	or:</span>
-
-<span class="sd">		data = ni.data.decoding_data.DecodingData()</span>
-<span class="sd">		pylab.plot(data.data.xs(0,level=&#39;Condition&#39;).xs(0,level=&#39;Cell&#39;).ix[:5].transpose().cumsum())</span>
-<span class="sd">		pylab.show()</span>
-
-<span class="sd">	With .xs one can slice at any level, ie. get specific trials and cells. this can be combined with .ix to get slices of data.</span>
-<span class="sd">	</span>
+<span class="sd">		</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="n">mat</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="s">&#39;ni/data/Group.mat&#39;</span><span class="p">)</span>
@@ -151,7 +105,7 @@
 		<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="p">[</span><span class="n">mat</span><span class="p">[</span><span class="s">&#39;Spikes_Group_Condition_A&#39;</span><span class="p">],</span><span class="n">mat</span><span class="p">[</span><span class="s">&#39;Spikes_Group_Condition_B&#39;</span><span class="p">]]:</span>
 			<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nr_trials</span><span class="p">):</span>
 				<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nr_cells</span><span class="p">):</span>
-						<span class="n">spikes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">getCounts</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="n">c</span><span class="p">,</span><span class="n">t</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">1000</span><span class="p">))</span>
+						<span class="n">spikes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">getBinary</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="n">c</span><span class="p">,</span><span class="n">t</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">1000</span><span class="p">))</span>
 						<span class="n">d</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">spikes</span><span class="p">)</span>
 		<span class="c">#print d</span>
 		<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="n">index</span><span class="p">)</span>
@@ -162,44 +116,18 @@
 		<span class="c">#		self.trials[t].addCell(mat[&#39;Spikes_Group_Condition_A&#39;][c,t])</span></div>
 </pre></div>
 
-          </div>
-        </div>
       </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="../../../index.html">Neuroinformatics Toolbox 0.1 documentation</a> &raquo;</li>
-          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
-      </ul>
-    </div>
+
     <div class="footer">
         &copy; Copyright 2013, Jacob Huth.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>
