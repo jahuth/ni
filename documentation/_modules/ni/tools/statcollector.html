@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -8,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>ni.tools.statcollector &mdash; Neuroinformatics Toolbox 0.1 documentation</title>
+    <title>ni.tools.statcollector &mdash; Neuroinformatics Toolbox 0.2 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -16,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '0.1',
+        VERSION:     '0.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -26,7 +24,7 @@
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="Neuroinformatics Toolbox 0.1 documentation" href="../../../index.html" />
+    <link rel="top" title="Neuroinformatics Toolbox 0.2 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body>
@@ -39,7 +37,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../../index.html">Neuroinformatics Toolbox 0.1 documentation</a> &raquo;</li>
+        <li><a href="../../../index.html">Neuroinformatics Toolbox 0.2 documentation</a> &raquo;</li>
           <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
@@ -50,41 +48,79 @@
           <div class="body">
             
   <h1>Source code for ni.tools.statcollector</h1><div class="highlight"><pre>
-<span class="k">def</span> <span class="nf">listToPath</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-<div class="viewcode-block" id="listToPath"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.listToPath">[docs]</a>	<span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
-		<span class="n">n</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">name</span><span class="p">])</span>
-	<span class="k">else</span><span class="p">:</span>
-		<span class="n">n</span> <span class="o">=</span> <span class="n">name</span>
-	<span class="k">return</span> <span class="n">n</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">.. module:: ni.tools.statcollector</span>
+<span class="sd">   :platform: Unix</span>
+<span class="sd">   :synopsis: Collects information into a dictionary of dictionaries and provides tools for visualization</span>
 
+<span class="sd">.. moduleauthor:: Jacob Huth &lt;jahuth@uos.de&gt;</span>
 
-<span class="k">class</span> <span class="nc">StatCollector</span><span class="p">:</span></div>
-<div class="viewcode-block" id="StatCollector"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector">[docs]</a>	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">from</span> <span class="nn">pylab</span> <span class="kn">import</span> <span class="n">figure</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pylab</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pylab</span> <span class="kn">as</span> <span class="nn">pl</span>
+<span class="kn">from</span> <span class="nn">ni.tools.plot</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">ni.tools.html_view</span> <span class="kn">import</span> <span class="n">View</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+
+<div class="viewcode-block" id="listToPath"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.listToPath">[docs]</a><span class="k">def</span> <span class="nf">listToPath</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a string that joins a list together with slashes. The list can contain strings and numbers.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">name</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">n</span>
+</div>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<div class="viewcode-block" id="atoi"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.atoi">[docs]</a><span class="k">def</span> <span class="nf">atoi</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; converts text containing numbers into ints / used by :func:`natural_keys`&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="k">if</span> <span class="n">text</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="k">else</span> <span class="n">text</span>
+</div>
+<div class="viewcode-block" id="natural_keys"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.natural_keys">[docs]</a><span class="k">def</span> <span class="nf">natural_keys</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    alist.sort(key=natural_keys) sorts in human order</span>
+<span class="sd">    (See Toothy&#39;s implementation in the comments of http://nedbatchelder.com/blog/200712/human_sorting.html )</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="p">[</span> <span class="n">atoi</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;(\d+)&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span> <span class="p">]</span>
+</div>
+<div class="viewcode-block" id="natural_sorted"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.natural_sorted">[docs]</a><span class="k">def</span> <span class="nf">natural_sorted</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot; sorts a sortable in human order (0 &lt; 20 &lt; 100) &quot;&quot;&quot;</span>
+	<span class="n">ll</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+	<span class="n">ll</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">natural_keys</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">ll</span>
+    </div>
+<div class="viewcode-block" id="StatCollector"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector">[docs]</a><span class="k">class</span> <span class="nc">StatCollector</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">		A class to collect statistics about models. It can be used to analyse nested models, as slashes in the name are interpreted as submodels.</span>
 
 <span class="sd">		Example:</span>
 
-<span class="sd">			rate model/0</span>
-<span class="sd">			rate model/1</span>
-<span class="sd">			rate model/2</span>
-<span class="sd">			rate model/3</span>
-<span class="sd">			nested model/0</span>
-<span class="sd">			nested model/1</span>
-<span class="sd">			nested model/2</span>
-<span class="sd">			nested model/3</span>
-<span class="sd">			nested model/0/1</span>
-<span class="sd">			nested model/0/2</span>
-<span class="sd">			nested model/0/3</span>
-<span class="sd">			nested model/0/2/1</span>
-<span class="sd">			nested model/0/2/3</span>
-<span class="sd">			nested model/0/2/3/1</span>
+<span class="sd">			&gt;&gt;&gt; rate model/0</span>
+<span class="sd">			&gt;&gt;&gt; rate model/1</span>
+<span class="sd">			&gt;&gt;&gt; rate model/2</span>
+<span class="sd">			&gt;&gt;&gt; rate model/3</span>
+<span class="sd">			&gt;&gt;&gt; nested model/0</span>
+<span class="sd">			&gt;&gt;&gt; nested model/1</span>
+<span class="sd">			&gt;&gt;&gt; nested model/2</span>
+<span class="sd">			&gt;&gt;&gt; nested model/3</span>
+<span class="sd">			&gt;&gt;&gt; nested model/0/1</span>
+<span class="sd">			&gt;&gt;&gt; nested model/0/2</span>
+<span class="sd">			&gt;&gt;&gt; nested model/0/3</span>
+<span class="sd">			&gt;&gt;&gt; nested model/0/2/1</span>
+<span class="sd">			&gt;&gt;&gt; nested model/0/2/3</span>
+<span class="sd">			&gt;&gt;&gt; nested model/0/2/3/1</span>
 
 <span class="sd">		This example could be generated by fitting a model with a certain number of crosshistory cells. In each iteration the best model is extended by another cell.</span>
 <span class="sd">		The nested model can then be evaluated whether it has increasing likelihood and/or eic, aic or other statistics:</span>
 
 <span class="sd">			&gt;&gt;&gt; stats.getModelsOnPath([&#39;nested model&#39;,0,2,3,1]).get(&#39;eic&#39;)</span>
-<span class="sd">			</span>
 <span class="sd">			[ -1023, -1020, -900, -950 ]</span>
 
 <span class="sd">		self.stats: a dict of lists, each list containing dicts with:</span>
@@ -94,24 +130,61 @@
 <span class="sd">			additional  - a dict with more information (ignored for now)</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stat_init</span> <span class="o">=</span> <span class="p">{}):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">stats</span> <span class="o">=</span> <span class="n">stat_init</span>
-	<span class="k">def</span> <span class="nf">addNode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="p">{}):</span>
-<div class="viewcode-block" id="StatCollector.addNode"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.addNode">[docs]</a>		<span class="n">n</span> <span class="o">=</span> <span class="n">listToPath</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">stats</span> <span class="o">=</span> <span class="p">{}</span>
+		<span class="k">if</span> <span class="n">stat_init</span> <span class="o">!=</span> <span class="p">{}:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">stats</span> <span class="o">=</span> <span class="n">stat_init</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">=</span><span class="s">&quot;&quot;</span>
+<div class="viewcode-block" id="StatCollector.addNode"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.addNode">[docs]</a>	<span class="k">def</span> <span class="nf">addNode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="p">{}):</span>
+		<span class="sd">&quot;&quot;&quot; adds the node `name` with the attributes in the dictionary `dic`. If `name` exists, it wll be overwritten. &quot;&quot;&quot;</span>
+		<span class="n">n</span> <span class="o">=</span> <span class="n">listToPath</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
-		<span class="k">return</span> <span class="n">name</span>
-	<span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">key</span><span class="p">,</span><span class="n">value</span><span class="p">):</span></div>
-<div class="viewcode-block" id="StatCollector.set"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.set">[docs]</a>		<span class="n">n</span> <span class="o">=</span> <span class="n">listToPath</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-	<span class="k">def</span> <span class="nf">getDimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></div>
-<div class="viewcode-block" id="StatCollector.getDimensions"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.getDimensions">[docs]</a>		<span class="n">dimensions</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-		<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">:</span>
-			<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
-				<span class="n">dimensions</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-		<span class="k">return</span> <span class="n">dimensions</span>
-	<span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">dim</span><span class="p">):</span></div>
-<div class="viewcode-block" id="StatCollector.get"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.get">[docs]</a>		<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">m</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">if</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">m</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">keys</span><span class="p">()])</span>
-	<span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">):</span></div>
-<div class="viewcode-block" id="StatCollector.filter"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.filter">[docs]</a>		<span class="sd">&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="n">name</span></div>
+<div class="viewcode-block" id="StatCollector.getNode"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.getNode">[docs]</a>	<span class="k">def</span> <span class="nf">getNode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot; returns a dictionary with all attributes of the node `name` &quot;&quot;&quot;</span>
+		<span class="n">n</span> <span class="o">=</span> <span class="n">listToPath</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">n</span><span class="p">]</span></div>
+<div class="viewcode-block" id="StatCollector.addToNode"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.addToNode">[docs]</a>	<span class="k">def</span> <span class="nf">addToNode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">dic</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot; adds all attributes in the dictionary `dic` to the node `name` &quot;&quot;&quot;</span>
+		<span class="n">n</span> <span class="o">=</span> <span class="n">listToPath</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">dic</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dic</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">name</span></div>
+<div class="viewcode-block" id="StatCollector.set"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.set">[docs]</a>	<span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">key</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot; sets one attribute for node `name` &quot;&quot;&quot;</span>
+		<span class="n">n</span> <span class="o">=</span> <span class="n">listToPath</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
+<div class="viewcode-block" id="StatCollector.getDimensions"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.getDimensions">[docs]</a>	<span class="k">def</span> <span class="nf">getDimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot; returns which dimensions are availble for the contained nodes &quot;&quot;&quot;</span>
+		<span class="n">dimensions</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+		<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+			<span class="n">dimensions</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+		<span class="k">return</span> <span class="n">dimensions</span></div>
+<div class="viewcode-block" id="StatCollector.get"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.get">[docs]</a>	<span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">dim</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">			returns a numpy ndarray with the `dim` attributes of each node that contains `dim`</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+			<span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
+			<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span><span class="n">key</span><span class="o">=</span><span class="n">natural_keys</span><span class="p">):</span>
+				<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">([</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dim</span><span class="p">]):</span>
+					<span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">d</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dim</span><span class="p">])</span>
+			<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+		<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span><span class="n">key</span><span class="o">=</span><span class="n">natural_keys</span><span class="p">)</span> <span class="k">if</span> <span class="n">dim</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">k</span><span class="p">]])</span></div>
+<div class="viewcode-block" id="StatCollector.getList"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.getList">[docs]</a>	<span class="k">def</span> <span class="nf">getList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">dim</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">			returns a list with the `dim` attributes of each node that contains `dim`</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+			<span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
+			<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span><span class="n">key</span><span class="o">=</span><span class="n">natural_keys</span><span class="p">):</span>
+				<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">([</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dim</span><span class="p">]):</span>
+					<span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">d</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dim</span><span class="p">])</span>
+			<span class="k">return</span> <span class="n">l</span>
+		<span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span><span class="n">key</span><span class="o">=</span><span class="n">natural_keys</span><span class="p">)</span> <span class="k">if</span> <span class="n">dim</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span></div>
+<div class="viewcode-block" id="StatCollector.filter"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.filter">[docs]</a>	<span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">			returns a StatCollector Object with only a subset of models</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">n</span> <span class="o">=</span> <span class="n">listToPath</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
@@ -119,27 +192,338 @@
 		<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
 			<span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
 				<span class="n">stats</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
-		<span class="k">return</span> <span class="n">StatCollector</span><span class="p">(</span><span class="n">stats</span><span class="p">)</span>
-	<span class="k">def</span> <span class="nf">getModelsOnPath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">):</span></div>
-<div class="viewcode-block" id="StatCollector.getModelsOnPath"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.getModelsOnPath">[docs]</a>		<span class="n">stats</span> <span class="o">=</span> <span class="p">{}</span>
+		<span class="k">return</span> <span class="n">StatCollector</span><span class="p">(</span><span class="n">stats</span><span class="p">)</span></div>
+<div class="viewcode-block" id="StatCollector.re"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.re">[docs]</a>	<span class="k">def</span> <span class="nf">re</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">regex</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">			returns a StatCollector Object with only a subset of models</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">stats</span> <span class="o">=</span> <span class="p">{}</span>
+		<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+			<span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span><span class="n">k</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+				<span class="n">stats</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+		<span class="k">return</span> <span class="n">StatCollector</span><span class="p">(</span><span class="n">stats</span><span class="p">)</span></div>
+<div class="viewcode-block" id="StatCollector.getModelsOnPath"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.getModelsOnPath">[docs]</a>	<span class="k">def</span> <span class="nf">getModelsOnPath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot; returns models that lead to the node `name` &quot;&quot;&quot;</span>
+		<span class="n">stats</span> <span class="o">=</span> <span class="p">{}</span>
+		<span class="n">sub_name</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+			<span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
 		<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
 			<span class="n">sub_name</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 			<span class="n">n</span> <span class="o">=</span> <span class="n">listToPath</span><span class="p">(</span><span class="n">sub_name</span><span class="p">)</span>
 			<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
 				<span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="n">n</span><span class="p">:</span>
 					<span class="n">stats</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
-		<span class="k">return</span> <span class="n">StatCollector</span><span class="p">(</span><span class="n">stats</span><span class="p">)</span>
-	<span class="k">def</span> <span class="nf">plotNesting</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></div>
-<div class="viewcode-block" id="StatCollector.plotNesting"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.plotNesting">[docs]</a>		<span class="k">return</span> <span class="bp">False</span>
-	<span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></div>
+		<span class="k">return</span> <span class="n">StatCollector</span><span class="p">(</span><span class="n">stats</span><span class="p">)</span></div>
+	<span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot; returns a string representation of some of the values of each node &quot;&quot;&quot;</span>
 		<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
 			<span class="k">print</span> <span class="n">k</span>
 			<span class="k">print</span> <span class="s">&#39;llf:&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">m</span><span class="p">[</span><span class="s">&#39;llf&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">if</span> <span class="s">&#39;llf&#39;</span> <span class="ow">in</span> <span class="n">m</span><span class="p">]</span>
 			<span class="k">print</span> <span class="s">&#39;eic:&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">m</span><span class="p">[</span><span class="s">&#39;eic&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">if</span> <span class="s">&#39;eic&#39;</span> <span class="ow">in</span> <span class="n">m</span><span class="p">]</span>
 			<span class="k">print</span> <span class="s">&#39;aic:&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">m</span><span class="p">[</span><span class="s">&#39;aic&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">if</span> <span class="s">&#39;aic&#39;</span> <span class="ow">in</span> <span class="n">m</span><span class="p">]</span>
 			<span class="k">print</span> <span class="s">&#39;complexity:&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">m</span><span class="p">[</span><span class="s">&#39;complexity&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">if</span> <span class="s">&#39;complexity&#39;</span> <span class="ow">in</span> <span class="n">m</span><span class="p">]</span>
-		
-</pre></div></div>
+<div class="viewcode-block" id="StatCollector.save"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.save">[docs]</a>	<span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">			Saves the StatCollector to `filename`.</span>
+
+<span class="sd">			This file will be a pickled dictionary.</span>
+
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="s">&quot;w&quot;</span><span class="p">)</span>
+		<span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">,</span><span class="n">f</span><span class="p">)</span>
+		<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+<div class="viewcode-block" id="StatCollector.load"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.load">[docs]</a>	<span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">			Loads the StatCollector saved to `filename`.</span>
+
+<span class="sd">			This file should be a pickled dictionary.</span>
+
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="s">&quot;r&quot;</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">stats</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+			<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+		<span class="k">except</span><span class="p">:</span>
+			<span class="k">print</span> <span class="s">&quot;Could not open file &quot;</span><span class="p">,</span><span class="n">filename</span>
+			<span class="k">raise</span></div>
+<div class="viewcode-block" id="StatCollector.load_list"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.load_list">[docs]</a>	<span class="k">def</span> <span class="nf">load_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filenames</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot; loads a list of files &quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">loadList</span><span class="p">(</span><span class="n">filenames</span><span class="p">)</span></div>
+<div class="viewcode-block" id="StatCollector.loadList"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.loadList">[docs]</a>	<span class="k">def</span> <span class="nf">loadList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filenames</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot; loads a list of files. (Alias of :func:`StatCollector.load_list`) &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">stats</span> <span class="o">=</span> <span class="p">{}</span>
+		<span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
+			<span class="k">try</span><span class="p">:</span>
+				<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="s">&quot;r&quot;</span><span class="p">)</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
+				<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+			<span class="k">except</span><span class="p">:</span>
+				<span class="k">pass</span>
+				<span class="c">#print &quot;Could not open file &quot;,filename</span></div>
+<div class="viewcode-block" id="StatCollector.load_glob"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.load_glob">[docs]</a>	<span class="k">def</span> <span class="nf">load_glob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename_template</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_list</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">filename_template</span><span class="p">))</span></div>
+<div class="viewcode-block" id="StatCollector.plotHist"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.plotHist">[docs]</a>	<span class="k">def</span> <span class="nf">plotHist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">path</span><span class="p">,</span><span class="n">width</span><span class="p">,</span><span class="n">dims</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot; plots a histogram of each dimension in `dims`&quot;&quot;&quot;</span>
+		<span class="n">fig</span> <span class="o">=</span> <span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
+		<span class="c">#subplot(2,1,1, title=&#39;EIC values for models of cell &#39;+str(cell))</span>
+		<span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dims</span><span class="p">:</span>
+			<span class="n">zz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getList</span><span class="p">([</span><span class="n">d</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]])</span>
+			<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">zz</span><span class="p">)):</span>
+				<span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span> <span class="o">=</span> <span class="n">plotHist</span><span class="p">(</span><span class="n">zz</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">d</span><span class="p">[</span><span class="s">&#39;line&#39;</span><span class="p">],</span><span class="n">d</span><span class="p">[</span><span class="s">&#39;marker&#39;</span><span class="p">],</span><span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">)</span>
+		<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s">&#39;.png&#39;</span><span class="p">)</span></div>
+<div class="viewcode-block" id="StatCollector.nodes"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.nodes">[docs]</a>	<span class="k">def</span> <span class="nf">nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot; returns the name of all nodes. Synonym of :func:`StatCollector.keys()` &quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span></div>
+<div class="viewcode-block" id="StatCollector.keys"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.keys">[docs]</a>	<span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot; returns the name of all nodes. Synonym of :func:`StatCollector.nodes()` &quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span></div>
+<div class="viewcode-block" id="StatCollector.getChildren"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.getChildren">[docs]</a>	<span class="k">def</span> <span class="nf">getChildren</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="n">_stats</span> <span class="o">=</span> <span class="p">{}</span>
+		<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+			<span class="n">ns</span> <span class="o">=</span> <span class="n">k</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">)</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="n">ns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="n">_stats</span><span class="p">:</span>
+				<span class="n">_stats</span><span class="p">[</span><span class="n">ns</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StatCollector</span><span class="p">({})</span>
+				<span class="n">_stats</span><span class="p">[</span><span class="n">ns</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s">&quot;/&quot;</span> <span class="o">+</span> <span class="n">ns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+			<span class="n">_stats</span><span class="p">[</span><span class="n">ns</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">addNode</span><span class="p">(</span><span class="n">ns</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+		<span class="k">return</span> <span class="n">_stats</span></div>
+<div class="viewcode-block" id="StatCollector.split"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.split">[docs]</a>	<span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">keys</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot; Takes a portion of the property names and makes it a node &quot;&quot;&quot;</span>
+		<span class="n">_stats</span> <span class="o">=</span> <span class="n">StatCollector</span><span class="p">({})</span>
+		<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+			<span class="n">saved</span> <span class="o">=</span> <span class="bp">False</span>
+			<span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+				<span class="n">saved</span> <span class="o">=</span> <span class="bp">False</span>
+				<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+					<span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+						<span class="n">_stats</span><span class="o">.</span><span class="n">addToNode</span><span class="p">([</span><span class="n">k</span><span class="p">,</span><span class="n">key</span><span class="p">],{</span><span class="n">prop</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">):</span><span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">prop</span><span class="p">]})</span>
+						<span class="n">saved</span> <span class="o">=</span> <span class="bp">True</span>
+				<span class="k">if</span> <span class="ow">not</span> <span class="n">saved</span><span class="p">:</span>
+					<span class="n">_stats</span><span class="o">.</span><span class="n">addToNode</span><span class="p">(</span><span class="n">k</span><span class="p">,{</span><span class="n">prop</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">prop</span><span class="p">]})</span>
+		<span class="n">_stats</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span>
+		<span class="k">return</span> <span class="n">_stats</span></div>
+<div class="viewcode-block" id="StatCollector.prefix"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.prefix">[docs]</a>	<span class="k">def</span> <span class="nf">prefix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">prefix</span><span class="o">=</span><span class="s">&quot;/&quot;</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot; Makes the last node a part of the property name &quot;&quot;&quot;</span>
+		<span class="n">_stats</span> <span class="o">=</span> <span class="n">StatCollector</span><span class="p">({})</span>
+		<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+			<span class="n">ns</span> <span class="o">=</span> <span class="n">k</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">)</span>
+			<span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+				<span class="n">_stats</span><span class="o">.</span><span class="n">addToNode</span><span class="p">(</span><span class="n">ns</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],{</span><span class="n">ns</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">prop</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">prop</span><span class="p">]})</span>
+		<span class="k">return</span> <span class="n">_stats</span></div>
+<div class="viewcode-block" id="StatCollector.pull_from_inner_dict"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.pull_from_inner_dict">[docs]</a>	<span class="k">def</span> <span class="nf">pull_from_inner_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">from_dictionary</span><span class="o">=</span><span class="s">&#39;statistics&#39;</span><span class="p">,</span> <span class="n">from_key</span><span class="o">=</span><span class="s">&#39;bic&#39;</span><span class="p">,</span> <span class="n">to_key</span><span class="o">=</span><span class="s">&#39;BIC&#39;</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">			If a dictionary is added as a dimension, this function can pull values from that dictionary and add them to each node that has the specific dictionary.</span>
+<span class="sd">			As the bootstrap functions add the statistics dictionary of the model fit to the node, this function has to be used to eg. access the BIC criterion (which is why this is the default from and to keys). </span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+			<span class="k">if</span> <span class="n">from_dictionary</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span>
+				<span class="k">if</span> <span class="n">from_key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">from_dictionary</span><span class="p">]:</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">to_key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">from_dictionary</span><span class="p">][</span><span class="n">from_key</span><span class="p">]</span></div>
+<div class="viewcode-block" id="StatCollector.rename"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.rename">[docs]</a>	<span class="k">def</span> <span class="nf">rename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">pattern</span><span class="p">,</span><span class="n">substitution</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">			Renames nodes with the regex pattern `pattern` just like :func:`re.sub()`.</span>
+
+<span class="sd">			Example to rename different number of knots to a tree, where each the increase in knots is counted as a submodel::</span>
+
+<span class="sd">				statsr = stats.rename(r&#39;50&#39;,&#39;30/50&#39;).rename(r&#39;30&#39;,&#39;20/30&#39;).rename(r&#39;20&#39;,&#39;10/20&#39;).rename(r&#39;10&#39;,&#39;5/10&#39;).rename(r&#39;5&#39;,&#39;3/5&#39;).rename(r&#39;30/3/50&#39;,&#39;30/50&#39;)</span>
+
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">_stats</span> <span class="o">=</span> <span class="n">StatCollector</span><span class="p">({})</span>
+		<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+			<span class="n">new_k</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span><span class="n">substitution</span><span class="p">,</span><span class="n">k</span><span class="p">)</span>
+			<span class="n">_stats</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">new_k</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+		<span class="k">return</span> <span class="n">_stats</span></div>
+<div class="viewcode-block" id="StatCollector.rename_value_to_tree"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.rename_value_to_tree">[docs]</a>	<span class="k">def</span> <span class="nf">rename_value_to_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">			Renames nodes, such that increases of one value are counted as submodels</span>
+
+<span class="sd">			`value` is the index (of the slash splitted node name) of the value that is to be replaced. The default is -1, ie. the last value.</span>
+
+<span class="sd">			Example::</span>
+
+<span class="sd">				import ni</span>
+<span class="sd">				stats = ni.StatCollector()</span>
+<span class="sd">				stats.addNode(&#39;Model 0/10&#39;,{&#39;a&#39;:100})</span>
+<span class="sd">				stats.addNode(&#39;Model 0/20&#39;,{&#39;a&#39;:100})</span>
+<span class="sd">				stats.addNode(&#39;Model 0/30&#39;,{&#39;a&#39;:100})</span>
+<span class="sd">				stats.addNode(&#39;Model 0/50&#39;,{&#39;a&#39;:100})</span>
+<span class="sd">				stats.addNode(&#39;Model 0/1000&#39;,{&#39;a&#39;:100})</span>
+<span class="sd">				stats.rename_value_to_tree().plotTree(&#39;a&#39;)</span>
+
+<span class="sd">			The example will rename the last node to &#39;Model 0/10/20/30/50/1000&#39;</span>
+
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+			<span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">)):</span>
+				<span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">)[</span><span class="n">value</span><span class="p">])</span>
+		<span class="n">values</span> <span class="o">=</span> <span class="n">natural_sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">values</span><span class="p">)))</span>
+		<span class="n">_stats</span> <span class="o">=</span> <span class="n">StatCollector</span><span class="p">({})</span>
+		<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+			<span class="n">new_k</span> <span class="o">=</span> <span class="n">k</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_k</span><span class="p">):</span>
+				<span class="n">this_value</span> <span class="o">=</span> <span class="bp">None</span>
+				<span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+					<span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="n">new_k</span><span class="p">[</span><span class="n">value</span><span class="p">]:</span>
+						<span class="n">this_value</span><span class="o">=</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span>
+						<span class="k">break</span>
+				<span class="k">if</span> <span class="n">this_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+					<span class="n">new_k</span><span class="p">[</span><span class="n">value</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">values</span><span class="p">[:</span><span class="n">this_value</span><span class="p">])</span>
+			<span class="n">_stats</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">new_k</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+		<span class="k">return</span> <span class="n">_stats</span></div>
+<div class="viewcode-block" id="StatCollector.getTree"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.getTree">[docs]</a>	<span class="k">def</span> <span class="nf">getTree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">substitution_patterns</span><span class="o">=</span><span class="p">[]):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">			returns a tuple used by plotTree to plot a tree representation of the nodes.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="n">model_points</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+			<span class="n">model_points</span><span class="o">.</span><span class="n">append</span><span class="p">(([</span><span class="n">k</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">)],[</span><span class="n">k</span><span class="p">],</span><span class="s">&#39;go&#39;</span><span class="p">))</span>
+			<span class="k">for</span> <span class="n">k_2</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+				<span class="k">for</span> <span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="n">c</span><span class="p">)</span> <span class="ow">in</span> <span class="n">substitution_patterns</span><span class="p">:</span>
+					<span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">k_2</span><span class="p">):</span>
+						<span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(([</span><span class="n">k_2</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">),</span><span class="n">k</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">)],[</span><span class="n">k_2</span><span class="p">,</span><span class="n">k</span><span class="p">],</span><span class="n">c</span><span class="p">))</span>
+				<span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">k_2</span><span class="p">)</span> <span class="ow">and</span> <span class="n">k_2</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">k</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+					<span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(([</span><span class="n">k_2</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">),</span><span class="n">k</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">)],[</span><span class="n">k_2</span><span class="p">,</span><span class="n">k</span><span class="p">],</span><span class="s">&#39;g--&#39;</span><span class="p">))</span>
+		<span class="k">return</span> <span class="n">l</span><span class="p">,</span><span class="n">model_points</span></div>
+<div class="viewcode-block" id="StatCollector.plotTree"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.plotTree">[docs]</a>	<span class="k">def</span> <span class="nf">plotTree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">dim</span><span class="p">,</span><span class="n">substitution_patterns</span><span class="o">=</span><span class="p">[],</span><span class="n">line_kwargs</span><span class="o">=</span><span class="p">{},</span><span class="n">marker_kwargs</span><span class="o">=</span><span class="p">{},</span> <span class="n">right_to_left</span> <span class="o">=</span> <span class="bp">False</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">			Plots a tree of the nodes, using `dim` as the height, if the node contains `dim`.</span>
+
+<span class="sd">			Slashes in the model names will be used as the different levels in the tree. The order of the parts between the slashes is ignored for now (3/4 and 4/3 are the same).</span>
+
+<span class="sd">			`substitution_patterns` may contain substitution patterns (used to connect nodes) for re.sub as a three tuple (pattern, substitute, color), where color is the color that will be assigned to this connection</span>
+
+<span class="sd">			`line_kwargs` and `marker_kwargs` can contain arguments in a dictionary to alter the options to set lines or markers. The dictionary will be passed on to the plot function.</span>
+
+<span class="sd">			`right_to_left` determines, whether the plot is plotted from left to right (default) or the other way around (`right_to_left` = True).</span>
+
+
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">right_to_left_mult</span> <span class="o">=</span> <span class="mi">1</span>
+		<span class="k">if</span> <span class="n">right_to_left</span><span class="p">:</span>
+			<span class="n">right_to_left_mult</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+		<span class="n">l</span><span class="p">,</span> <span class="n">model_points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTree</span><span class="p">(</span><span class="n">substitution_patterns</span><span class="p">)</span>
+		<span class="n">last_y</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="k">for</span> <span class="n">ll</span> <span class="ow">in</span> <span class="n">l</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">ll</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span> <span class="n">ll</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+				<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">right_to_left_mult</span><span class="o">*</span><span class="n">ll</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span><span class="n">right_to_left_mult</span><span class="o">*</span><span class="n">ll</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]],</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getNode</span><span class="p">(</span><span class="n">ll</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])[</span><span class="n">dim</span><span class="p">]),</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getNode</span><span class="p">(</span><span class="n">ll</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])[</span><span class="n">dim</span><span class="p">])],</span><span class="n">ll</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="o">**</span><span class="n">line_kwargs</span><span class="p">)</span>
+		<span class="k">for</span> <span class="n">ll</span> <span class="ow">in</span> <span class="n">model_points</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">ll</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+				<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">right_to_left_mult</span><span class="o">*</span><span class="n">ll</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getNode</span><span class="p">(</span><span class="n">ll</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])[</span><span class="n">dim</span><span class="p">]),</span><span class="n">ll</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="o">**</span><span class="n">marker_kwargs</span><span class="p">)</span>
+				<span class="n">x</span> <span class="o">=</span> <span class="n">ll</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+				<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getNode</span><span class="p">(</span><span class="n">ll</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])[</span><span class="n">dim</span><span class="p">])</span>
+				<span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">last_y</span><span class="o">-</span><span class="n">y</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.1</span><span class="p">:</span>
+					<span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="mf">0.1</span>
+				<span class="k">if</span> <span class="s">&#39;name&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">getNode</span><span class="p">(</span><span class="n">ll</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]):</span>
+					<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getNode</span><span class="p">(</span><span class="n">ll</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])[</span><span class="s">&#39;name&#39;</span><span class="p">],</span><span class="n">rotation</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span><span class="n">va</span><span class="o">=</span><span class="s">&#39;bottom&#39;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="n">ll</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span><span class="n">rotation</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span><span class="n">va</span><span class="o">=</span><span class="s">&#39;bottom&#39;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span></div>
+<div class="viewcode-block" id="StatCollector.html_view"><a class="viewcode-back" href="../../../ni.tools.html#ni.tools.statcollector.StatCollector.html_view">[docs]</a>	<span class="k">def</span> <span class="nf">html_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">			Generates an html_view of this object. </span>
+
+<span class="sd">			Example::</span>
+
+<span class="sd">				stats.html_view().render(&#39;stats_file.html&#39;)</span>
+
+
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">view</span> <span class="o">=</span> <span class="n">View</span><span class="p">()</span>
+		<span class="n">stat_prefix</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+		<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+			<span class="n">view</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">stat_prefix</span> <span class="o">+</span> <span class="s">&quot;#2/tabs/Models/&quot;</span><span class="o">+</span><span class="n">k</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">,</span><span class="s">&quot;/tabs/&quot;</span><span class="p">),</span><span class="n">k</span><span class="p">)</span>
+			<span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getNode</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+			<span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">node</span><span class="p">:</span>
+				<span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="n">prop</span><span class="p">])</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">:</span>
+					<span class="n">view</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">stat_prefix</span> <span class="o">+</span> <span class="s">&quot;#2/tabs/Models/&quot;</span><span class="o">+</span><span class="n">k</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">,</span><span class="s">&quot;/tabs/&quot;</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/#1/&quot;</span><span class="o">+</span><span class="n">prop</span><span class="p">,</span><span class="n">prop</span><span class="o">+</span><span class="s">&quot; = &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="n">prop</span><span class="p">]))</span>
+				<span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="n">prop</span><span class="p">])</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+					<span class="k">with</span> <span class="n">view</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">stat_prefix</span> <span class="o">+</span> <span class="s">&quot;#2/tabs/Models/&quot;</span><span class="o">+</span><span class="n">k</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">,</span><span class="s">&quot;/tabs/&quot;</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/Plots/tabs/&quot;</span><span class="o">+</span><span class="n">prop</span><span class="p">):</span>
+						<span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="n">prop</span><span class="p">])</span>
+		<span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDimensions</span><span class="p">():</span>	
+			<span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+			<span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">:</span>
+					<span class="n">view</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">stat_prefix</span> <span class="o">+</span> <span class="s">&quot;#2/tabs/Dimensions/tabs/&quot;</span><span class="o">+</span><span class="n">d</span><span class="o">+</span><span class="s">&quot;/&quot;</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+			<span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+				<span class="k">try</span><span class="p">:</span>
+					<span class="k">with</span> <span class="n">view</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="s">&quot;#2/tabs/Dimensions/tabs/&quot;</span><span class="o">+</span><span class="n">d</span><span class="o">+</span><span class="s">&quot;/#1&quot;</span><span class="p">):</span>
+						<span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+				<span class="k">except</span><span class="p">:</span>
+					<span class="n">view</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">stat_prefix</span> <span class="o">+</span> <span class="s">&quot;#2/tabs/Dimensions/tabs/&quot;</span><span class="o">+</span><span class="n">d</span><span class="o">+</span><span class="s">&quot;/#1/failed&quot;</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+			<span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+				<span class="k">try</span><span class="p">:</span>
+					<span class="k">with</span> <span class="n">view</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">stat_prefix</span> <span class="o">+</span> <span class="s">&quot;#2/tabs/Dimensions/tabs/&quot;</span><span class="o">+</span><span class="n">d</span><span class="o">+</span><span class="s">&quot;/#1&quot;</span><span class="p">):</span>
+						<span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+					<span class="k">with</span> <span class="n">view</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">stat_prefix</span> <span class="o">+</span> <span class="s">&quot;#2/tabs/Dimensions/tabs/&quot;</span><span class="o">+</span><span class="n">d</span><span class="o">+</span><span class="s">&quot;/#2&quot;</span><span class="p">):</span>
+						<span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">transpose</span><span class="p">())</span>
+				<span class="k">except</span><span class="p">:</span>
+					<span class="k">with</span> <span class="n">view</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">stat_prefix</span> <span class="o">+</span> <span class="s">&quot;#2/tabs/Dimensions/tabs/&quot;</span><span class="o">+</span><span class="n">d</span><span class="o">+</span><span class="s">&quot;/#1/failed&quot;</span><span class="p">):</span>
+						<span class="k">for</span> <span class="n">xx</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+							<span class="k">for</span> <span class="n">xxx</span> <span class="ow">in</span> <span class="n">xx</span><span class="p">:</span>
+								<span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xxx</span><span class="p">)</span>
+			<span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+				<span class="k">try</span><span class="p">:</span>
+					<span class="k">with</span> <span class="n">view</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">stat_prefix</span> <span class="o">+</span><span class="s">&quot;#2/tabs/Dimensions/tabs/&quot;</span><span class="o">+</span><span class="n">d</span><span class="o">+</span><span class="s">&quot;/tabs/Axis 0/#1&quot;</span><span class="p">):</span>
+						<span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+					<span class="k">with</span> <span class="n">view</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">stat_prefix</span> <span class="o">+</span> <span class="s">&quot;#2/tabs/Dimensions/tabs/&quot;</span><span class="o">+</span><span class="n">d</span><span class="o">+</span><span class="s">&quot;/tabs/Axis 0/#2&quot;</span><span class="p">):</span>
+						<span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">())</span>
+					<span class="k">with</span> <span class="n">view</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">stat_prefix</span> <span class="o">+</span> <span class="s">&quot;#2/tabs/Dimensions/tabs/&quot;</span><span class="o">+</span><span class="n">d</span><span class="o">+</span><span class="s">&quot;/tabs/Axis 1/#1&quot;</span><span class="p">):</span>
+						<span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+					<span class="k">with</span> <span class="n">view</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">stat_prefix</span> <span class="o">+</span> <span class="s">&quot;#2/tabs/Dimensions/tabs/&quot;</span><span class="o">+</span><span class="n">d</span><span class="o">+</span><span class="s">&quot;/tabs/Axis 1/#2&quot;</span><span class="p">):</span>
+						<span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">())</span>
+					<span class="k">with</span> <span class="n">view</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">stat_prefix</span> <span class="o">+</span> <span class="s">&quot;#2/tabs/Dimensions/tabs/&quot;</span><span class="o">+</span><span class="n">d</span><span class="o">+</span><span class="s">&quot;/tabs/Axis 2/#1&quot;</span><span class="p">):</span>
+						<span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+					<span class="k">with</span> <span class="n">view</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">stat_prefix</span> <span class="o">+</span> <span class="s">&quot;#2/tabs/Dimensions/tabs/&quot;</span><span class="o">+</span><span class="n">d</span><span class="o">+</span><span class="s">&quot;/tabs/Axis 2/#2&quot;</span><span class="p">):</span>
+						<span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">())</span>
+				<span class="k">except</span><span class="p">:</span>
+					<span class="n">view</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">stat_prefix</span> <span class="o">+</span> <span class="s">&quot;#2/tabs/Dimensions/tabs/&quot;</span><span class="o">+</span><span class="n">d</span><span class="o">+</span><span class="s">&quot;/#1/failed&quot;</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">view</span></div></div>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	def tree_plot():	</span>
+
+
+<span class="sd">		..todo:: make work</span>
+
+
+<span class="sd">		N = data.nr_cells</span>
+<span class="sd">		l = []</span>
+<span class="sd">		for i in range(N):</span>
+<span class="sd">			l.append(([0,1],[&quot;False&quot;, &quot;[&quot;+str(i)+&quot;]&quot;],&#39;b&#39;))</span>
+<span class="sd">		for i in range(N):</span>
+<span class="sd">			for j in range(i+1,N):</span>
+<span class="sd">				l.append(([1,2],[&quot;[&quot;+str(i)+&quot;]&quot;,str(i)+&quot;/&quot;+str(j)],&#39;g&#39;))</span>
+<span class="sd">				l.append(([1,2],[&quot;[&quot;+str(j)+&quot;]&quot;,str(i)+&quot;/&quot;+str(j)],&#39;g--&#39;))</span>
+<span class="sd">		model_points = [&quot;False&quot;]</span>
+<span class="sd">		for i in range(N):</span>
+<span class="sd">			model_points.append(([1],[&quot;[&quot;+str(i)+&quot;]&quot;],&#39;bo&#39;))</span>
+<span class="sd">			for j in range(i+1,N):</span>
+<span class="sd">				model_points.append(([2],[str(i)+&quot;/&quot;+str(j)],&#39;go&#39;))</span>
+
+<span class="sd">		for dim in [&#39;llf_test_model&#39;,&#39;EIC&#39;,&#39;AIC&#39;,&#39;llf_boot&#39;,&#39;llf_train&#39;]:</span>
+<span class="sd">			textxys = []</span>
+<span class="sd">			view.figure()</span>
+<span class="sd">			figsize(7,20)</span>
+<span class="sd">			last_y = 0</span>
+<span class="sd">			for ll in l:</span>
+<span class="sd">				if &quot;Model &quot;+ll[1][0] in stats.keys() and &quot;Model &quot;+ll[1][1] in stats.keys():</span>
+<span class="sd">					plot(ll[0], [mean(stats.filter(&quot;Model &quot;+ll[1][0]).get(dim)[0]),mean(stats.filter(&quot;Model &quot;+ll[1][1]).get(dim)[0])],ll[2])</span>
+<span class="sd">					#x = ll[0][1]</span>
+<span class="sd">					#y = mean(stats.filter(&quot;Model &quot;+ll[1][1]).get(dim)[0])</span>
+<span class="sd">					#if abs(last_y-y) &lt; 0.1:</span>
+<span class="sd">					#	y = y + 0.1</span>
+<span class="sd">					#text(x,y, &quot;Model &quot;+ll[1][1],rotation=30,va=&#39;bottom&#39;,size=9)</span>
+<span class="sd">			for ll in model_points:</span>
+<span class="sd">				if &quot;Model &quot;+ll[1][0] in stats.keys():</span>
+<span class="sd">					x = ll[0][0]</span>
+<span class="sd">					y = mean(stats.filter(&quot;Model &quot;+ll[1][0]).get(dim)[0])</span>
+<span class="sd">					if abs(last_y-y) &lt; 0.1:</span>
+<span class="sd">						y = y + 0.1</span>
+<span class="sd">					text(x,y, &quot;Model &quot;+ll[1][0],rotation=30,va=&#39;bottom&#39;,size=9)</span>
+<span class="sd">			title(dim)</span>
+<span class="sd">			view.savefig(&quot;Cells/tabs/Cell &quot;+str(cell)+&quot;/tabs/Trees/tabs/&quot;+dim)&quot;&quot;&quot;</span>
+</pre></div>
 
           </div>
         </div>
@@ -172,13 +556,13 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../../index.html">Neuroinformatics Toolbox 0.1 documentation</a> &raquo;</li>
+        <li><a href="../../../index.html">Neuroinformatics Toolbox 0.2 documentation</a> &raquo;</li>
           <li><a href="../../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
         &copy; Copyright 2013, Jacob Huth.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>
