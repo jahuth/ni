@@ -28,8 +28,12 @@ class RateModel(ip.Model):
 		
 	"""
 	def __init__(self,knots_rate=10):
-		super(RateModel,self).__init__({'name':'Rate Model','autohistory':False, 'crosshistory':False, 'knots_rate':knots_rate})
-		self.loads(knots_rate)
+		if type(knots_rate) == int:
+			super(RateModel,self).__init__({'name':'Rate Model','autohistory':False, 'crosshistory':False, 'knots_rate':knots_rate})
+		elif type(knots_rate) == dict:
+			conf = {'name':'Rate Model','autohistory':False, 'crosshistory':False,'knots_rate':10};
+			conf.update(knots_rate)
+		        super(RateModel,self).__init__(conf)
 
 class RateAndHistoryModel(ip.Model):
 	"""This is a shorthand class for an Inhomogenous Pointprocess model that contains only a RateComponent, a Autohistory Component and nothing else.

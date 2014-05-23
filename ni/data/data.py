@@ -11,6 +11,26 @@
 .. todo::
 		Lazy loading and prevention from data duplicates where unnecessary. See also: `indexing view versus copy <http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy>`_
 
+
+Using the ni.Data data structures
+------------------------------------
+
+The `Data` class is supposed to be easily accessible to the `ni.` models. They contain an index that separates the time series into different **cells**, **trials** and **conditions**.
+
+**Conditions** are mostly for the users, as they are ignored by the model classes. They should be used to separate data before fitting a model on them, such that only data from a certain subset of trials (ie. one or more experimental conditions) are used for the fit.
+If multiple conditions are contained in a dataset that is passed to a model, the model should treat them as additional trials.
+
+**Trials** assume a common time frame ie. that bin 0 of each trial corresponds to the same time relative to a stimulus, such that rate fluctuations can be averaged over trials.
+
+**Cells** signify spike trains that are recorded from different sources (or spike sorted), such that there can be correlations between cells in a certain trail.
+
+The index is hierarchical, as in for each condition there are several trials, which each have several cells.
+But since modelling is mainly used to distinguish varying behaviour of the same ensemble of cells, the number of cells in a trial and the number of trials pro condition has to be equal.
+
+
+
+
+
 Storing Spike Data in Python with Pandas
 --------------------------------------------------------
 
@@ -287,6 +307,8 @@ class Data:
 		data.index = pandas.MultiIndex.from_tuples(self.data.index.tolist(), names=self.data.index.names)
 		return Data(data)
 	def reduce_resolution(self,factor=2):
+		if factor == 1:
+			return Data(self.data)
 		before_spikes = self.data.sum().sum()
 		data = pandas.concat([ self.data.iloc[:,int(a*factor):int((a+1)*factor)].max(axis=1) for a in range(int(self.time_bins/factor)) ],axis=1)
 		data.columns = range(len(data.columns))
@@ -327,14 +349,14 @@ class Data:
 			for cell in range(self.nr_cells):
 				n = self.cell(cell)
 				d = n.data.sum(0)
-				channels.append(scipy.ndimage.gaussian_filter(d,smooth_width))
+				channels.append(scipy.ndimage.gaussian_filter(d,smooth_width)/(self.nr_trials*self.nr_conditions))
 			return np.array(channels).transpose()
 		else:
 			channels = []
 			for cell in range(self.nr_cells):
 				n = self.cell(cell).trial(trials)
 				d = n.data.sum(0)
-				channels.append(scipy.ndimage.gaussian_filter(d,smooth_width))
+				channels.append(scipy.ndimage.gaussian_filter(d,smooth_width)/(len(trials)*self.nr_conditions))
 			return np.array(channels).transpose()
 	def interspike_intervals(self,smooth_width=0,trials=False):
 		"""

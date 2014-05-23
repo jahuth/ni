@@ -263,6 +263,7 @@ class Picklable(object):
 
 
 def load(file):
+	"""loads a pickled object"""
 	with open(file,"r") as f:
 		l = parse(f.read())
 		if type(l) == str:
