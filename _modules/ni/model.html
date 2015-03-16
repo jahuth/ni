@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>ni.model &mdash; Neuroinformatics Toolbox 0.2 documentation</title>
+    <title>ni.model &mdash; ni 0.2 documentation</title>
     
     <link rel="stylesheet" href="../../_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -24,13 +24,12 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="author" title="About these documents" href="../../about.html" />
-    <link rel="top" title="Neuroinformatics Toolbox 0.2 documentation" href="../../index.html" />
+    <link rel="top" title="ni 0.2 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="../../index.html">
-          <span>Neuroinformatics Toolbox 0.2 documentation</span></a></h1>
+          <span>ni 0.2 documentation</span></a></h1>
         <h2 class="heading"><span>ni.model</span></h2>
       </div>
       <div class="topnav">
@@ -51,11 +50,11 @@
 <span class="kn">import</span> <span class="nn">ip_generator</span>
 
 <div class="viewcode-block" id="BareModel"><a class="viewcode-back" href="../../ni.model.html#ni.model.BareModel">[docs]</a><span class="k">class</span> <span class="nc">BareModel</span><span class="p">(</span><span class="n">ip</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
-	<span class="sd">&quot;&quot;&quot;This is a shorthand class for an Inhomogenous Pointprocess model that contains only a RateComponent and nothing else.</span>
+	<span class="sd">&quot;&quot;&quot;This is a shorthand class for an Inhomogenous Pointprocess model that contains no Components.</span>
 
 <span class="sd">	This is completely equivalent to using:</span>
 
-<span class="sd">		ni.model.ip.Model({&#39;name&#39;:&#39;Rate Model&#39;,&#39;autohistory&#39;:False, &#39;crosshistory&#39;:False, &#39;knots_rate&#39;:knots_rate})</span>
+<span class="sd">		ni.model.ip.Model({&#39;name&#39;:&#39;Bare Model&#39;,&#39;autohistory&#39;:False, &#39;crosshistory&#39;:False, &#39;rate&#39;:False})</span>
 <span class="sd">		</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">configuration</span><span class="o">=</span><span class="p">{}):</span>
@@ -104,7 +103,7 @@
       </div>
 
     <div class="footer">
-        &copy; Copyright 2013, Jacob Huth.
+        &copy; Copyright 2015, Jacob Huth.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

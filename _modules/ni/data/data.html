@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>ni.data.data &mdash; Neuroinformatics Toolbox 0.2 documentation</title>
+    <title>ni.data.data &mdash; ni 0.2 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -24,13 +24,12 @@
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="author" title="About these documents" href="../../../about.html" />
-    <link rel="top" title="Neuroinformatics Toolbox 0.2 documentation" href="../../../index.html" />
+    <link rel="top" title="ni 0.2 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="../../../index.html">
-          <span>Neuroinformatics Toolbox 0.2 documentation</span></a></h1>
+          <span>ni 0.2 documentation</span></a></h1>
         <h2 class="heading"><span>ni.data.data</span></h2>
       </div>
       <div class="topnav">
@@ -395,14 +394,14 @@
 			<span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nr_cells</span><span class="p">):</span>
 				<span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
 				<span class="n">d</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-				<span class="n">channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scipy</span><span class="o">.</span><span class="n">ndimage</span><span class="o">.</span><span class="n">gaussian_filter</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">smooth_width</span><span class="p">))</span>
+				<span class="n">channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scipy</span><span class="o">.</span><span class="n">ndimage</span><span class="o">.</span><span class="n">gaussian_filter</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">smooth_width</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nr_trials</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">nr_conditions</span><span class="p">))</span>
 			<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">channels</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
 		<span class="k">else</span><span class="p">:</span>
 			<span class="n">channels</span> <span class="o">=</span> <span class="p">[]</span>
 			<span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nr_cells</span><span class="p">):</span>
 				<span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span><span class="o">.</span><span class="n">trial</span><span class="p">(</span><span class="n">trials</span><span class="p">)</span>
 				<span class="n">d</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-				<span class="n">channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scipy</span><span class="o">.</span><span class="n">ndimage</span><span class="o">.</span><span class="n">gaussian_filter</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">smooth_width</span><span class="p">))</span>
+				<span class="n">channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scipy</span><span class="o">.</span><span class="n">ndimage</span><span class="o">.</span><span class="n">gaussian_filter</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">smooth_width</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">trials</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">nr_conditions</span><span class="p">))</span>
 			<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">channels</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span></div>
 <div class="viewcode-block" id="Data.interspike_intervals"><a class="viewcode-back" href="../../../ni.data.html#ni.data.data.Data.interspike_intervals">[docs]</a>	<span class="k">def</span> <span class="nf">interspike_intervals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">smooth_width</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">trials</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
@@ -584,7 +583,7 @@
       </div>
 
     <div class="footer">
-        &copy; Copyright 2013, Jacob Huth.
+        &copy; Copyright 2015, Jacob Huth.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

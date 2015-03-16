@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>ni.model.pointprocess &mdash; Neuroinformatics Toolbox 0.2 documentation</title>
+    <title>ni.model.pointprocess &mdash; ni 0.2 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -24,13 +24,12 @@
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="author" title="About these documents" href="../../../about.html" />
-    <link rel="top" title="Neuroinformatics Toolbox 0.2 documentation" href="../../../index.html" />
+    <link rel="top" title="ni 0.2 documentation" href="../../../index.html" />
     <link rel="up" title="ni.model" href="../model.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="../../../index.html">
-          <span>Neuroinformatics Toolbox 0.2 documentation</span></a></h1>
+          <span>ni 0.2 documentation</span></a></h1>
         <h2 class="heading"><span>ni.model.pointprocess</span></h2>
       </div>
       <div class="topnav">
@@ -59,7 +58,7 @@
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 
-<div class="viewcode-block" id="PointProcess"><a class="viewcode-back" href="../../../ni.model.html#ni.model.pointprocess.PointProcess">[docs]</a><span class="k">class</span> <span class="nc">PointProcess</span><span class="p">:</span>
+<div class="viewcode-block" id="PointProcess"><a class="viewcode-back" href="../../../ni.model.pointprocess.html#ni.model.pointprocess.PointProcess">[docs]</a><span class="k">class</span> <span class="nc">PointProcess</span><span class="p">:</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A Point Process container.</span>
 
@@ -71,7 +70,7 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">dimensionality</span> <span class="o">=</span> <span class="n">dimensionality</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">spikes</span> <span class="o">=</span> <span class="p">[]</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">frate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<div class="viewcode-block" id="PointProcess.addSpike"><a class="viewcode-back" href="../../../ni.model.html#ni.model.pointprocess.PointProcess.addSpike">[docs]</a>	<span class="k">def</span> <span class="nf">addSpike</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>
+<div class="viewcode-block" id="PointProcess.addSpike"><a class="viewcode-back" href="../../../ni.model.pointprocess.html#ni.model.pointprocess.PointProcess.addSpike">[docs]</a>	<span class="k">def</span> <span class="nf">addSpike</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		adds a spike to the point process, if it falls in the allowed range.</span>
 <span class="sd">		&quot;&quot;&quot;</span>
@@ -81,12 +80,12 @@
 		<span class="k">else</span><span class="p">:</span>
 			<span class="k">if</span> <span class="p">(</span><span class="n">t</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">all</span> <span class="ow">and</span> <span class="p">(</span><span class="n">t</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">all</span><span class="p">:</span>
 				<span class="bp">self</span><span class="o">.</span><span class="n">spikes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span></div>
-<div class="viewcode-block" id="PointProcess.getProbability"><a class="viewcode-back" href="../../../ni.model.html#ni.model.pointprocess.PointProcess.getProbability">[docs]</a>	<span class="k">def</span> <span class="nf">getProbability</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">t_from</span><span class="p">,</span><span class="n">t_to</span><span class="p">):</span>
+<div class="viewcode-block" id="PointProcess.getProbability"><a class="viewcode-back" href="../../../ni.model.pointprocess.html#ni.model.pointprocess.PointProcess.getProbability">[docs]</a>	<span class="k">def</span> <span class="nf">getProbability</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">t_from</span><span class="p">,</span><span class="n">t_to</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Undocumented</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">return</span> <span class="mi">0</span>	</div>
-<div class="viewcode-block" id="PointProcess.getCounts"><a class="viewcode-back" href="../../../ni.model.html#ni.model.pointprocess.PointProcess.getCounts">[docs]</a>	<span class="k">def</span> <span class="nf">getCounts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PointProcess.getCounts"><a class="viewcode-back" href="../../../ni.model.pointprocess.html#ni.model.pointprocess.PointProcess.getCounts">[docs]</a>	<span class="k">def</span> <span class="nf">getCounts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Gives a (in most cases binary) time series of the point process.</span>
 <span class="sd">		&quot;&quot;&quot;</span>
@@ -94,20 +93,20 @@
 		<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">spikes</span><span class="p">:</span>
 			<span class="n">ba</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">ba</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
 		<span class="k">return</span> <span class="n">ba</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span> </div>
-<div class="viewcode-block" id="PointProcess.plot"><a class="viewcode-back" href="../../../ni.model.html#ni.model.pointprocess.PointProcess.plot">[docs]</a>	<span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s">&#39;|&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="PointProcess.plot"><a class="viewcode-back" href="../../../ni.model.pointprocess.html#ni.model.pointprocess.PointProcess.plot">[docs]</a>	<span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s">&#39;|&#39;</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Plots the pointprocess as points at line `y`.</span>
 
 <span class="sd">		`marker` determines the color and shape of the marker. Default is a vertical line &#39;|&#39;</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">y</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spikes</span><span class="p">),</span><span class="bp">self</span><span class="o">.</span><span class="n">spikes</span><span class="p">,</span><span class="n">marker</span><span class="p">)</span></div>
-<div class="viewcode-block" id="PointProcess.plotGaussed"><a class="viewcode-back" href="../../../ni.model.html#ni.model.pointprocess.PointProcess.plotGaussed">[docs]</a>	<span class="k">def</span> <span class="nf">plotGaussed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">width</span><span class="p">):</span>
+<div class="viewcode-block" id="PointProcess.plotGaussed"><a class="viewcode-back" href="../../../ni.model.pointprocess.html#ni.model.pointprocess.PointProcess.plotGaussed">[docs]</a>	<span class="k">def</span> <span class="nf">plotGaussed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">width</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Plots the pointprocess as a smoothed time series</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">scipy</span><span class="o">.</span><span class="n">ndimage</span><span class="o">.</span><span class="n">gaussian_filter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getCounts</span><span class="p">(),</span><span class="n">width</span><span class="p">))</span>
 </div></div>
-<div class="viewcode-block" id="getCounts"><a class="viewcode-back" href="../../../ni.model.html#ni.model.pointprocess.getCounts">[docs]</a><span class="k">def</span> <span class="nf">getCounts</span><span class="p">(</span><span class="n">spikes</span><span class="p">):</span>
+<div class="viewcode-block" id="getCounts"><a class="viewcode-back" href="../../../ni.model.pointprocess.html#ni.model.pointprocess.getCounts">[docs]</a><span class="k">def</span> <span class="nf">getCounts</span><span class="p">(</span><span class="n">spikes</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Gives back an array of spike counts from an array of spike times. If the output is suppsed to be a Binomial, use `getBinary` instead.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -116,7 +115,7 @@
 		<span class="n">ba</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">ba</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
 	<span class="k">return</span> <span class="n">ba</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="getBinary"><a class="viewcode-back" href="../../../ni.model.html#ni.model.pointprocess.getBinary">[docs]</a><span class="k">def</span> <span class="nf">getBinary</span><span class="p">(</span><span class="n">spikes</span><span class="p">,</span> <span class="n">min_length</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="getBinary"><a class="viewcode-back" href="../../../ni.model.pointprocess.html#ni.model.pointprocess.getBinary">[docs]</a><span class="k">def</span> <span class="nf">getBinary</span><span class="p">(</span><span class="n">spikes</span><span class="p">,</span> <span class="n">min_length</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Gives back a binary array from an array of spike times. The maximum for each bin is 1.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -132,7 +131,7 @@
 		<span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s">&quot;Warning: &quot;</span> <span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">collisions</span><span class="p">)</span><span class="o">+</span> <span class="s">&quot; Spike collision(s) occured. You might want to increase bin spacing.&quot;</span><span class="p">,</span><span class="ne">UserWarning</span><span class="p">)</span>
 	<span class="k">return</span> <span class="n">ba</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="reverse_correlation"><a class="viewcode-back" href="../../../ni.model.html#ni.model.pointprocess.reverse_correlation">[docs]</a><span class="k">def</span> <span class="nf">reverse_correlation</span><span class="p">(</span><span class="n">spikes_a</span><span class="p">,</span><span class="n">spikes_b</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="reverse_correlation"><a class="viewcode-back" href="../../../ni.model.pointprocess.html#ni.model.pointprocess.reverse_correlation">[docs]</a><span class="k">def</span> <span class="nf">reverse_correlation</span><span class="p">(</span><span class="n">spikes_a</span><span class="p">,</span><span class="n">spikes_b</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 	<span class="n">isi</span> <span class="o">=</span> <span class="n">interspike_interval</span><span class="p">(</span><span class="n">spikes_a</span><span class="p">,</span><span class="n">spikes_b</span><span class="p">)</span>
 	<span class="n">rev</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">isi</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
 	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">isi</span><span class="p">:</span>
@@ -141,7 +140,7 @@
 	<span class="k">return</span> <span class="n">rev</span>
 
 </div>
-<div class="viewcode-block" id="interspike_interval"><a class="viewcode-back" href="../../../ni.model.html#ni.model.pointprocess.interspike_interval">[docs]</a><span class="k">def</span> <span class="nf">interspike_interval</span><span class="p">(</span><span class="n">spikes_a</span><span class="p">,</span><span class="n">spikes_b</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="interspike_interval"><a class="viewcode-back" href="../../../ni.model.pointprocess.html#ni.model.pointprocess.interspike_interval">[docs]</a><span class="k">def</span> <span class="nf">interspike_interval</span><span class="p">(</span><span class="n">spikes_a</span><span class="p">,</span><span class="n">spikes_b</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 	<span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">spikes_b</span><span class="p">)</span> <span class="o">==</span> <span class="nb">bool</span><span class="p">:</span>
 		<span class="n">spikes_b</span> <span class="o">=</span> <span class="n">spikes_a</span>
 	<span class="n">isi</span> <span class="o">=</span> <span class="p">[]</span>
@@ -152,7 +151,7 @@
 	<span class="k">return</span> <span class="n">isi</span>
 
 </div>
-<div class="viewcode-block" id="PointProcessFromSpikeTimes"><a class="viewcode-back" href="../../../ni.model.html#ni.model.pointprocess.PointProcessFromSpikeTimes">[docs]</a><span class="k">def</span> <span class="nf">PointProcessFromSpikeTimes</span><span class="p">(</span><span class="n">times</span><span class="p">):</span>
+<div class="viewcode-block" id="PointProcessFromSpikeTimes"><a class="viewcode-back" href="../../../ni.model.pointprocess.html#ni.model.pointprocess.PointProcessFromSpikeTimes">[docs]</a><span class="k">def</span> <span class="nf">PointProcessFromSpikeTimes</span><span class="p">(</span><span class="n">times</span><span class="p">):</span>
 	<span class="c">#if np.size(times,1) &gt; 1:</span>
 	<span class="c">#	return [PointProcessFromSpikeTimes(times[i]) for i in xrange(np.size(times,0))]</span>
 	<span class="n">pp</span> <span class="o">=</span> <span class="n">PointProcess</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -160,7 +159,7 @@
 	<span class="n">pp</span><span class="o">.</span><span class="n">spikes</span> <span class="o">=</span> <span class="n">times</span>
 	<span class="k">return</span> <span class="n">pp</span>
 </div>
-<div class="viewcode-block" id="createPoisson"><a class="viewcode-back" href="../../../ni.model.html#ni.model.pointprocess.createPoisson">[docs]</a><span class="k">def</span> <span class="nf">createPoisson</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="n">l</span><span class="p">):</span>
+<div class="viewcode-block" id="createPoisson"><a class="viewcode-back" href="../../../ni.model.pointprocess.html#ni.model.pointprocess.createPoisson">[docs]</a><span class="k">def</span> <span class="nf">createPoisson</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="n">l</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	This generates a spike sequence of length `l` according to either a fixed firing rate `p`, or a repeated sequence of firing rates if `type(p) == np.ndarray`.</span>
 
@@ -234,7 +233,7 @@
 			<span class="n">pp</span><span class="o">.</span><span class="n">addSpike</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
 	<span class="k">return</span> <span class="n">pp</span>
 </div>
-<div class="viewcode-block" id="plotGaussed"><a class="viewcode-back" href="../../../ni.model.html#ni.model.pointprocess.plotGaussed">[docs]</a><span class="k">def</span> <span class="nf">plotGaussed</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">width</span><span class="p">):</span>
+<div class="viewcode-block" id="plotGaussed"><a class="viewcode-back" href="../../../ni.model.pointprocess.html#ni.model.pointprocess.plotGaussed">[docs]</a><span class="k">def</span> <span class="nf">plotGaussed</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">width</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	.. testcode::</span>
 
@@ -246,7 +245,7 @@
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">scipy</span><span class="o">.</span><span class="n">ndimage</span><span class="o">.</span><span class="n">gaussian_filter</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">width</span><span class="p">))</span>
 </div>
-<div class="viewcode-block" id="plotMultiSpikes"><a class="viewcode-back" href="../../../ni.model.html#ni.model.pointprocess.plotMultiSpikes">[docs]</a><span class="k">def</span> <span class="nf">plotMultiSpikes</span><span class="p">(</span><span class="n">spikes</span><span class="p">):</span>
+<div class="viewcode-block" id="plotMultiSpikes"><a class="viewcode-back" href="../../../ni.model.pointprocess.html#ni.model.pointprocess.plotMultiSpikes">[docs]</a><span class="k">def</span> <span class="nf">plotMultiSpikes</span><span class="p">(</span><span class="n">spikes</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	* `spikes` is a binary 2d matrix </span>
 
@@ -258,25 +257,25 @@
 	<span class="c">#[plotGaussed(spikes[i]+i,1)  for i in range(0,len(spikes.T))]</span>
 	<span class="p">[</span><span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">spikes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">spikes</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">spikes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">i</span><span class="o">+</span><span class="mf">0.5</span><span class="p">,</span><span class="s">&#39;|&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">spikes</span><span class="p">))]</span>
 </div>
-<div class="viewcode-block" id="SimpleFiringRateModel"><a class="viewcode-back" href="../../../ni.model.html#ni.model.pointprocess.SimpleFiringRateModel">[docs]</a><span class="k">class</span> <span class="nc">SimpleFiringRateModel</span><span class="p">:</span>
+<div class="viewcode-block" id="SimpleFiringRateModel"><a class="viewcode-back" href="../../../ni.model.pointprocess.html#ni.model.pointprocess.SimpleFiringRateModel">[docs]</a><span class="k">class</span> <span class="nc">SimpleFiringRateModel</span><span class="p">:</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Uses just the firing rate as a predictor</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">frate</span> <span class="o">=</span> <span class="mi">0</span>
-<div class="viewcode-block" id="SimpleFiringRateModel.fit"><a class="viewcode-back" href="../../../ni.model.html#ni.model.pointprocess.SimpleFiringRateModel.fit">[docs]</a>	<span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data</span><span class="p">):</span>
+<div class="viewcode-block" id="SimpleFiringRateModel.fit"><a class="viewcode-back" href="../../../ni.model.pointprocess.html#ni.model.pointprocess.SimpleFiringRateModel.fit">[docs]</a>	<span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data</span><span class="p">):</span>
 		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ni</span><span class="o">.</span><span class="n">Data</span><span class="p">):</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">frate</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">firing_rate</span><span class="p">()</span>
 		<span class="k">else</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">frate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 		<span class="k">return</span> <span class="bp">self</span></div>
-<div class="viewcode-block" id="SimpleFiringRateModel.predict"><a class="viewcode-back" href="../../../ni.model.html#ni.model.pointprocess.SimpleFiringRateModel.predict">[docs]</a>	<span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Data</span><span class="p">):</span>
+<div class="viewcode-block" id="SimpleFiringRateModel.predict"><a class="viewcode-back" href="../../../ni.model.pointprocess.html#ni.model.pointprocess.SimpleFiringRateModel.predict">[docs]</a>	<span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Data</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Data</span><span class="p">)</span>
 		<span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">frate</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">Data</span><span class="p">)</span></div>
-<div class="viewcode-block" id="SimpleFiringRateModel.loglikelihood"><a class="viewcode-back" href="../../../ni.model.html#ni.model.pointprocess.SimpleFiringRateModel.loglikelihood">[docs]</a>	<span class="k">def</span> <span class="nf">loglikelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Data</span><span class="p">,</span><span class="n">Prediction</span><span class="p">):</span> 
+<div class="viewcode-block" id="SimpleFiringRateModel.loglikelihood"><a class="viewcode-back" href="../../../ni.model.pointprocess.html#ni.model.pointprocess.SimpleFiringRateModel.loglikelihood">[docs]</a>	<span class="k">def</span> <span class="nf">loglikelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Data</span><span class="p">,</span><span class="n">Prediction</span><span class="p">):</span> 
 		<span class="c">#return [np.sum(Data) * np.log(self.frate) - self.frate * len(Data)]*len(Data)</span>
 		<span class="k">return</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Data</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frate</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">frate</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">Data</span><span class="p">)]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">Data</span><span class="p">)</span></div>
-<div class="viewcode-block" id="SimpleFiringRateModel.compare"><a class="viewcode-back" href="../../../ni.model.html#ni.model.pointprocess.SimpleFiringRateModel.compare">[docs]</a>	<span class="k">def</span> <span class="nf">compare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Data</span><span class="p">,</span><span class="n">Prediction</span><span class="p">):</span> 
+<div class="viewcode-block" id="SimpleFiringRateModel.compare"><a class="viewcode-back" href="../../../ni.model.pointprocess.html#ni.model.pointprocess.SimpleFiringRateModel.compare">[docs]</a>	<span class="k">def</span> <span class="nf">compare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Data</span><span class="p">,</span><span class="n">Prediction</span><span class="p">):</span> 
 		<span class="c">#return [np.sum(Data) * np.log(self.frate) - self.frate * len(Data)]*len(Data)</span>
 		<span class="k">return</span> <span class="p">{</span><span class="s">&#39;LogLikelihood&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Data</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frate</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">frate</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">Data</span><span class="p">)]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">Data</span><span class="p">)}</span></div></div>
 </pre></div>
@@ -291,7 +290,7 @@
       </div>
 
     <div class="footer">
-        &copy; Copyright 2013, Jacob Huth.
+        &copy; Copyright 2015, Jacob Huth.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>3. data Package &mdash; Neuroinformatics Toolbox 0.2 documentation</title>
+    <title>1. data Package &mdash; ni 0.2 documentation</title>
     
     <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -24,24 +24,23 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="Neuroinformatics Toolbox 0.2 documentation" href="index.html" />
-    <link rel="next" title="4. Additional Information" href="about.html" />
-    <link rel="prev" title="2. tools Package" href="ni.tools.html" /> 
+    <link rel="top" title="ni 0.2 documentation" href="index.html" />
+    <link rel="next" title="2. model Package" href="ni.model.html" />
+    <link rel="prev" title="Welcome to the Neuroinformatics Toolbox documentation!" href="index.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="index.html">
-          <span>Neuroinformatics Toolbox 0.2 documentation</span></a></h1>
-        <h2 class="heading"><span>3. data Package</span></h2>
+          <span>ni 0.2 documentation</span></a></h1>
+        <h2 class="heading"><span>1. data Package</span></h2>
       </div>
       <div class="topnav">
       
         <p>
-        «&#160;&#160;<a href="ni.tools.html">2. tools Package</a>
+        «&#160;&#160;<a href="index.html">Welcome to the Neuroinformatics Toolbox documentation!</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="about.html">4. Additional Information</a>&#160;&#160;»
+        <a href="ni.model.html">2. model Package</a>&#160;&#160;»
         </p>
 
       </div>
@@ -49,20 +48,12 @@
         
         
   <div class="section" id="data-package">
-<h1>3. data Package<a class="headerlink" href="#data-package" title="Permalink to this headline">¶</a></h1>
-<p>Provides easy access to data.</p>
+<h1>1. data Package<a class="headerlink" href="#data-package" title="Permalink to this headline">¶</a></h1>
+<p>Provides easy access to some data.</p>
 <div class="section" id="module-ni.data.data">
-<span id="ni-data-data-module"></span><h2>3.1. <a class="reference internal" href="#module-ni.data.data" title="ni.data.data: Storing Point Process Data (Unix)"><tt class="xref py py-mod docutils literal"><span class="pre">ni.data.data</span></tt></a> Module<a class="headerlink" href="#module-ni.data.data" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-ni.data.data"></span><div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">Use different internal representations, depending on use. Ie. Spike times vs. binary array</p>
-</div>
-<div class="admonition-todo admonition" id="index-1">
-<p class="first admonition-title">Todo</p>
-<p class="last">Lazy loading and prevention from data duplicates where unnecessary. See also: <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy">indexing view versus copy</a></p>
-</div>
-<div class="section" id="using-the-ni-data-data-structures">
-<h3>3.1.1. Using the ni.Data data structures<a class="headerlink" href="#using-the-ni-data-data-structures" title="Permalink to this headline">¶</a></h3>
+<span id="data-module"></span><h2>1.1. <tt class="xref py py-mod docutils literal"><span class="pre">data</span></tt> Module<a class="headerlink" href="#module-ni.data.data" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-ni.data.data"></span><div class="section" id="using-the-ni-data-data-structures">
+<h3>1.1.1. Using the ni.Data data structures<a class="headerlink" href="#using-the-ni-data-data-structures" title="Permalink to this headline">¶</a></h3>
 <p>The <cite>Data</cite> class is supposed to be easily accessible to the <cite>ni.</cite> models. They contain an index that separates the time series into different <strong>cells</strong>, <strong>trials</strong> and <strong>conditions</strong>.</p>
 <p><strong>Conditions</strong> are mostly for the users, as they are ignored by the model classes. They should be used to separate data before fitting a model on them, such that only data from a certain subset of trials (ie. one or more experimental conditions) are used for the fit.
 If multiple conditions are contained in a dataset that is passed to a model, the model should treat them as additional trials.</p>
@@ -72,8 +63,8 @@ If multiple conditions are contained in a dataset that is passed to a model, the
 But since modelling is mainly used to distinguish varying behaviour of the same ensemble of cells, the number of cells in a trial and the number of trials pro condition has to be equal.</p>
 </div>
 <div class="section" id="storing-spike-data-in-python-with-pandas">
-<h3>3.1.2. Storing Spike Data in Python with Pandas<a class="headerlink" href="#storing-spike-data-in-python-with-pandas" title="Permalink to this headline">¶</a></h3>
-<p>The <a class="reference external" href="http://pandas.pydata.org/">pandas package</a> allows for easy storage of large data objects in python. The structure that is used by this toolbox is the pandas <tt class="xref py py-class docutils literal"><span class="pre">pandas.MultiIndexedFrame</span></tt> which is a <a class="reference external" href="http://pandas.pydata.org/pandas-docs/dev/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.13.1)"><tt class="xref py py-class docutils literal"><span class="pre">pandas.DataFrame</span></tt></a> / <a class="reference external" href="http://pandas.pydata.org/pandas-docs/dev/dsintro.html#dataframe">pandas.DataFrame</a> with an Index that has multiple levels.</p>
+<h3>1.1.2. Storing Spike Data in Python with Pandas<a class="headerlink" href="#storing-spike-data-in-python-with-pandas" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference external" href="http://pandas.pydata.org/">pandas package</a> allows for easy storage of large data objects in python. The structure that is used by this toolbox is the pandas <tt class="xref py py-class docutils literal"><span class="pre">pandas.MultiIndexedFrame</span></tt> which is a <tt class="xref py py-class docutils literal"><span class="pre">pandas.DataFrame</span></tt> / <a class="reference external" href="http://pandas.pydata.org/pandas-docs/dev/dsintro.html#dataframe">pandas.DataFrame</a> with an Index that has multiple levels.</p>
 <p>The index contains at least the levels <tt class="docutils literal"><span class="pre">'Cell'</span></tt>, <tt class="docutils literal"><span class="pre">'Trial'</span></tt> and <tt class="docutils literal"><span class="pre">'Condition'</span></tt>. Additional Indizex can be used (eg. <tt class="docutils literal"><span class="pre">'Bootstrap</span> <span class="pre">Sample'</span></tt> for Bootstrap Samples), but keep in mind that when fitting a model only <tt class="docutils literal"><span class="pre">'Cell'</span></tt> and <tt class="docutils literal"><span class="pre">'Trial'</span></tt> should remain, all other dimensions will be collapsed as more sets of Trials which may be indistinguishable after the fit.</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -137,7 +128,7 @@ But since modelling is mainly used to distinguish varying behaviour of the same 
 </tr>
 </tbody>
 </table>
-<p>To put your own data into a <a class="reference external" href="http://pandas.pydata.org/pandas-docs/dev/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.13.1)"><tt class="xref py py-class docutils literal"><span class="pre">pandas.DataFrame</span></tt></a>, so it can be used by the models in this toolbox create a MultiIndex for example like this:</p>
+<p>To put your own data into a <tt class="xref py py-class docutils literal"><span class="pre">pandas.DataFrame</span></tt>, so it can be used by the models in this toolbox create a MultiIndex for example like this:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">ni</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 <span class="n">d</span> <span class="o">=</span> <span class="p">[]</span>
@@ -321,7 +312,7 @@ Can save to and load from files.</p>
 </div>
 </div>
 <div class="section" id="module-ni.data.decoding_data">
-<span id="decoding-data-module"></span><h2>3.2. <tt class="xref py py-mod docutils literal"><span class="pre">decoding_data</span></tt> Module<a class="headerlink" href="#module-ni.data.decoding_data" title="Permalink to this headline">¶</a></h2>
+<span id="decoding-data-module"></span><h2>1.2. <tt class="xref py py-mod docutils literal"><span class="pre">decoding_data</span></tt> Module<a class="headerlink" href="#module-ni.data.decoding_data" title="Permalink to this headline">¶</a></h2>
 <span class="target" id="module-ni.data.decoding_data"></span><p>Loads Data into a Panda Data Frame</p>
 <dl class="class">
 <dt id="ni.data.decoding_data.Cell">
@@ -356,7 +347,7 @@ Can save to and load from files.</p>
 
 </div>
 <div class="section" id="module-ni.data.monkey">
-<span id="monkey-module"></span><h2>3.3. <tt class="xref py py-mod docutils literal"><span class="pre">monkey</span></tt> Module<a class="headerlink" href="#module-ni.data.monkey" title="Permalink to this headline">¶</a></h2>
+<span id="monkey-module"></span><h2>1.3. <tt class="xref py py-mod docutils literal"><span class="pre">monkey</span></tt> Module<a class="headerlink" href="#module-ni.data.monkey" title="Permalink to this headline">¶</a></h2>
 <span class="target" id="module-ni.data.monkey"></span><dl class="function">
 <dt id="ni.data.monkey.Data">
 <tt class="descclassname">ni.data.monkey.</tt><tt class="descname">Data</tt><big>(</big><em>file_nr='101a03'</em>, <em>resolution=1000</em>, <em>trial=</em>, <span class="optional">[</span><span class="optional">]</span><em>condition=</em>, <span class="optional">[</span><span class="optional">]</span><em>cell=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="_modules/ni/data/monkey.html#Data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.data.monkey.Data" title="Permalink to this definition">¶</a></dt>
@@ -392,17 +383,17 @@ Non-existent cell numbers are ignored.</div></blockquote>
       <div class="bottomnav">
       
         <p>
-        «&#160;&#160;<a href="ni.tools.html">2. tools Package</a>
+        «&#160;&#160;<a href="index.html">Welcome to the Neuroinformatics Toolbox documentation!</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="about.html">4. Additional Information</a>&#160;&#160;»
+        <a href="ni.model.html">2. model Package</a>&#160;&#160;»
         </p>
 
       </div>
 
     <div class="footer">
-        &copy; Copyright 2013, Jacob Huth.
+        &copy; Copyright 2015, Jacob Huth.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

@@ -1,79 +1,15 @@
 .. Neuroinformatics Toolbox documentation master file, created by
-   sphinx-quickstart on Thu Apr 10 11:06:20 2014.
+   sphinx-quickstart on Wed Jun 12 17:07:28 2013.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
 Welcome to the Neuroinformatics Toolbox documentation!
 ======================================================
 
-The NI Toolbox contains functions to deal with spike data.
+The NI Toolbox contains python versions of commonly used functions to deal with spike data.
+Get the pdf version `here <_static/NeuroinformaticsToolbox.pdf>`_
 
 
- * `Get the toolbox <https://github.com/jahuth/ni>`_ 
- * `Search in this Documentation <http://jahuth.github.io/ni/search.html>`_
-
-
-
-Using the toolbox looks like this::
-
-	data = ni.Data('spike_data.pkl')
-	model = ni.model.RateAndHistoryModel({'cell':2,'crosshistory':[6,7]})
-
-	fitted_model = model.fit(data)
-
-	plot(fitted_model.predict(data.trial(0)))
-
-
-:mod:`ni.` Shortcuts
-----------------------------
-
-The toolbox provides some shortcuts for functions and classes that are used regularly:
-
-    `ni.Data` -> :py:class:`ni.data.data.Data`
-
-	A container for spike data. Can load pickled numpy arrays::
-
-		ni.Data('some_matrix.pkl')
-
-    `ni.merge` -> :py:func:`ni.data.data.merge`
-
-	Merges mutliple :py:func:`ni.data.data.Data` instances into one, adding a new index.
-
-    `ni.load` -> :py:func:`ni.tools.pickler.load`
-
-	Loads a ni. object that has been `.save()`d.
-
-    `ni.figure` -> :py:func:`ni.tools.project.figure`
-
-	Creates a context manager
-
-    `ni.View` -> :py:class:`ni.tools.html_view.View`
-
-    `ni.StatCollector` -> :py:class:`tools.statcollector.StatCollector`
-
-
-
-
-Contents of this Documentation:
----------------------------------
-
-.. toctree::
-   :numbered:
-   :maxdepth: 2
-
-   ni.model
-   ni.tools
-   ni.data
-   about
-
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
 
 Installation
 ==========
@@ -89,6 +25,29 @@ In the repository the toolbox, default configuration, the documentation and exam
 If you lack any of the following packages, you might want to install them (with eg. `pip`) ::
 
 	ipython matplotlib scipy numpy pandas scikit-learn statsmodels
+
+
+
+Contents:
+
+.. toctree::
+   :maxdepth: 5
+   :numbered:
+
+   ni.data
+   ni.model
+   ni.model.pointprocess
+   ni.tools
+
+
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
 
 
 Some Examples
@@ -109,6 +68,21 @@ This will load matplotlib functions for easy plotting and even provide many alia
 Basic Example
 ----------------
 
+The most basic example (if a path to the data is set and accessible) of how to use the toolbox is::
+
+	import ni
+	data = ni.data.monkey.Data(condition = 0)
+	model = ni.model.ip.Model({'cell':4,'crosshistory':[6,7]})
+	fm = model.fit(data.trial(range(data.nr_trials/2)))
+	plot(fm.prototypes()['rate'],'k')
+
+The first line loads data from the monkey module with the default filename. The second line creates a model for cell 4, using 6 and 7 as crosshistory dependencies.
+Then the model is fitted on half of the data and the rate component is displayed.
+
+
+Generating example data
+---------------------------
+
 If no data is available, some can be generated with the net_sim module::
 
 	import ni
@@ -122,14 +96,12 @@ Will output:
 
 	Spike data: 1 Condition(s) 100 Trial(s) of 10 Cell(s) in 1000 Time step(s). No other data.
 
-The data fitted with a model::
+The data can then be used with a model::
 
 	model = ni.model.ip.Model({'cell':4,'crosshistory':[6,7]})
-	fm = model.fit(data.trial(range(r.data.nr_trials/2)))
+	fm = model.fit(r.data.trial(range(r.data.nr_trials/2)))
 	fm.plot_prototypes()
 
-The first line creates a model on cell 4, using 6 and 7 as crosshistory dependencies.
-Then the model is fitted on half of the data and the rate component is displayed.
 
 
 Using other sources of data

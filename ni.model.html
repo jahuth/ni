@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>1. model Package &mdash; Neuroinformatics Toolbox 0.2 documentation</title>
+    <title>2. model Package &mdash; ni 0.2 documentation</title>
     
     <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -24,24 +24,23 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="Neuroinformatics Toolbox 0.2 documentation" href="index.html" />
-    <link rel="next" title="3. data Package" href="ni.data.html" />
-    <link rel="prev" title="Welcome to the Neuroinformatics Toolbox documentation!" href="index.html" /> 
+    <link rel="top" title="ni 0.2 documentation" href="index.html" />
+    <link rel="next" title="3. The ni.model.pointprocess Module" href="ni.model.pointprocess.html" />
+    <link rel="prev" title="1. data Package" href="ni.data.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="index.html">
-          <span>Neuroinformatics Toolbox 0.2 documentation</span></a></h1>
-        <h2 class="heading"><span>1. model Package</span></h2>
+          <span>ni 0.2 documentation</span></a></h1>
+        <h2 class="heading"><span>2. model Package</span></h2>
       </div>
       <div class="topnav">
       
         <p>
-        «&#160;&#160;<a href="index.html">Welcome to the Neuroinformatics Toolbox documentation!</a>
+        «&#160;&#160;<a href="ni.data.html">1. data Package</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="ni.data.html">3. data Package</a>&#160;&#160;»
+        <a href="ni.model.pointprocess.html">3. The <tt class="docutils literal"><span class="pre">ni.model.pointprocess</span></tt> Module</a>&#160;&#160;»
         </p>
 
       </div>
@@ -49,12 +48,182 @@
         
         
   <div class="section" id="model-package">
-<h1>1. model Package<a class="headerlink" href="#model-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="module-ni.model">
-<span id="model-module"></span><h2>1.1. <tt class="xref py py-mod docutils literal"><span class="pre">model</span></tt> Module<a class="headerlink" href="#module-ni.model" title="Permalink to this headline">¶</a></h2>
+<h1>2. model Package<a class="headerlink" href="#model-package" title="Permalink to this headline">¶</a></h1>
+<p>This package provides two kinds of models:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Generative pointprocess models (see Section <tt class="xref py py-mod docutils literal"><span class="pre">ni.model.pointproccess</span></tt>)</li>
+<li>GLM based inhomogeneous pointprocess (ip) models</li>
+</ul>
+</div></blockquote>
+<p>The pointprocess models can instantiate a given firing rate function with a spike train.
+The ip models use &#8220;components&#8221; that are combined to fit a spike train using a GLM.</p>
+<div class="section" id="what-is-a-component">
+<h2>2.1. What is a &#8220;component&#8221;?<a class="headerlink" href="#what-is-a-component" title="Permalink to this headline">¶</a></h2>
+<p>For the <cite>ni.model</cite> package, a component is a set of time series (or a way to generate these) in a Generalized Linear Model that is used to fit a set of spike trains. When a model is fitted to a set of spike trains, the components are used to compute the designmatrix. Each component provides 1 or more timeseries that represent the influence of a specific event or aspect that is expected to affect the firing rate at that specific point in time to a certain degree.</p>
+<p>Eg. a component can be as simple as a constant value over time, or it can be 0 for most of the time, except at those time points where a specific event occurs (eg. a spike of a different neuron). The design matrix shown here is mostly 0 and contains three components (history, rate and a constant):</p>
+<img alt="_static/2_designmatrix_example.png" src="_static/2_designmatrix_example.png" />
+<p>To model a more or less precise time course of the effect of an event, the component needs to create mutiple time series, each representing a time window relative to the event (usually following the event, if a causal link is assumed). It is convenient to use splines to model these windows, because they will produce a smooth time series when summed.
+These time windows can be arranged linearly (each spanning the same amount of time) or logarithmically (such that there is a higher resolution close to the event than further away). The length and number of the time windows can be adjusted, since their explanatory value depends on the modeled process.</p>
+</div>
+<div class="section" id="the-rate-component">
+<h2>2.2. The Rate component<a class="headerlink" href="#the-rate-component" title="Permalink to this headline">¶</a></h2>
+<p>Given that each spike train is alligned in the same timeframe regarding a certain stimulus (or sequence of stimuli), a rate component models rate fluctuations that occur in every trial. This is done by creating a number of timeseries, each representing a portion of the trial time: eg. early in the trial, in the middle of the trial, at the end of the trial.</p>
+<p>A  <a class="reference internal" href="#ni.model.designmatrix.RateComponent" title="ni.model.designmatrix.RateComponent"><tt class="xref py py-class docutils literal"><span class="pre">ni.model.designmatrix.RateComponent</span></tt></a> will span the whole trial with a given number of knots while the class <a class="reference internal" href="#ni.model.designmatrix.AdaptiveRateComponent" title="ni.model.designmatrix.AdaptiveRateComponent"><tt class="xref py py-class docutils literal"><span class="pre">ni.model.designmatrix.AdaptiveRateComponent</span></tt></a> will use the firing rate to space out the knots to cover (on average) an equal amount of spikes.</p>
+</div>
+<div class="section" id="the-history-components">
+<h2>2.3. The history components<a class="headerlink" href="#the-history-components" title="Permalink to this headline">¶</a></h2>
+<p>Since the spike data containers contain multiple spike trains, a component can access the spiketimes of each of the spike trains contained. The history components use these spike times to model the effect of a certain spike train on the dependent spike train.</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>autohistory:</strong> the effect of the spike train on itself. Eg. refractory period or periodic spiking</li>
+<li><strong>crosshistory:</strong> models the effect of another spike train on the one modeled</li>
+<li>2nd order <strong>autohistory_2d:</strong> for bursting neurons, the autohistory alone will not capture the behaviour of the neuron, as it has to either predict periodic activity for the whole trial or no auto effect at all. The 2nd order history takes into account two spikes, such that the end of a burst can be predicted.</li>
+</ul>
+</div></blockquote>
+<p>Here you can see the slow time frame of a rate fluctuation (fixed to the time frame of each trial) and the fast time frame of a history component (each relative to a spike):</p>
+<img alt="_static/2_designmatrix_sum.png" src="_static/2_designmatrix_sum.png" />
+</div>
+<div class="section" id="configuring-a-model">
+<h2>2.4. Configuring a Model<a class="headerlink" href="#configuring-a-model" title="Permalink to this headline">¶</a></h2>
+<p>The model class has a default behaviour that assumes you want to have one rate component, one autohistory componenet and a crosshistory component for each channel. This behaviour can be changed by providing a different configuration dictionary to the model.</p>
+<p>Eg. to create a model without any of the components:</p>
+<div class="highlight-python"><div class="highlight"><pre>model = ni.model.ip.Model({‘name’:’Model’,’autohistory’:False, ‘crosshistory’:False, &#39;rate&#39;:False})
+</pre></div>
+</div>
+<p>Or, if additionally the 2nd order autohistory should be enabled:</p>
+<div class="highlight-python"><div class="highlight"><pre>model = ni.model.ip.Model({‘name’:’Model’,’autohistory_2d’:True })
+</pre></div>
+</div>
+<p>Important for models is also which spike train channel should be modeled by the others:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">model_0</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">ip</span><span class="o">.</span><span class="n">Model</span><span class="p">({</span><span class="s">&#39;cell&#39;</span><span class="p">:</span><span class="mi">0</span><span class="p">})</span>
+<span class="n">model_1</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">ip</span><span class="o">.</span><span class="n">Model</span><span class="p">({</span><span class="s">&#39;cell&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">})</span>
+<span class="n">model_2</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">ip</span><span class="o">.</span><span class="n">Model</span><span class="p">({</span><span class="s">&#39;cell&#39;</span><span class="p">:</span><span class="mi">2</span><span class="p">})</span>
+<span class="n">model_3</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">ip</span><span class="o">.</span><span class="n">Model</span><span class="p">({</span><span class="s">&#39;cell&#39;</span><span class="p">:</span><span class="mi">3</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>Instead of only true or false, crosshistory can also be a list of channels that should be used:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">model</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">ip</span><span class="o">.</span><span class="n">Model</span><span class="p">({</span><span class="s">&#39;cell&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="s">&#39;crosshistory&#39;</span><span class="p">:[</span><span class="mi">2</span><span class="p">]})</span> <span class="c"># cell 1 modeled using activity of cell 2</span>
+</pre></div>
+</div>
+<p>Also there are a number of configuration options that are passed on to a component to change its behaviour:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>Rate Component:</dt>
+<dd><ul class="first last">
+<li><p class="first"><em>knots_rate</em>: how many knots should be created</p>
+</li>
+<li><dl class="first docutils">
+<dt><em>adaptive_rate</em>: Whether the RateComponent or AdaptiveRateComponent should be used. The AdaptiveRateComponent can additionally be tweaked with:</dt>
+<dd><ul class="first last simple">
+<li>adaptive_rate_exponent (default = 2)</li>
+<li>adaptive_rate_smooth_width (default = 20)</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>History Components (autohistory and crosshistory):</dt>
+<dd><ul class="first last simple">
+<li><em>history_length</em>: total lenght of the time spanned by the history component</li>
+<li><em>history_knots</em>: number of knots to span</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>These options are set for the whole model at once:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">model</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">ip</span><span class="o">.</span><span class="n">Model</span><span class="p">({</span><span class="s">&#39;knots_rate&#39;</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span><span class="s">&#39;history_length&#39;</span><span class="p">:</span><span class="mi">200</span><span class="p">})</span> <span class="c"># sets history_length for autohistory and crosshistory, knots_rate for rate component</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="fitting-a-model">
+<h2>2.5. Fitting a Model<a class="headerlink" href="#fitting-a-model" title="Permalink to this headline">¶</a></h2>
+<p>An ip.Model can be fitted on a <a class="reference internal" href="ni.data.html#ni.data.data.Data" title="ni.data.data.Data"><tt class="xref py py-class docutils literal"><span class="pre">ni.data.data.Data</span></tt></a> object and will produce a <a class="reference internal" href="#ni.model.ip.FittedModel" title="ni.model.ip.FittedModel"><tt class="xref py py-class docutils literal"><span class="pre">ni.model.ip.FittedModel</span></tt></a>. This will contain the fitted coefficients and the design templates, such that the different components can be inspected individually:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">model</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">ip</span><span class="o">.</span><span class="n">Model</span><span class="p">({</span><span class="s">&#39;cell&#39;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="s">&#39;crosshistory&#39;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]})</span>
+<span class="n">fm</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">trial</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">nr_trials</span><span class="o">/</span><span class="mi">2</span><span class="p">)))</span>
+
+<span class="n">fm</span><span class="o">.</span><span class="n">plot_prototypes</span><span class="p">()</span> <span class="c"># will plot each fitted component</span>
+
+<span class="n">plot</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">firing_rate_model</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="c"># will plot the firing rate components (rate + constant)</span>
+
+<span class="n">plot</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">statistics</span><span class="p">[</span><span class="s">&#39;pvalues&#39;</span><span class="p">])</span> <span class="c"># plots the pvalues for each coefficient</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="creating-custom-components">
+<h2>2.6. Creating custom components<a class="headerlink" href="#creating-custom-components" title="Permalink to this headline">¶</a></h2>
+<p>To be precise, what happens when a model is fitted is the following:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>The model creates a <a class="reference internal" href="#ni.model.designmatrix.DesignMatrixTemplate" title="ni.model.designmatrix.DesignMatrixTemplate"><tt class="xref py py-class docutils literal"><span class="pre">ni.model.designmatrix.DesignMatrixTemplate</span></tt></a> and adds components (which are subclasses of <a class="reference internal" href="#ni.model.designmatrix.Component" title="ni.model.designmatrix.Component"><tt class="xref py py-class docutils literal"><span class="pre">ni.model.designmatrix.Component</span></tt></a>) according to its configuration to it:</dt>
+<dd><ul class="first last simple">
+<li>when the Component classes are created they are provided with most of the information they need (eg. trial length)</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>The DesignMatrixTemplate is combined with the data which creates the actual designmatrix by:</dt>
+<dd><ul class="first last simple">
+<li>For each component the function getSplines is called, providing the component with spikes of other neurons</li>
+<li>The component returns a 2 dimensional numpy array that has the dimensions of <em>length of time</em> <strong>x</strong> <em>number of time series</em></li>
+<li>if the array does not have the length of the complete time series, it will be repeated until it fits. So a kernel that has the length of exactly one trial will be repeated for each trial (the ni models by default make all trials the same length).</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">The design matrix is then passed to the GLM fitting backend</p>
+</li>
+</ul>
+</div></blockquote>
+<p>So, if you want to add a component, this can be either implement a function <em>getSplines</em> that returns a 2d numpy array that has the correct dimensions (time bins x N), or you can use or inherit from <a class="reference internal" href="#ni.model.designmatrix.Component" title="ni.model.designmatrix.Component"><tt class="xref py py-class docutils literal"><span class="pre">ni.model.designmatrix.Component</span></tt></a> and set the <cite>self.kernel</cite> attribute which will then be returned:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">my_kernel</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">create_splines</span><span class="o">.</span><span class="n">create_splines_linspace</span><span class="p">(</span><span class="n">time_length</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c"># creates a 6 knotted set of splines covering time_length</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">Component</span><span class="p">(</span><span class="n">header</span><span class="o">=</span><span class="s">&#39;My own component&#39;</span><span class="p">,</span><span class="n">kernel</span><span class="o">=</span><span class="n">my_kernel</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">ip</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">custom_components</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Applications can be eg. a rate component that is only applied to trials, while a second component is applied to the others. If two kinds of trials are alternated this could be done like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ni.model.designmatrix</span> <span class="kn">import</span> <span class="n">Component</span>
+<span class="n">my_kernel</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">create_splines</span><span class="o">.</span><span class="n">create_splines_linspace</span><span class="p">(</span><span class="n">time_length</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c"># creates a 6 knotted set of splines covering time_length</span>
+<span class="n">is_trial_type_1</span> <span class="o">=</span> <span class="n">repeat</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">number_of_trials</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span><span class="n">trial_length</span><span class="p">)</span>
+<span class="n">is_trial_type_2</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">is_trial_type_1</span>
+<span class="n">c1</span> <span class="o">=</span> <span class="n">Component</span><span class="p">(</span><span class="n">header</span><span class="o">=</span><span class="s">&#39;Trial Type 1 Rate&#39;</span><span class="p">,</span><span class="n">kernel</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">my_kernel</span><span class="p">]</span><span class="o">*</span><span class="n">number_of_trials</span><span class="p">)</span> <span class="o">*</span> <span class="n">is_trial_type_1</span><span class="p">[:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
+<span class="n">c2</span> <span class="o">=</span> <span class="n">Component</span><span class="p">(</span><span class="n">header</span><span class="o">=</span><span class="s">&#39;Trial Type 2 Rate&#39;</span><span class="p">,</span><span class="n">kernel</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">my_kernel</span><span class="p">]</span><span class="o">*</span><span class="n">number_of_trials</span><span class="p">)</span> <span class="o">*</span> <span class="n">is_trial_type_2</span><span class="p">[:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">ip</span><span class="o">.</span><span class="n">Model</span><span class="p">({</span><span class="s">&#39;custom_components&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">c1</span><span class="p">,</span><span class="n">c2</span><span class="p">]},</span><span class="n">trial_length</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Or alternatively you can overwrite a kernel of the rate component:</p>
+<div class="highlight-python"><div class="highlight"><pre>kernel = np.concatenate([
+            np.concatenate([my_kernel]*number_of_trials) * is_trial_type_1[:,np.newaxis]),
+            np.concatenate([my_kernel]*number_of_trials) * is_trial_type_2[:,np.newaxis])
+        ])
+model = ni.model.RateModel({’rate’:True, ’custom_kernels’: [{’Name’:’rate’,’Kernel’: kernel}]})
+</pre></div>
+</div>
+</div>
+<div class="section" id="classes-in-the-ni-model-package">
+<h2>2.7. Classes in the ni.model package<a class="headerlink" href="#classes-in-the-ni-model-package" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="ni.model.BareModel">
 <em class="property">class </em><tt class="descclassname">ni.model.</tt><tt class="descname">BareModel</tt><big>(</big><em>configuration={}</em><big>)</big><a class="reference internal" href="_modules/ni/model.html#BareModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.BareModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ni.model.ip.Model" title="ni.model.ip.Model"><tt class="xref py py-class docutils literal"><span class="pre">ni.model.ip.Model</span></tt></a></p>
+<p>This is a shorthand class for an Inhomogenous Pointprocess model that contains no Components.</p>
+<p>This is completely equivalent to using:</p>
+<blockquote>
+<div>ni.model.ip.Model({&#8216;name&#8217;:&#8217;Bare Model&#8217;,&#8217;autohistory&#8217;:False, &#8216;crosshistory&#8217;:False, &#8216;rate&#8217;:False})</div></blockquote>
+</dd></dl>
+
+<dl class="class">
+<dt id="ni.model.RateModel">
+<em class="property">class </em><tt class="descclassname">ni.model.</tt><tt class="descname">RateModel</tt><big>(</big><em>knots_rate=10</em><big>)</big><a class="reference internal" href="_modules/ni/model.html#RateModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.RateModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ni.model.ip.Model" title="ni.model.ip.Model"><tt class="xref py py-class docutils literal"><span class="pre">ni.model.ip.Model</span></tt></a></p>
 <p>This is a shorthand class for an Inhomogenous Pointprocess model that contains only a RateComponent and nothing else.</p>
 <p>This is completely equivalent to using:</p>
@@ -72,19 +241,8 @@
 <div>ni.model.ip.Model({&#8216;name&#8217;:&#8217;Rate Model with Autohistory Component&#8217;,&#8217;autohistory&#8217;:True, &#8216;crosshistory&#8217;:False, &#8216;knots_rate&#8217;:knots_rate, &#8216;history_length&#8217;:history_length, &#8216;knot_number&#8217;:history_knots})</div></blockquote>
 </dd></dl>
 
-<dl class="class">
-<dt id="ni.model.RateModel">
-<em class="property">class </em><tt class="descclassname">ni.model.</tt><tt class="descname">RateModel</tt><big>(</big><em>knots_rate=10</em><big>)</big><a class="reference internal" href="_modules/ni/model.html#RateModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.RateModel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ni.model.ip.Model" title="ni.model.ip.Model"><tt class="xref py py-class docutils literal"><span class="pre">ni.model.ip.Model</span></tt></a></p>
-<p>This is a shorthand class for an Inhomogenous Pointprocess model that contains only a RateComponent and nothing else.</p>
-<p>This is completely equivalent to using:</p>
-<blockquote>
-<div>ni.model.ip.Model({&#8216;name&#8217;:&#8217;Rate Model&#8217;,&#8217;autohistory&#8217;:False, &#8216;crosshistory&#8217;:False, &#8216;knots_rate&#8217;:knots_rate})</div></blockquote>
-</dd></dl>
-
-</div>
 <div class="section" id="module-ni.model.ip">
-<span id="ip-module"></span><h2>1.2. <tt class="xref py py-mod docutils literal"><span class="pre">ip</span></tt> Module<a class="headerlink" href="#module-ni.model.ip" title="Permalink to this headline">¶</a></h2>
+<span id="ip-module"></span><h3>2.7.1. <tt class="xref py py-mod docutils literal"><span class="pre">ip</span></tt> Module<a class="headerlink" href="#module-ni.model.ip" title="Permalink to this headline">¶</a></h3>
 <span class="target" id="module-ni.model.ip"></span><dl class="class">
 <dt id="ni.model.ip.Configuration">
 <em class="property">class </em><tt class="descclassname">ni.model.ip.</tt><tt class="descname">Configuration</tt><big>(</big><em>c=False</em><big>)</big><a class="reference internal" href="_modules/ni/model/ip.html#Configuration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.ip.Configuration" title="Permalink to this definition">¶</a></dt>
@@ -377,267 +535,8 @@ Uses these two options:</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-ni.model.backend_elasticnet">
-<span id="backend-elasticnet-module"></span><h2>1.3. <tt class="xref py py-mod docutils literal"><span class="pre">backend_elasticnet</span></tt> Module<a class="headerlink" href="#module-ni.model.backend_elasticnet" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-ni.model.backend_elasticnet"></span><p>This module provides a backend to the .ip model. It wraps the sklearn.linear_model.ElasticNet / ElasticNetCV objects.</p>
-<dl class="class">
-<dt id="ni.model.backend_elasticnet.Configuration">
-<em class="property">class </em><tt class="descclassname">ni.model.backend_elasticnet.</tt><tt class="descname">Configuration</tt><a class="reference internal" href="_modules/ni/model/backend_elasticnet.html#Configuration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.backend_elasticnet.Configuration" title="Permalink to this definition">¶</a></dt>
-<dd><p>Default Values:</p>
-<blockquote>
-<div><p>crossvalidation = True</p>
-<blockquote>
-<div>If true, alpha and l1_ratio will be calculated by crossvalidation.</div></blockquote>
-<p>alpha = 0.5</p>
-<p>l1_ratio = 1</p>
-<dl class="docutils">
-<dt>be_memory_efficient = True</dt>
-<dd>Does not keep the data with which it is fitted.</dd>
-</dl>
-</div></blockquote>
-</dd></dl>
-
-<dl class="class">
-<dt id="ni.model.backend_elasticnet.Fit">
-<em class="property">class </em><tt class="descclassname">ni.model.backend_elasticnet.</tt><tt class="descname">Fit</tt><big>(</big><em>f</em>, <em>m</em><big>)</big><a class="reference internal" href="_modules/ni/model/backend_elasticnet.html#Fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.backend_elasticnet.Fit" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
-<dt id="ni.model.backend_elasticnet.Fit.predict">
-<tt class="descname">predict</tt><big>(</big><em>X=False</em><big>)</big><a class="reference internal" href="_modules/ni/model/backend_elasticnet.html#Fit.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.backend_elasticnet.Fit.predict" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="ni.model.backend_elasticnet.Model">
-<em class="property">class </em><tt class="descclassname">ni.model.backend_elasticnet.</tt><tt class="descname">Model</tt><big>(</big><em>c=False</em><big>)</big><a class="reference internal" href="_modules/ni/model/backend_elasticnet.html#Model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.backend_elasticnet.Model" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
-<dt id="ni.model.backend_elasticnet.Model.fit">
-<tt class="descname">fit</tt><big>(</big><em>x</em>, <em>dm</em><big>)</big><a class="reference internal" href="_modules/ni/model/backend_elasticnet.html#Model.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.backend_elasticnet.Model.fit" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="function">
-<dt id="ni.model.backend_elasticnet.compare">
-<tt class="descclassname">ni.model.backend_elasticnet.</tt><tt class="descname">compare</tt><big>(</big><em>x</em>, <em>p</em>, <em>nr_trials=1</em><big>)</big><a class="reference internal" href="_modules/ni/model/backend_elasticnet.html#compare"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.backend_elasticnet.compare" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="ni.model.backend_elasticnet.predict">
-<tt class="descclassname">ni.model.backend_elasticnet.</tt><tt class="descname">predict</tt><big>(</big><em>x</em>, <em>dm</em><big>)</big><a class="reference internal" href="_modules/ni/model/backend_elasticnet.html#predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.backend_elasticnet.predict" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</div>
-<div class="section" id="module-ni.model.backend_glm">
-<span id="backend-glm-module"></span><h2>1.4. <tt class="xref py py-mod docutils literal"><span class="pre">backend_glm</span></tt> Module<a class="headerlink" href="#module-ni.model.backend_glm" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-ni.model.backend_glm"></span><p>This module provides a backend to the .ip model. It wraps the statsmodels.api.GLM object.</p>
-<dl class="class">
-<dt id="ni.model.backend_glm.Configuration">
-<em class="property">class </em><tt class="descclassname">ni.model.backend_glm.</tt><tt class="descname">Configuration</tt><a class="reference internal" href="_modules/ni/model/backend_glm.html#Configuration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.backend_glm.Configuration" title="Permalink to this definition">¶</a></dt>
-<dd><p>Default Values:</p>
-<blockquote>
-<div><dl class="docutils">
-<dt>be_memory_efficient = True</dt>
-<dd>Does not keep the data with which it is fitted.</dd>
-</dl>
-</div></blockquote>
-</dd></dl>
-
-<dl class="class">
-<dt id="ni.model.backend_glm.Fit">
-<em class="property">class </em><tt class="descclassname">ni.model.backend_glm.</tt><tt class="descname">Fit</tt><big>(</big><em>f</em>, <em>m</em><big>)</big><a class="reference internal" href="_modules/ni/model/backend_glm.html#Fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.backend_glm.Fit" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
-<dt id="ni.model.backend_glm.Fit.predict">
-<tt class="descname">predict</tt><big>(</big><em>X=False</em><big>)</big><a class="reference internal" href="_modules/ni/model/backend_glm.html#Fit.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.backend_glm.Fit.predict" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="ni.model.backend_glm.Model">
-<em class="property">class </em><tt class="descclassname">ni.model.backend_glm.</tt><tt class="descname">Model</tt><big>(</big><em>c=False</em><big>)</big><a class="reference internal" href="_modules/ni/model/backend_glm.html#Model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.backend_glm.Model" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
-<dt id="ni.model.backend_glm.Model.fit">
-<tt class="descname">fit</tt><big>(</big><em>y</em>, <em>X</em><big>)</big><a class="reference internal" href="_modules/ni/model/backend_glm.html#Model.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.backend_glm.Model.fit" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="function">
-<dt id="ni.model.backend_glm.compare">
-<tt class="descclassname">ni.model.backend_glm.</tt><tt class="descname">compare</tt><big>(</big><em>x</em>, <em>p</em>, <em>nr_trials=1</em><big>)</big><a class="reference internal" href="_modules/ni/model/backend_glm.html#compare"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.backend_glm.compare" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="ni.model.backend_glm.predict">
-<tt class="descclassname">ni.model.backend_glm.</tt><tt class="descname">predict</tt><big>(</big><em>x</em>, <em>dm</em><big>)</big><a class="reference internal" href="_modules/ni/model/backend_glm.html#predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.backend_glm.predict" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</div>
-<div class="section" id="module-ni.model.pointprocess">
-<span id="pointprocess-module"></span><h2>1.5. <tt class="xref py py-mod docutils literal"><span class="pre">pointprocess</span></tt> Module<a class="headerlink" href="#module-ni.model.pointprocess" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-ni.model.pointprocess"></span><dl class="class">
-<dt id="ni.model.pointprocess.PointProcess">
-<em class="property">class </em><tt class="descclassname">ni.model.pointprocess.</tt><tt class="descname">PointProcess</tt><big>(</big><em>dimensionality</em><big>)</big><a class="reference internal" href="_modules/ni/model/pointprocess.html#PointProcess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.pointprocess.PointProcess" title="Permalink to this definition">¶</a></dt>
-<dd><p>A Point Process container.</p>
-<p>Usually generated by loading from a file or via <a class="reference internal" href="#ni.model.pointprocess.createPoisson" title="ni.model.pointprocess.createPoisson"><tt class="xref py py-func docutils literal"><span class="pre">ni.model.pointprocess.createPoisson()</span></tt></a></p>
-<dl class="method">
-<dt id="ni.model.pointprocess.PointProcess.addSpike">
-<tt class="descname">addSpike</tt><big>(</big><em>t</em><big>)</big><a class="reference internal" href="_modules/ni/model/pointprocess.html#PointProcess.addSpike"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.pointprocess.PointProcess.addSpike" title="Permalink to this definition">¶</a></dt>
-<dd><p>adds a spike to the point process, if it falls in the allowed range.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="ni.model.pointprocess.PointProcess.getCounts">
-<tt class="descname">getCounts</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ni/model/pointprocess.html#PointProcess.getCounts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.pointprocess.PointProcess.getCounts" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gives a (in most cases binary) time series of the point process.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="ni.model.pointprocess.PointProcess.getProbability">
-<tt class="descname">getProbability</tt><big>(</big><em>t_from</em>, <em>t_to</em><big>)</big><a class="reference internal" href="_modules/ni/model/pointprocess.html#PointProcess.getProbability"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.pointprocess.PointProcess.getProbability" title="Permalink to this definition">¶</a></dt>
-<dd><p>Undocumented</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="ni.model.pointprocess.PointProcess.plot">
-<tt class="descname">plot</tt><big>(</big><em>y=0</em>, <em>marker='|'</em><big>)</big><a class="reference internal" href="_modules/ni/model/pointprocess.html#PointProcess.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.pointprocess.PointProcess.plot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plots the pointprocess as points at line <cite>y</cite>.</p>
-<p><cite>marker</cite> determines the color and shape of the marker. Default is a vertical line &#8216;|&#8217;</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="ni.model.pointprocess.PointProcess.plotGaussed">
-<tt class="descname">plotGaussed</tt><big>(</big><em>width</em><big>)</big><a class="reference internal" href="_modules/ni/model/pointprocess.html#PointProcess.plotGaussed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.pointprocess.PointProcess.plotGaussed" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plots the pointprocess as a smoothed time series</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="function">
-<dt id="ni.model.pointprocess.PointProcessFromSpikeTimes">
-<tt class="descclassname">ni.model.pointprocess.</tt><tt class="descname">PointProcessFromSpikeTimes</tt><big>(</big><em>times</em><big>)</big><a class="reference internal" href="_modules/ni/model/pointprocess.html#PointProcessFromSpikeTimes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.pointprocess.PointProcessFromSpikeTimes" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
-<dt id="ni.model.pointprocess.SimpleFiringRateModel">
-<em class="property">class </em><tt class="descclassname">ni.model.pointprocess.</tt><tt class="descname">SimpleFiringRateModel</tt><a class="reference internal" href="_modules/ni/model/pointprocess.html#SimpleFiringRateModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.pointprocess.SimpleFiringRateModel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Uses just the firing rate as a predictor</p>
-<dl class="method">
-<dt id="ni.model.pointprocess.SimpleFiringRateModel.compare">
-<tt class="descname">compare</tt><big>(</big><em>Data</em>, <em>Prediction</em><big>)</big><a class="reference internal" href="_modules/ni/model/pointprocess.html#SimpleFiringRateModel.compare"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.pointprocess.SimpleFiringRateModel.compare" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="ni.model.pointprocess.SimpleFiringRateModel.fit">
-<tt class="descname">fit</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="_modules/ni/model/pointprocess.html#SimpleFiringRateModel.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.pointprocess.SimpleFiringRateModel.fit" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="ni.model.pointprocess.SimpleFiringRateModel.loglikelihood">
-<tt class="descname">loglikelihood</tt><big>(</big><em>Data</em>, <em>Prediction</em><big>)</big><a class="reference internal" href="_modules/ni/model/pointprocess.html#SimpleFiringRateModel.loglikelihood"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.pointprocess.SimpleFiringRateModel.loglikelihood" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="ni.model.pointprocess.SimpleFiringRateModel.predict">
-<tt class="descname">predict</tt><big>(</big><em>Data</em><big>)</big><a class="reference internal" href="_modules/ni/model/pointprocess.html#SimpleFiringRateModel.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.pointprocess.SimpleFiringRateModel.predict" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="function">
-<dt id="ni.model.pointprocess.createPoisson">
-<tt class="descclassname">ni.model.pointprocess.</tt><tt class="descname">createPoisson</tt><big>(</big><em>p</em>, <em>l</em><big>)</big><a class="reference internal" href="_modules/ni/model/pointprocess.html#createPoisson"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.pointprocess.createPoisson" title="Permalink to this definition">¶</a></dt>
-<dd><p>This generates a spike sequence of length <cite>l</cite> according to either a fixed firing rate <cite>p</cite>, or a repeated sequence of firing rates if <cite>type(p) == np.ndarray</cite>.</p>
-<p>It creates a <a class="reference internal" href="#ni.model.pointprocess.PointProcess" title="ni.model.pointprocess.PointProcess"><tt class="xref py py-class docutils literal"><span class="pre">ni.model.pointprocess.PointProcess</span></tt></a></p>
-<p>Example 1:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">p1</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">createPoisson</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span>
-<span class="n">p1</span><span class="o">.</span><span class="n">plotGaussed</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
-<span class="n">plot</span><span class="p">(</span><span class="n">p1</span><span class="o">.</span><span class="n">frate</span><span class="p">)</span>
-</pre></div>
-</div>
-<img alt="_images/p1_out_smooth.png" src="_images/p1_out_smooth.png" />
-<div class="highlight-python"><div class="highlight"><pre><span class="n">p2</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">createPoisson</span><span class="p">(</span><span class="n">sin</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">200</span><span class="p">))</span><span class="o">*</span><span class="mf">0.01</span><span class="p">)</span><span class="o">*</span><span class="mf">0.5</span><span class="o">-</span> <span class="mf">0.2</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span>
-<span class="n">p2</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-<span class="n">p2</span><span class="o">.</span><span class="n">plotGaussed</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-</pre></div>
-</div>
-<img alt="_images/p2_out.png" src="_images/p2_out.png" />
-<div class="highlight-python"><div class="highlight"><pre><span class="n">p2</span><span class="o">.</span><span class="n">plotGaussed</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
-<span class="n">plot</span><span class="p">(</span><span class="n">p2</span><span class="o">.</span><span class="n">frate</span><span class="p">)</span>
-</pre></div>
-</div>
-<img alt="_images/p2_out_smooth.png" src="_images/p2_out_smooth.png" />
-<p>Example with multiple channels:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">frate</span> <span class="o">=</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">200</span><span class="p">))</span><span class="o">*</span><span class="mf">0.001</span><span class="p">)</span><span class="o">*</span><span class="mf">0.2</span><span class="o">+</span><span class="mf">0.01</span>
-<span class="n">channels</span> <span class="o">=</span> <span class="mi">9</span>
-
-<span class="n">dists</span> <span class="o">=</span> <span class="p">[</span><span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">createPoisson</span><span class="p">(</span><span class="n">frate</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">channels</span><span class="p">)]</span>
-<span class="c">#for i in range(0,9): dists[i].plotGaussed(10)</span>
-<span class="kn">import</span> <span class="nn">itertools</span>
-<span class="n">spks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dists</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">getCounts</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">channels</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">99</span><span class="p">)</span> <span class="p">])</span>
-<span class="n">imshow</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">*</span><span class="n">spks</span><span class="p">)</span>
-<span class="n">set_cmap</span><span class="p">(</span><span class="s">&#39;gray&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Will generate:</p>
-<div class="highlight-none"><div class="highlight"><pre>(A plot of spikes)
-</pre></div>
-</div>
-<img alt="_images/multichannel_spike_plot.png" src="_images/multichannel_spike_plot.png" />
-<div class="highlight-python"><div class="highlight"><pre><span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">plotGaussed</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dists</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">getCounts</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">channels</span><span class="p">)])</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span><span class="mi">20</span><span class="p">)</span>
-<span class="n">plot</span><span class="p">(</span><span class="n">dists</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">frate</span><span class="p">)</span>
-</pre></div>
-</div>
-<img alt="_images/multichannel_sum_gaussed.png" src="_images/multichannel_sum_gaussed.png" />
-</dd></dl>
-
-<dl class="function">
-<dt id="ni.model.pointprocess.getBinary">
-<tt class="descclassname">ni.model.pointprocess.</tt><tt class="descname">getBinary</tt><big>(</big><em>spikes</em>, <em>min_length=1</em><big>)</big><a class="reference internal" href="_modules/ni/model/pointprocess.html#getBinary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.pointprocess.getBinary" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gives back a binary array from an array of spike times. The maximum for each bin is 1.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="ni.model.pointprocess.getCounts">
-<tt class="descclassname">ni.model.pointprocess.</tt><tt class="descname">getCounts</tt><big>(</big><em>spikes</em><big>)</big><a class="reference internal" href="_modules/ni/model/pointprocess.html#getCounts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.pointprocess.getCounts" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gives back an array of spike counts from an array of spike times. If the output is suppsed to be a Binomial, use <cite>getBinary</cite> instead.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="ni.model.pointprocess.interspike_interval">
-<tt class="descclassname">ni.model.pointprocess.</tt><tt class="descname">interspike_interval</tt><big>(</big><em>spikes_a</em>, <em>spikes_b=False</em><big>)</big><a class="reference internal" href="_modules/ni/model/pointprocess.html#interspike_interval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.pointprocess.interspike_interval" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="ni.model.pointprocess.plotGaussed">
-<tt class="descclassname">ni.model.pointprocess.</tt><tt class="descname">plotGaussed</tt><big>(</big><em>data</em>, <em>width</em><big>)</big><a class="reference internal" href="_modules/ni/model/pointprocess.html#plotGaussed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.pointprocess.plotGaussed" title="Permalink to this definition">¶</a></dt>
-<dd><div class="highlight-python"><div class="highlight"><pre><span class="n">p2</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pointprocess</span><span class="o">.</span><span class="n">createPoisson</span><span class="p">(</span><span class="n">sin</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">200</span><span class="p">))</span><span class="o">*</span><span class="mf">0.01</span><span class="p">)</span><span class="o">*</span><span class="mf">0.5</span><span class="o">-</span> <span class="mf">0.2</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span>
-<span class="n">p2</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-<span class="n">p2</span><span class="o">.</span><span class="n">plotGaussed</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-</pre></div>
-</div>
-<img alt="_images/p2_out.png" src="_images/p2_out.png" />
-</dd></dl>
-
-<dl class="function">
-<dt id="ni.model.pointprocess.plotMultiSpikes">
-<tt class="descclassname">ni.model.pointprocess.</tt><tt class="descname">plotMultiSpikes</tt><big>(</big><em>spikes</em><big>)</big><a class="reference internal" href="_modules/ni/model/pointprocess.html#plotMultiSpikes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.pointprocess.plotMultiSpikes" title="Permalink to this definition">¶</a></dt>
-<dd><ul class="simple">
-<li><cite>spikes</cite> is a binary 2d matrix</li>
-</ul>
-<p>Generates something like:</p>
-<img alt="_images/plotMultiSpikes.png" src="_images/plotMultiSpikes.png" />
-</dd></dl>
-
-<dl class="function">
-<dt id="ni.model.pointprocess.reverse_correlation">
-<tt class="descclassname">ni.model.pointprocess.</tt><tt class="descname">reverse_correlation</tt><big>(</big><em>spikes_a</em>, <em>spikes_b=False</em><big>)</big><a class="reference internal" href="_modules/ni/model/pointprocess.html#reverse_correlation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.pointprocess.reverse_correlation" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</div>
 <div class="section" id="module-ni.model.designmatrix">
-<span id="designmatrix-module"></span><h2>1.6. <tt class="xref py py-mod docutils literal"><span class="pre">designmatrix</span></tt> Module<a class="headerlink" href="#module-ni.model.designmatrix" title="Permalink to this headline">¶</a></h2>
+<span id="designmatrix-module"></span><h3>2.7.2. <tt class="xref py py-mod docutils literal"><span class="pre">designmatrix</span></tt> Module<a class="headerlink" href="#module-ni.model.designmatrix" title="Permalink to this headline">¶</a></h3>
 <span class="target" id="module-ni.model.designmatrix"></span><dl class="class">
 <dt id="ni.model.designmatrix.AdaptiveRateComponent">
 <em class="property">class </em><tt class="descclassname">ni.model.designmatrix.</tt><tt class="descname">AdaptiveRateComponent</tt><big>(</big><em>header='rate'</em>, <em>rate=False</em>, <em>exponent=2</em>, <em>knots=10</em>, <em>length=1000</em>, <em>kernel=False</em><big>)</big><a class="reference internal" href="_modules/ni/model/designmatrix.html#AdaptiveRateComponent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.designmatrix.AdaptiveRateComponent" title="Permalink to this definition">¶</a></dt>
@@ -863,13 +762,9 @@ order_flag: default 0 (no higher order interactions)</p>
 
 </div>
 <div class="section" id="module-ni.model.net_sim">
-<span id="net-sim-module"></span><h2>1.7. <tt class="xref py py-mod docutils literal"><span class="pre">net_sim</span></tt> Module<a class="headerlink" href="#module-ni.model.net_sim" title="Permalink to this headline">¶</a></h2>
+<span id="net-sim-module"></span><h3>2.7.3. <tt class="xref py py-mod docutils literal"><span class="pre">net_sim</span></tt> Module<a class="headerlink" href="#module-ni.model.net_sim" title="Permalink to this headline">¶</a></h3>
 <span class="target" id="module-ni.model.net_sim"></span><p>The Net Simulator is divided into a Configuration, Net and a Result object.</p>
 <p>After configuration of the network it can be instantiated by calling <cite>Net(conf)</cite> with a valid configuration <cite>conf</cite>. This creates eg. random connectivity so that the simulation with the same network can be repeated multiple times.</p>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">Add options for random number generator seeds, so that the <em>exact</em> same trial can be run over and over again.</p>
-</div>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">c</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">net_sim</span><span class="o">.</span><span class="n">SimulationConfiguration</span><span class="p">()</span>
 <span class="n">c</span><span class="o">.</span><span class="n">Nneur</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">net</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">net_sim</span><span class="o">.</span><span class="n">Net</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
@@ -884,7 +779,7 @@ Timerange: (250, 10250)
 Firing Rates plot
 </pre></div>
 </div>
-<img alt="_images/net_sim_firing_rates.png" src="_images/net_sim_firing_rates.png" />
+<img alt="_static/net_sim_firing_rates.png" src="_static/net_sim_firing_rates.png" />
 <div class="highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">11</span><span class="p">):</span>
     <span class="k">print</span> <span class="n">i</span>
     <span class="n">res1</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">simulate</span><span class="p">()</span>
@@ -894,7 +789,7 @@ Firing Rates plot
 <span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">results</span><span class="p">))</span>
 </pre></div>
 </div>
-<img alt="_images/net_sim_trials_firing.png" src="_images/net_sim_trials_firing.png" />
+<img alt="_static/net_sim_trials_firing.png" src="_static/net_sim_trials_firing.png" />
 <dl class="class">
 <dt id="ni.model.net_sim.Net">
 <em class="property">class </em><tt class="descclassname">ni.model.net_sim.</tt><tt class="descname">Net</tt><big>(</big><em>config</em><big>)</big><a class="reference internal" href="_modules/ni/model/net_sim.html#Net"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.net_sim.Net" title="Permalink to this definition">¶</a></dt>
@@ -1009,7 +904,7 @@ Firing Rates plot
 
 </div>
 <div class="section" id="module-ni.model.create_design_matrix_vk">
-<span id="create-design-matrix-vk-module"></span><h2>1.8. <tt class="xref py py-mod docutils literal"><span class="pre">create_design_matrix_vk</span></tt> Module<a class="headerlink" href="#module-ni.model.create_design_matrix_vk" title="Permalink to this headline">¶</a></h2>
+<span id="create-design-matrix-vk-module"></span><h3>2.7.4. <tt class="xref py py-mod docutils literal"><span class="pre">create_design_matrix_vk</span></tt> Module<a class="headerlink" href="#module-ni.model.create_design_matrix_vk" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="ni.model.create_design_matrix_vk.computeCovariate">
 <tt class="descclassname">ni.model.create_design_matrix_vk.</tt><tt class="descname">computeCovariate</tt><big>(</big><em>index</em>, <em>o</em>, <em>C</em>, <em>V1</em><big>)</big><a class="reference internal" href="_modules/ni/model/create_design_matrix_vk.html#computeCovariate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.create_design_matrix_vk.computeCovariate" title="Permalink to this definition">¶</a></dt>
@@ -1063,7 +958,7 @@ symmetric kernels are assumed.</p>
 
 </div>
 <div class="section" id="module-ni.model.create_splines">
-<span id="create-splines-module"></span><h2>1.9. <tt class="xref py py-mod docutils literal"><span class="pre">create_splines</span></tt> Module<a class="headerlink" href="#module-ni.model.create_splines" title="Permalink to this headline">¶</a></h2>
+<span id="create-splines-module"></span><h3>2.7.5. <tt class="xref py py-mod docutils literal"><span class="pre">create_splines</span></tt> Module<a class="headerlink" href="#module-ni.model.create_splines" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="ni.model.create_splines.N">
 <tt class="descclassname">ni.model.create_splines.</tt><tt class="descname">N</tt><big>(</big><em>u</em>, <em>i</em>, <em>p</em>, <em>knots</em><big>)</big><a class="reference internal" href="_modules/ni/model/create_splines.html#N"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.create_splines.N" title="Permalink to this definition">¶</a></dt>
@@ -1132,6 +1027,104 @@ the ith basis of knots evaluated on x.</dd>
 </dd></dl>
 
 </div>
+<div class="section" id="module-ni.model.backend_elasticnet">
+<span id="backend-elasticnet-module"></span><h3>2.7.6. <tt class="xref py py-mod docutils literal"><span class="pre">backend_elasticnet</span></tt> Module<a class="headerlink" href="#module-ni.model.backend_elasticnet" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="module-ni.model.backend_elasticnet"></span><p>This module provides a backend to the .ip model. It wraps the sklearn.linear_model.ElasticNet / ElasticNetCV objects.</p>
+<dl class="class">
+<dt id="ni.model.backend_elasticnet.Configuration">
+<em class="property">class </em><tt class="descclassname">ni.model.backend_elasticnet.</tt><tt class="descname">Configuration</tt><a class="reference internal" href="_modules/ni/model/backend_elasticnet.html#Configuration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.backend_elasticnet.Configuration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default Values:</p>
+<blockquote>
+<div><p>crossvalidation = True</p>
+<blockquote>
+<div>If true, alpha and l1_ratio will be calculated by crossvalidation.</div></blockquote>
+<p>alpha = 0.5</p>
+<p>l1_ratio = 1</p>
+<dl class="docutils">
+<dt>be_memory_efficient = True</dt>
+<dd>Does not keep the data with which it is fitted.</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="class">
+<dt id="ni.model.backend_elasticnet.Fit">
+<em class="property">class </em><tt class="descclassname">ni.model.backend_elasticnet.</tt><tt class="descname">Fit</tt><big>(</big><em>f</em>, <em>m</em><big>)</big><a class="reference internal" href="_modules/ni/model/backend_elasticnet.html#Fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.backend_elasticnet.Fit" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="ni.model.backend_elasticnet.Fit.predict">
+<tt class="descname">predict</tt><big>(</big><em>X=False</em><big>)</big><a class="reference internal" href="_modules/ni/model/backend_elasticnet.html#Fit.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.backend_elasticnet.Fit.predict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ni.model.backend_elasticnet.Model">
+<em class="property">class </em><tt class="descclassname">ni.model.backend_elasticnet.</tt><tt class="descname">Model</tt><big>(</big><em>c=False</em><big>)</big><a class="reference internal" href="_modules/ni/model/backend_elasticnet.html#Model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.backend_elasticnet.Model" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="ni.model.backend_elasticnet.Model.fit">
+<tt class="descname">fit</tt><big>(</big><em>x</em>, <em>dm</em><big>)</big><a class="reference internal" href="_modules/ni/model/backend_elasticnet.html#Model.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.backend_elasticnet.Model.fit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="ni.model.backend_elasticnet.compare">
+<tt class="descclassname">ni.model.backend_elasticnet.</tt><tt class="descname">compare</tt><big>(</big><em>x</em>, <em>p</em>, <em>nr_trials=1</em><big>)</big><a class="reference internal" href="_modules/ni/model/backend_elasticnet.html#compare"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.backend_elasticnet.compare" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ni.model.backend_elasticnet.predict">
+<tt class="descclassname">ni.model.backend_elasticnet.</tt><tt class="descname">predict</tt><big>(</big><em>x</em>, <em>dm</em><big>)</big><a class="reference internal" href="_modules/ni/model/backend_elasticnet.html#predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.backend_elasticnet.predict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-ni.model.backend_glm">
+<span id="backend-glm-module"></span><h3>2.7.7. <tt class="xref py py-mod docutils literal"><span class="pre">backend_glm</span></tt> Module<a class="headerlink" href="#module-ni.model.backend_glm" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="module-ni.model.backend_glm"></span><p>This module provides a backend to the .ip model. It wraps the statsmodels.api.GLM object.</p>
+<dl class="class">
+<dt id="ni.model.backend_glm.Configuration">
+<em class="property">class </em><tt class="descclassname">ni.model.backend_glm.</tt><tt class="descname">Configuration</tt><a class="reference internal" href="_modules/ni/model/backend_glm.html#Configuration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.backend_glm.Configuration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default Values:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>be_memory_efficient = True</dt>
+<dd>Does not keep the data with which it is fitted.</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="class">
+<dt id="ni.model.backend_glm.Fit">
+<em class="property">class </em><tt class="descclassname">ni.model.backend_glm.</tt><tt class="descname">Fit</tt><big>(</big><em>f</em>, <em>m</em><big>)</big><a class="reference internal" href="_modules/ni/model/backend_glm.html#Fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.backend_glm.Fit" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="ni.model.backend_glm.Fit.predict">
+<tt class="descname">predict</tt><big>(</big><em>X=False</em><big>)</big><a class="reference internal" href="_modules/ni/model/backend_glm.html#Fit.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.backend_glm.Fit.predict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ni.model.backend_glm.Model">
+<em class="property">class </em><tt class="descclassname">ni.model.backend_glm.</tt><tt class="descname">Model</tt><big>(</big><em>c=False</em><big>)</big><a class="reference internal" href="_modules/ni/model/backend_glm.html#Model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.backend_glm.Model" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="ni.model.backend_glm.Model.fit">
+<tt class="descname">fit</tt><big>(</big><em>y</em>, <em>X</em><big>)</big><a class="reference internal" href="_modules/ni/model/backend_glm.html#Model.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.backend_glm.Model.fit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="ni.model.backend_glm.compare">
+<tt class="descclassname">ni.model.backend_glm.</tt><tt class="descname">compare</tt><big>(</big><em>x</em>, <em>p</em>, <em>nr_trials=1</em><big>)</big><a class="reference internal" href="_modules/ni/model/backend_glm.html#compare"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.backend_glm.compare" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ni.model.backend_glm.predict">
+<tt class="descclassname">ni.model.backend_glm.</tt><tt class="descname">predict</tt><big>(</big><em>x</em>, <em>dm</em><big>)</big><a class="reference internal" href="_modules/ni/model/backend_glm.html#predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ni.model.backend_glm.predict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
 </div>
 
 
@@ -1139,17 +1132,17 @@ the ith basis of knots evaluated on x.</dd>
       <div class="bottomnav">
       
         <p>
-        «&#160;&#160;<a href="index.html">Welcome to the Neuroinformatics Toolbox documentation!</a>
+        «&#160;&#160;<a href="ni.data.html">1. data Package</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="ni.data.html">3. data Package</a>&#160;&#160;»
+        <a href="ni.model.pointprocess.html">3. The <tt class="docutils literal"><span class="pre">ni.model.pointprocess</span></tt> Module</a>&#160;&#160;»
         </p>
 
       </div>
 
     <div class="footer">
-        &copy; Copyright 2013, Jacob Huth.
+        &copy; Copyright 2015, Jacob Huth.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
