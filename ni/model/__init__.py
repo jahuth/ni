@@ -5,11 +5,11 @@ import net_sim
 import ip_generator
 
 class BareModel(ip.Model):
-	"""This is a shorthand class for an Inhomogenous Pointprocess model that contains only a RateComponent and nothing else.
+	"""This is a shorthand class for an Inhomogenous Pointprocess model that contains no Components.
 
 	This is completely equivalent to using:
 
-		ni.model.ip.Model({'name':'Rate Model','autohistory':False, 'crosshistory':False, 'knots_rate':knots_rate})
+		ni.model.ip.Model({'name':'Bare Model','autohistory':False, 'crosshistory':False, 'rate':False})
 		
 	"""
 	def __init__(self,configuration={}):

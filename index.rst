@@ -10,26 +10,8 @@ The NI Toolbox contains python versions of commonly used functions to deal with 
 Get the pdf version `here <_static/NeuroinformaticsToolbox.pdf>`_
 
 
-Contents:
 
-.. toctree::
-   :maxdepth: 5
-   :numbered:
-
-   ni.model
-   ni.tools
-   ni.data
-
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
-Tutorial
+Installation
 ==========
 
 To install the toolbox, clone the git repository, or download the zip file from: https://github.com/jahuth/ni
@@ -43,6 +25,29 @@ In the repository the toolbox, default configuration, the documentation and exam
 If you lack any of the following packages, you might want to install them (with eg. `pip`) ::
 
 	ipython matplotlib scipy numpy pandas scikit-learn statsmodels
+
+
+
+Contents:
+
+.. toctree::
+   :maxdepth: 5
+   :numbered:
+
+   ni.data
+   ni.model
+   ni.model.pointprocess
+   ni.tools
+
+
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
 
 
 Some Examples
@@ -94,7 +99,7 @@ Will output:
 The data can then be used with a model::
 
 	model = ni.model.ip.Model({'cell':4,'crosshistory':[6,7]})
-	fm = model.fit(data.trial(range(data.nr_trials/2)))
+	fm = model.fit(r.data.trial(range(r.data.nr_trials/2)))
 	fm.plot_prototypes()
 
 
